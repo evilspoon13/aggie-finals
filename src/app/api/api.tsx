@@ -1,46 +1,34 @@
 import axios from 'axios';
+import { CourseInstructor, CourseMeeting, CourseRequest, CourseResponse } from './types';
 
-const BASE_API_URL = "https://tamu.collegescheduler.com/api"
+const API_URL = "https://howdy.tamu.edu/api/section-meeting-times-with-profs";
 
-export interface Meeting {
-    days: string;
-    daysRaw: string;
-    startTime: number;
-    endTime: number;
-    location: string;
-    meetingType: string;
-    meetingTypeDescription: string;
-    building: string;
-    buildingDescription: string;
-    room: string;
-}
-  
-export interface CourseSection {
-    id: string;
-    sectionNumber: string;
-    title: string;
-    instructor: Array<{
-      id: string;
-      name: string;
-    }>;
-    meetings: Meeting[];
-}
-  
-export interface CourseResponse {
-    sections: CourseSection[];
-}
-
-// Modified to use our internal API route
-export const fetchCourseMeetingTimes = async (
-    subject: string,
-    courseNumber: string,
-    term: string = 'Fall 2025 - College Station'
-): Promise<CourseSection[]> => {
-    try {
-        const response = await axios.get<CourseResponse>(`${BASE_API_URL}/terms/${encodeURIComponent(term)}/subjects/${subject}/courses/${courseNumber}/regblocks`);
-        return response.data.sections;
-    } catch (error) {
-        console.error('Error fetching course data:', error);
+export const fetchCourseInfo = async (request: CourseRequest): Promise<CourseResponse> => {
+    try{
+        const response = await axios.post<CourseResponse>(API_URL, request, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    }
+    catch(error){
+        if(axios.isAxiosError(error)) {
+            console.error('API Error:', error.response?.data || error.message);
+            throw new Error(`Failed to fetch course information: ${error.message}`);
+        }
         throw error;
     }
-}
+};
+
+export const parseCourseResponse = (response: CourseResponse) => {
+    const instructors = JSON.parse(response.SWV_CLASS_SEARCH_INSTRCTR_JSON) as CourseInstructor[];
+    const meetings = JSON.parse(response.SWV_CLASS_SEARCH_JSON_CLOB) as CourseMeeting[];
+
+    return {
+        instructors,
+        meetings
+    };
+};
+
+
