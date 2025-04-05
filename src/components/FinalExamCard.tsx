@@ -36,7 +36,7 @@ export const FinalExamCard = ({
   }
 
   return (
-    <div className="p-4 bg-gray-50 border rounded-md">
+    <div className="p-4 border rounded-md">
       <div className="space-y-2">
         <h4 className="font-semibold text-lg">Course Schedule</h4>
         <p><span className="font-medium">Days:</span> {lectureSchedule.days}</p>
