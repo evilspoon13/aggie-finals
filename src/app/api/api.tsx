@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { CourseInstructor, CourseMeeting, CourseRequest, CourseResponse } from './types';
 
-const API_URL = "https://howdy.tamu.edu/api/section-meeting-times-with-profs";
+const API_URL = "/api/section-meeting-times-with-profs";
 
 export const fetchCourseInfo = async (request: CourseRequest): Promise<CourseResponse> => {
     try{
