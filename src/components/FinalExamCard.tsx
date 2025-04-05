@@ -1,4 +1,13 @@
 import { FinalExam, LectureSchedule } from "@/app/api/types";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { CalendarIcon, ClockIcon } from "lucide-react";
 
 interface FinalExamCardProps {
   loading: boolean;
@@ -16,44 +25,78 @@ export const FinalExamCard = ({
   crn
 }: FinalExamCardProps) => {
   if (loading) {
-    return <div>Loading final exam data...</div>;
+    return (
+      <Card className="w-full border-0">
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-center h-24">
+            <p className="text-muted-foreground">Loading final exam data...</p>
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
   
   if (error) {
     return (
-      <div className="p-3 bg-red-50 border border-red-200 rounded-md text-red-600">
-        <p className="font-medium">Error: {error}</p>
-      </div>
+      <Card className="w-full border-0 bg-red-50">
+        <CardHeader className="pb-2">
+          <CardTitle>Course CRN: {crn}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-red-600">{error}</p>
+        </CardContent>
+      </Card>
     );
   }
   
   if (!lectureSchedule || !finalExam) {
     return (
-      <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-        <p>No lecture information found for CRN: {crn}</p>
-      </div>
+      <Card className="w-full border-0 bg-yellow-50">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-yellow-700">No Data Available</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p className="text-yellow-700">No lecture information found for CRN: {crn}</p>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="p-4 border rounded-md">
-      <div className="space-y-2">
-        <h4 className="font-semibold text-lg">Course Schedule</h4>
-        <p><span className="font-medium">Days:</span> {lectureSchedule.days}</p>
-        <p><span className="font-medium">Time:</span> {lectureSchedule.beginTime} - {lectureSchedule.endTime}</p>
-        
+    <Card className="w-full border-0 shadow-none ring-0 ring-offset-0">
+      <CardHeader className="pb-2">
+        <CardTitle>Course CRN: {crn}</CardTitle>
+        <CardDescription className="flex items-center gap-2">
+          <Badge variant="outline">{lectureSchedule.days}</Badge>
+          <span className="flex items-center gap-1 text-muted-foreground">
+            <ClockIcon className="h-3 w-3" /> 
+            {lectureSchedule.beginTime} - {lectureSchedule.endTime}
+          </span>
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
         {finalExam.success ? (
-          <div className="mt-4 p-3 bg-[#500000] text-white rounded-md">
-            <h4 className="font-bold">Final Exam:</h4>
-            <p><span className="font-medium">Date:</span> {finalExam.date}</p>
-            <p><span className="font-medium">Time:</span> {finalExam.examTime}</p>
+          <div className="space-y-4">
+            <div className="rounded-md bg-[#500000] p-4 text-white">
+              <h4 className="font-bold text-lg mb-2">Final Exam</h4>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <CalendarIcon className="h-4 w-4" />
+                  <span>{finalExam.date}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <ClockIcon className="h-4 w-4" />
+                  <span>{finalExam.examTime}</span>
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
-          <div className="p-3 bg-orange-50 border border-orange-200 rounded-md text-orange-700">
-            <p>Final exam not found: {finalExam.error}</p>
+          <div className="rounded-md bg-orange-50 p-4 border-0">
+            <p className="text-orange-700">Final exam not found: {finalExam.error}</p>
           </div>
         )}
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };

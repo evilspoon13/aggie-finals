@@ -163,7 +163,6 @@ export default function Home() {
             <div className="space-y-6">
               {courses.map((course, index) => (
                 <div key={index} className="border p-4 rounded shadow-sm">
-                  <h4 className="font-medium">Course CRN: {course.crn}</h4>
                   <FinalExamCard
                     loading={course.loading}
                     error={course.error}
