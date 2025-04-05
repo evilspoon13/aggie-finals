@@ -1,9 +1,7 @@
-export const findFinalExam = (lectureSchedule: {
-    days: string;
-    beginTime: string;
-    endTime: string;
-    location?: string;
-  }) => {
+import { LectureSchedule } from "../api/types";
+import { FinalExam } from "../api/types";
+
+export const findFinalExam = (lectureSchedule: LectureSchedule) : FinalExam => {
     // convert time from "HH:MM AM/PM" format to decimal hours (24-hour format)
     const convertTo24Hour = (timeStr: string): number => {
       const [time, period] = timeStr.split(" ");
@@ -215,8 +213,8 @@ export const findFinalExam = (lectureSchedule: {
                 success: true,
                 date: day.date,
                 examTime: slot.examTime,
-                classMeetingPattern: lectureSchedule.days,
-                classStartTime: lectureSchedule.beginTime
+                error: null,
+                schedule: lectureSchedule
               };
             }
           }
@@ -227,7 +225,6 @@ export const findFinalExam = (lectureSchedule: {
     return { 
       success: false,
       error: "No matching final exam time found for this course",
-      classMeetingPattern: lectureSchedule.days,
-      classStartTime: lectureSchedule.beginTime
+      schedule: lectureSchedule
     };
   };

@@ -29,3 +29,17 @@ export interface CourseResponse {
     SWV_CLASS_SEARCH_INSTRCTR_JSON: string;
     SWV_CLASS_SEARCH_JSON_CLOB: string; 
 }
+
+export interface LectureSchedule {
+    days: string;
+    beginTime: string;
+    endTime: string;
+}
+
+export interface FinalExam {
+    success: boolean;
+    error: string | null;
+    schedule: LectureSchedule | null;
+    date?: string;
+    examTime?: string;
+}
