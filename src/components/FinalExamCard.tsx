@@ -26,10 +26,10 @@ export const FinalExamCard = ({
 }: FinalExamCardProps) => {
   if (loading) {
     return (
-      <Card className="w-full border-0">
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-center h-24">
-            <p className="text-muted-foreground">Loading final exam data...</p>
+      <Card className="border-0 h-full">
+        <CardContent className="pt-4">
+          <div className="flex items-center justify-center h-20">
+            <p className="text-muted-foreground">Loading...</p>
           </div>
         </CardContent>
       </Card>
@@ -38,12 +38,12 @@ export const FinalExamCard = ({
   
   if (error) {
     return (
-      <Card className="w-full border-0 bg-red-50">
-        <CardHeader className="pb-2">
-          <CardTitle>Course CRN: {crn}</CardTitle>
+      <Card className="border-0 bg-red-50 h-full">
+        <CardHeader className="pb-1 pt-3">
+          <CardTitle className="text-sm">CRN: {crn}</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-red-600">{error}</p>
+          <p className="text-red-600 text-sm">{error}</p>
         </CardContent>
       </Card>
     );
@@ -51,49 +51,48 @@ export const FinalExamCard = ({
   
   if (!lectureSchedule || !finalExam) {
     return (
-      <Card className="w-full border-0 bg-yellow-50">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-yellow-700">No Data Available</CardTitle>
+      <Card className="border-0 bg-yellow-50 h-full">
+        <CardHeader className="pb-1 pt-3">
+          <CardTitle className="text-yellow-700 text-sm">No Data</CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-yellow-700">No lecture information found for CRN: {crn}</p>
+          <p className="text-yellow-700 text-sm">No info for CRN: {crn}</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card className="w-full border-0 shadow-none ring-0 ring-offset-0">
-      <CardHeader className="pb-2">
-        <CardTitle>Course CRN: {crn}</CardTitle>
-        <CardDescription className="flex items-center gap-2">
-          <Badge variant="outline">{lectureSchedule.days}</Badge>
+    <Card className="border-0 shadow-none ring-0 ring-offset-0 h-full">
+      <CardHeader className="pb-1 pt-3">
+        <CardTitle className="text-sm">CRN: {crn}</CardTitle>
+        <CardDescription className="flex items-center gap-1 text-xs">
+          <Badge variant="outline" className="text-xs px-1 py-0">{lectureSchedule.days}</Badge>
           <span className="flex items-center gap-1 text-muted-foreground">
-            <ClockIcon className="h-3 w-3" /> 
-            {lectureSchedule.beginTime} - {lectureSchedule.endTime}
+            <ClockIcon className="h-2 w-2" /> 
+            {lectureSchedule.beginTime}
           </span>
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="pt-0">
         {finalExam.success ? (
-          <div className="space-y-4">
-            <div className="rounded-md bg-[#500000] p-4 text-white">
-              <h4 className="font-bold text-lg mb-2">Final Exam</h4>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <CalendarIcon className="h-4 w-4" />
+          <div>
+            <div className="rounded-md bg-[#500000] p-2 text-white text-xs">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1">
+                  <CalendarIcon className="h-3 w-3" />
                   <span>{finalExam.date}</span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <ClockIcon className="h-4 w-4" />
+                <div className="flex items-center gap-1">
+                  <ClockIcon className="h-3 w-3" />
                   <span>{finalExam.examTime}</span>
                 </div>
               </div>
             </div>
           </div>
         ) : (
-          <div className="rounded-md bg-orange-50 p-4 border-0">
-            <p className="text-orange-700">Final exam not found: {finalExam.error}</p>
+          <div className="rounded-md bg-orange-50 p-2 text-xs">
+            <p className="text-orange-700">No exam found</p>
           </div>
         )}
       </CardContent>

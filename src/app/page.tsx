@@ -163,29 +163,33 @@ export default function Home() {
           {loading ? (
             <div>Loading your exam schedule...</div>
           ) : (
-            <div className="space-y-6">
-              {courses.map((course, index) => (
-                <div key={index} className="border p-4 rounded shadow-sm">
-                  <FinalExamCard
-                    loading={course.loading}
-                    error={course.error}
-                    lectureSchedule={course.lectureSchedule}
-                    finalExam={course.finalExam}
-                    crn={course.crn}
-                  />
-                </div>
-              ))}
-              
+            <div>
+              <div className="grid grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) gap-3">
+                {courses.map((course, index) => (
+                  <div key={index} className="border p-4 rounded shadow-sm">
+                    <FinalExamCard
+                      loading={course.loading}
+                      error={course.error}
+                      lectureSchedule={course.lectureSchedule}
+                      finalExam={course.finalExam}
+                      crn={course.crn}
+                    />
+                  </div>
+                ))}
+              </div>
+                            
               <Button 
-                className="mt-6"
-                onClick={() => {
-                  setShowSchedule(false);
-                  setCourses([]);
-                }}
-              >
-                Start Over
-              </Button>
+                  className="mt-6"
+                  onClick={() => {
+                    setShowSchedule(false);
+                    setCourses([]);
+                  }}
+                >
+                  Start Over
+                </Button>
             </div>
+            
+            
           )}
         </div>
       )}

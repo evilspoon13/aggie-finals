@@ -30,7 +30,7 @@ export function Header(){
 
                         <NavigationMenuItem>
                             <Link href="/about" legacyBehavior passHref>
-                                <NavigationMenuLink>
+                                <NavigationMenuLink className="font-medium">
                                     About
                                 </NavigationMenuLink>
                             </Link>
