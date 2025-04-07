@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 
 import { FinalExamCard } from "@/components/FinalExamCard";
+import { StaticFinalData } from "@/components/StaticFinalData";
 
 
 interface CourseEntry {
@@ -98,10 +99,12 @@ export default function Home() {
 
 
   return (
-    <div className="p-6 max-w-md mx-auto">
+    <div className="container mx-auto py-8 px-4 max-w-7xl">
       <h2 className="text-2xl font-bold mb-6">Course Information</h2>
       
 
+
+      {/* either show the CRN entry box or the user's final exam schedule*/}
       {!showSchedule ? (
         <>
           <div className="space-y-4 mb-8">
@@ -144,7 +147,7 @@ export default function Home() {
               </ul>
               
               <Button 
-                className="w-full mt-4 bg-[#500000] hover:bg-[#400000] text-white"
+                className="mt-4 bg-[#500000] hover:bg-[#400000] text-white"
                 onClick={fetchCourseData}
                 disabled={courses.length === 0}
               >
@@ -187,17 +190,9 @@ export default function Home() {
         </div>
       )}
 
+        {/*Always show user the static final exam data if they want to find their exam themselves*/}
 
-
-
-
-
-
-
-
-
-
-
-    </div>
+        <StaticFinalData/>
+      </div>
   );
 }
