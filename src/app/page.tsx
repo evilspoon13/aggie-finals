@@ -69,7 +69,6 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center mx-auto py-8 px-4 max-w-7xl">
-      <h2 className="text-3xl font-bold mb-6">Find your courses</h2>
       
       {/* either show the CRN entry box or the user's final exam schedule*/}
       {!showSchedule ? (

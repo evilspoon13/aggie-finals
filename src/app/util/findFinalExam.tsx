@@ -15,27 +15,30 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
       hoursNum = 0;
     }
     
-    return hoursNum + parseInt(minutes) / 60;
+    // round to 2 decimal places to avoid floating point precision issues
+    return parseFloat((hoursNum + parseInt(minutes) / 60).toFixed(2));
   };
 
-  // Get meeting pattern and decimal time
+  // get meeting pattern and decimal time
   const days = lectureSchedule.days;
   const startTime = convertToDecimalHours(lectureSchedule.beginTime);
   
+  // small tolerance for floating-point comparison
+  const TIME_TOLERANCE = 0.01;
 
-  // Helper function to check if days match
+  // helper function to check if days match
   const daysMatch = (classDays: string, scheduleDays: string): boolean => {
     // Exact match
-    if (classDays === scheduleDays) {
+    if(classDays === scheduleDays) {
       return true;
     }
     
     // Single day mapping to double days
-    if (scheduleDays === "MW" && (classDays === "M" || classDays === "W")) {
+    if(scheduleDays === "MW" && (classDays === "M" || classDays === "W")){
       return true;
     }
     
-    if (scheduleDays === "TR" && (classDays === "T" || classDays === "R")) {
+    if (scheduleDays === "TR" && (classDays === "T" || classDays === "R")){
       return true;
     }
     
@@ -47,11 +50,11 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
     return false;
   };
 
-  // Find a matching slot with a tiny tolerance for time
+  // Find a matching slot with a tolerance for time
   const match = examMappings.find(mapping => 
     daysMatch(days, mapping.dayPattern) && 
-    startTime >= mapping.timeStart && 
-    startTime <= mapping.timeEnd
+    startTime >= (mapping.timeStart - TIME_TOLERANCE) && 
+    startTime <= (mapping.timeEnd + TIME_TOLERANCE)
   );
 
   if (match) {

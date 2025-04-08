@@ -18,6 +18,13 @@ interface CourseEntryFormProps {
 export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: CourseEntryFormProps) {
   const [crn, setCrn] = useState<string>("");
   const [currentTab, setCurrentTab] = useState<string>("crn");
+  const [submitted, setSubmitted] = useState<boolean>(false);
+
+  const handleGenerateSchedule = () => {
+    // function to set submitted to true and generate schedule so we can have two functions called on one button press
+    setSubmitted(true);
+    onGenerateSchedule();
+  }
 
   useEffect(() => {
     setCourses([]);
@@ -51,6 +58,11 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
 
   return (
     <div className="w-full max-w-2xl mx-auto">
+      
+      {!submitted && (
+        <h2 className="text-3xl font-bold mb-6">Find your courses</h2>
+      )}
+
       <Tabs defaultValue="crn" className="w-full" onValueChange={(value) => setCurrentTab(value)}>
         <TabsList className="w-full flex justify-center items-center rounded-lg shadow-sm mb-6">
           <TabsTrigger 
@@ -134,7 +146,7 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
                 <div className="pt-4 flex justify-center">
                   <Button 
                     className="mt-2 bg-[#562626] hover:bg-[#5A0010] text-white px-6 py-2 h-11 text-base font-medium shadow-sm transition-colors"
-                    onClick={onGenerateSchedule}
+                    onClick={handleGenerateSchedule}
                     disabled={courses.length === 0}
                   >
                     Generate Exam Schedule
