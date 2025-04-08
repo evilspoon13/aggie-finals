@@ -86,7 +86,7 @@ export default function Home() {
               
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-12">
-                  <Loader2Icon className="h-8 w-8 text-[#820000] animate-spin mb-3" />
+                  <Loader2Icon className="h-8 w-8 text-[#562626] animate-spin mb-3" />
                   <p className="text-gray-500">Loading your exam schedule...</p>
                 </div>
               ) : (
@@ -107,7 +107,7 @@ export default function Home() {
                   
                   <div className="flex justify-center mt-6">
                     <Button 
-                      className="bg-[#820000] hover:bg-[#5A0010] text-white px-6 py-2 h-11 text-base font-medium shadow-sm transition-colors"
+                      className="bg-[#562626] hover:bg-[#5A0010] text-white px-6 py-2 h-11 text-base font-medium shadow-sm transition-colors"
                       onClick={() => {
                         setShowSchedule(false);
                         setCourses([]);

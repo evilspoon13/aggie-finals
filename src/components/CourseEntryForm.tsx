@@ -55,13 +55,13 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
         <TabsList className="w-full flex justify-center items-center rounded-lg shadow-sm mb-6">
           <TabsTrigger 
             value="course" 
-            className="flex-1 py-3 rounded-l-lg data-[state=active]:bg-[#820000] data-[state=active]:text-white transition-all"
+            className="flex-1 py-3 rounded-l-lg data-[state=active]:bg-[#562626] data-[state=active]:text-white transition-all"
           >
             Search by course
           </TabsTrigger>
           <TabsTrigger 
             value="crn" 
-            className="flex-1 py-3 rounded-r-lg data-[state=active]:bg-[#820000] data-[state=active]:text-white transition-all"
+            className="flex-1 py-3 rounded-r-lg data-[state=active]:bg-[#562626] data-[state=active]:text-white transition-all"
           >
             Search by CRN
           </TabsTrigger>
@@ -82,11 +82,11 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
                       value={crn}
                       onChange={(e) => setCrn(e.target.value)}
                       placeholder="Enter CRN (e.g. 12345)"
-                      className="rounded-md focus:ring-[#820000] focus:border-[#820000]"
+                      className="rounded-md focus:ring-[#562626] focus:border-[#562626]"
                       onKeyDown={handleKeyDown}
                     />
                     <Button 
-                      className="bg-[#820000] hover:bg-[#5A0010] text-white shadow-sm transition-colors" 
+                      className="bg-[#562626] hover:bg-[#5A0010] text-white shadow-sm transition-colors" 
                       onClick={addCourse}
                       disabled={!crn.trim()}
                     >
@@ -116,7 +116,7 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
                   {courses.map((course, index) => (
                     <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-sm transition-shadow">
                       <div className="flex items-center gap-2">
-                        <Badge className="bg-[#820000] hover:bg-[#820000]">{index + 1}</Badge>
+                        <Badge className="bg-[#562626] hover:bg-[#562626]">{index + 1}</Badge>
                         <span className="font-medium">CRN: {course.crn}</span>
                       </div>
                       <Button 
@@ -133,7 +133,7 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
                 
                 <div className="pt-4 flex justify-center">
                   <Button 
-                    className="mt-2 bg-[#820000] hover:bg-[#5A0010] text-white px-6 py-2 h-11 text-base font-medium shadow-sm transition-colors"
+                    className="mt-2 bg-[#562626] hover:bg-[#5A0010] text-white px-6 py-2 h-11 text-base font-medium shadow-sm transition-colors"
                     onClick={onGenerateSchedule}
                     disabled={courses.length === 0}
                   >

@@ -29,7 +29,7 @@ export const FinalExamCard = ({
         </div>
         <CardContent className="p-8 flex justify-center items-center">
           <div className="flex flex-col items-center gap-2">
-            <Loader2Icon className="h-6 w-6 text-[#820000] animate-spin" />
+            <Loader2Icon className="h-6 w-6 text-[#562626] animate-spin" />
             <p className="text-sm text-gray-500">Loading exam details...</p>
           </div>
         </CardContent>
@@ -81,7 +81,7 @@ export const FinalExamCard = ({
 
   return (
     <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 bg-white">
-      <div className="bg-[#820000] px-4 py-3">
+      <div className="bg-[#562626] px-4 py-3">
         <div className="flex justify-between items-center">
           <div>
             <p className="font-medium text-white">CRN: {crn}</p>
@@ -106,10 +106,10 @@ export const FinalExamCard = ({
               <h3 className="font-semibold text-gray-800 mb-1">Final Exam</h3>
             </div>
             
-            <div className="rounded-md bg-[#820000]/10 p-4 border border-[#820000]/20">
+            <div className="rounded-md bg-[#562626]/10 p-4 border border-[#562626]/20">
               <div className="flex flex-col space-y-3">
                 <div className="flex items-center gap-2">
-                  <div className="bg-[#820000] rounded-full p-1.5 flex-shrink-0">
+                  <div className="bg-[#562626] rounded-full p-1.5 flex-shrink-0">
                     <CalendarIcon className="h-3.5 w-3.5 text-white" />
                   </div>
                   <div>
@@ -119,7 +119,7 @@ export const FinalExamCard = ({
                 </div>
                 
                 <div className="flex items-center gap-2">
-                  <div className="bg-[#820000] rounded-full p-1.5 flex-shrink-0">
+                  <div className="bg-[#562626] rounded-full p-1.5 flex-shrink-0">
                     <ClockIcon className="h-3.5 w-3.5 text-white" />
                   </div>
                   <div>
