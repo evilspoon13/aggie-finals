@@ -1,0 +1,31 @@
+import Link from "next/link";
+
+export function Footer() {
+  const currentYear = new Date().getFullYear();
+
+  return (
+    <footer className="w-full bg-gray-50 border-t py-6">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="mb-4 md:mb-0">
+            <div className="flex items-center justify-center md:justify-start">
+              <span className="text-sm font-medium text-gray-800">Made by Cameron Stone</span>
+            </div>
+          </div>
+          
+          <div className="flex space-x-6">
+            <Link href="https://aggie.tamu.edu/registration-and-records/classes/final-examination-schedules" className="text-sm text-gray-600 hover:text-[#500000]">
+              Official Final Exam Info
+            </Link>
+          </div>
+        </div>
+        
+        <div className="mt-4 pt-4 border-t border-gray-200 flex justify-center md:justify-start">
+          <p className="text-xs text-gray-500">
+            © {currentYear} Aggie Final Scheduler
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+}

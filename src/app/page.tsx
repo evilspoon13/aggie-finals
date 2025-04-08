@@ -1,19 +1,18 @@
 "use client";
 import { fetchCourseInfo, parseCourseResponse } from "./api/api";
-import { useEffect, useState } from "react";
-import { CourseInstructor, CourseMeeting, CourseResponse, FinalExam, LectureSchedule } from "./api/types";
+import { useState } from "react";
+import { FinalExam, LectureSchedule } from "./api/types";
 import { getLectureSchedule } from "./util/getLectureSchedule";
 import { findFinalExam } from "./util/findFinalExam";
 
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-
 import { FinalExamCard } from "@/components/FinalExamCard";
 import { StaticFinalData } from "@/components/StaticFinalData";
+import { CourseEntryForm } from "@/components/CourseEntryForm";
+import { Card, CardContent } from "@/components/ui/card";
+import { Loader2Icon } from "lucide-react";
 
-
-interface CourseEntry {
+export interface CourseEntry {
   crn: string;
   loading: boolean;
   error: string | null;
@@ -21,12 +20,9 @@ interface CourseEntry {
   finalExam?: FinalExam;
 }
 
-
 export default function Home() {
-
   // state for current CRN input
   const [term, setTerm] = useState<string>('202511'); // default to spring 2025
-  const [crn, setCrn] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   // state for list of added courses
@@ -34,30 +30,6 @@ export default function Home() {
 
   // state to control when to show the schedule
   const [showSchedule, setShowSchedule] = useState<boolean>(false);
-
-
-  // add a course to the list and clear CRN field
-  const addCourse = () => {
-    if(!crn.trim() || courses.some(course => course.crn === crn)) {
-      return;
-    }
-
-    const newCourse: CourseEntry = {
-      crn,
-      loading: false,
-      error: null
-    }
-
-    setCourses([...courses, newCourse]);
-    setCrn("");
-
-  }
-
-
-  const removeCourse = (crn: string) => {
-    setCourses(courses.filter(course => course.crn !== crn));
-  }
-
 
   const fetchCourseData = async () => {
     setLoading(true);
@@ -93,110 +65,70 @@ export default function Home() {
     }
 
     setLoading(false);
-
   };
 
-
-
   return (
-    <div className="container mx-auto py-8 px-4 max-w-7xl">
-      <h2 className="text-2xl font-bold mb-6">Course Information</h2>
+    <div className="flex flex-col items-center mx-auto py-8 px-4 max-w-7xl">
+      <h2 className="text-3xl font-bold mb-6">Find your courses</h2>
       
-
-
       {/* either show the CRN entry box or the user's final exam schedule*/}
       {!showSchedule ? (
-        <>
-          <div className="space-y-4 mb-8">
-            <div className="grid w-full items-center gap-1.5">
-              <Label htmlFor="crn">Course Registration Number (CRN)</Label>
-              <Input
-                type="text" 
-                id="crn"
-                value={crn}
-                onChange={(e) => setCrn(e.target.value)}
-                placeholder="Enter CRN"
-              />
-            </div>
-            
-            <Button 
-              className="bg-[#500000] hover:bg-[#400000] text-white" 
-              onClick={addCourse}
-              disabled={!crn.trim()}
-            >
-              Add Course
-            </Button>
-          </div>
-          
-          {courses.length > 0 && (
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold mb-2">Added Courses:</h3>
-              <ul className="space-y-2">
-                {courses.map((course, index) => (
-                  <li key={index} className="flex justify-between items-center p-2 bg-gray-100 rounded">
-                    <span>CRN: {course.crn}</span>
-                    <Button 
-                      variant="destructive" 
-                      size="sm"
-                      onClick={() => removeCourse(course.crn)}
-                    >
-                      Remove
-                    </Button>
-                  </li>
-                ))}
-              </ul>
-              
-              <Button 
-                className="mt-4 bg-[#500000] hover:bg-[#400000] text-white"
-                onClick={fetchCourseData}
-                disabled={courses.length === 0}
-              >
-                Generate Exam Schedule
-              </Button>
-            </div>
-          )}
-        </>
+        <CourseEntryForm 
+          courses={courses}
+          setCourses={setCourses}
+          onGenerateSchedule={fetchCourseData}
+        />
       ) : (
-        <div>
-          <h3 className="text-lg font-semibold mb-4">Your Final Exam Schedule</h3>
-          
-          {loading ? (
-            <div>Loading your exam schedule...</div>
-          ) : (
-            <div>
-              <div className="grid grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) gap-3">
-                {courses.map((course, index) => (
-                  <div key={index} className="border p-4 rounded shadow-sm">
-                    <FinalExamCard
-                      loading={course.loading}
-                      error={course.error}
-                      lectureSchedule={course.lectureSchedule}
-                      finalExam={course.finalExam}
-                      crn={course.crn}
-                    />
+        <div className="w-full max-w-2xl mx-auto">
+          <Card className="border shadow-sm rounded-xl bg-white">
+            <CardContent className="p-6">
+              <h3 className="text-lg font-medium text-gray-800 mb-4">Mark your calendar for the following:</h3>
+              
+              {loading ? (
+                <div className="flex flex-col items-center justify-center py-12">
+                  <Loader2Icon className="h-8 w-8 text-[#820000] animate-spin mb-3" />
+                  <p className="text-gray-500">Loading your exam schedule...</p>
+                </div>
+              ) : (
+                <div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {courses.map((course, index) => (
+                      <div key={index}>
+                        <FinalExamCard
+                          loading={course.loading}
+                          error={course.error}
+                          lectureSchedule={course.lectureSchedule}
+                          finalExam={course.finalExam}
+                          crn={course.crn}
+                        />
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-                            
-              <Button 
-                  className="mt-6"
-                  onClick={() => {
-                    setShowSchedule(false);
-                    setCourses([]);
-                  }}
-                >
-                  Start Over
-                </Button>
-            </div>
-            
-            
-          )}
+                  
+                  <div className="flex justify-center mt-6">
+                    <Button 
+                      className="bg-[#820000] hover:bg-[#5A0010] text-white px-6 py-2 h-11 text-base font-medium shadow-sm transition-colors"
+                      onClick={() => {
+                        setShowSchedule(false);
+                        setCourses([]);
+                      }}
+                    >
+                      Start Over
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       )}
 
-        {/*Always show user the static final exam data if they want to find their exam themselves*/}
+      {/*Always show user the static final exam data if they want to find their exam themselves*/}
 
-        <StaticFinalData/>
+      <div className="mt-36 b-12 w-full  mx-auto">
+        <hr className="border-gray-200" />
       </div>
+      <StaticFinalData/>
+    </div>
   );
 }
