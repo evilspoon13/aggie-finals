@@ -5,7 +5,7 @@ import { CourseEntry } from "@/app/api/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { Trash2 } from "lucide-react";
+import { Trash2, User, Clock} from "lucide-react";
 import { IndividualDataEntry } from "./IndividualDataEntry";
 import { searchCourses } from "@/app/api/hooks/searchCourses";
 
@@ -29,6 +29,11 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
 
   const [currentTab, setCurrentTab] = useState<string>("crn");
   const [submitted, setSubmitted] = useState<boolean>(false);
+
+  const handleSearchForCourseButton = () => {
+    searchBySubject();
+    setPossibleCourses([]);
+  }
 
   const handleGenerateSchedule = () => {
     // function to set submitted to true and generate schedule so we can have two functions called on one button press
@@ -67,6 +72,7 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
 
     setPossibleCoursesLoading(false);
     setPossibleCourses(result.courses);
+    console.log(result.courses);
   };
 
 
@@ -169,7 +175,7 @@ const addSelectedCourse = (course: CourseEntry) => {
             <div className="flex justify-center mt-4">
               <Button 
                 className="bg-[#562626] hover:bg-[#5A0010]text-white shadow-sm transition-colors w-50" 
-                onClick={searchBySubject}
+                onClick={handleSearchForCourseButton}
                 disabled={!subject.trim() || courseNumber <= 0}
               >
                 Search for Course
@@ -204,9 +210,19 @@ const addSelectedCourse = (course: CourseEntry) => {
                             <span className="font-medium">
                               {course.courseDetails.subject} {course.courseDetails.courseNumber}-{course.courseDetails.section}
                             </span>
+                            <div className="flex items-center gap-1 text-sm text-gray-600">
+                              <User size={14} className="text-gray-500" />
+                              <span>{course.courseDetails.instructor}</span>
+                            </div>
                             <span className="text-sm text-gray-600 block">
                               {course.courseDetails.title} (CRN: {course.crn})
                             </span>
+                            <div className="flex items-center gap-1 text-sm text-gray-600">
+                            <Clock size={14} className="text-gray-500" />
+                              <span className="text-sm text-gray-600 block">
+                                {course.lectureSchedule?.beginTime}-{course.lectureSchedule?.endTime}
+                              </span>
+                            </div>
                           </div>
                         ) : (
                           <span className="font-medium">CRN: {course.crn}</span>

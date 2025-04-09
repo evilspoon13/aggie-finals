@@ -114,6 +114,7 @@ export interface CourseEntry {
       courseNumber: string;
       section: string;
       title: string;
+      instructor: string;
     };
     lectureSchedule?: LectureSchedule;
     finalExam?: FinalExam;
