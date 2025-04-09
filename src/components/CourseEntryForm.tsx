@@ -5,7 +5,7 @@ import { CourseEntry } from "@/app/api/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
-import { Trash2, User, Clock} from "lucide-react";
+import { Trash2, User, Clock, Smile} from "lucide-react";
 import { IndividualDataEntry } from "./IndividualDataEntry";
 import { searchCourses } from "@/app/api/hooks/searchCourses";
 
@@ -72,7 +72,6 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
 
     setPossibleCoursesLoading(false);
     setPossibleCourses(result.courses);
-    console.log(result.courses);
   };
 
 
@@ -97,6 +96,14 @@ const addSelectedCourse = (course: CourseEntry) => {
   return (
     <div className="w-full max-w-2xl mx-auto">
       
+
+      {submitted && (
+        <div className="flex items-center gap-1 mb-4">
+          <h2 className="text-xl font-bold">Good luck!</h2>
+          <Smile size={20} className="text-gray-500"/>
+        </div>
+      )}
+
       {!submitted && (
         <h2 className="text-3xl font-bold mb-6">Find your courses</h2>
       )}

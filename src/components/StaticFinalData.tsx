@@ -43,16 +43,16 @@ export const StaticFinalData: React.FC = () => {
             <Tabs defaultValue="thursday" className="w-full">
                 <TabsList className="grid grid-cols-4 md:grid-cols-8 mb-6 w-full">
                     <TabsTrigger value="thursday" className="md:col-span-2 data-[state=active]:bg-[#562626] data-[state=active]:text-white">
-                        Thursday<Badge className="ml-2 bg-[#f8e2e4] text-[#562626]">{thursdayExams.length}</Badge>
+                        Thu<Badge className="ml-2 bg-[#f8e2e4] text-[#562626]">{thursdayExams.length}</Badge>
                     </TabsTrigger>
                     <TabsTrigger value="friday" className="md:col-span-2 data-[state=active]:bg-[#562626] data-[state=active]:text-white">
-                        Friday<Badge className="ml-2 bg-[#f8e2e4] text-[#562626]">{fridayExams.length}</Badge>
+                        Fri<Badge className="ml-2 bg-[#f8e2e4] text-[#562626]">{fridayExams.length}</Badge>
                     </TabsTrigger>
                     <TabsTrigger value="monday" className="md:col-span-2 data-[state=active]:bg-[#562626] data-[state=active]:text-white">
-                        Monday<Badge className="ml-2 bg-[#f8e2e4] text-[#562626]">{mondayExams.length}</Badge>
+                        Mon<Badge className="ml-2 bg-[#f8e2e4] text-[#562626]">{mondayExams.length}</Badge>
                     </TabsTrigger>
                     <TabsTrigger value="tuesday" className="md:col-span-2 data-[state=active]:bg-[#562626] data-[state=active]:text-white">
-                        Tuesday<Badge className="ml-2 bg-[#f8e2e4] text-[#562626]">{tuesdayExams.length}</Badge>
+                        Tue<Badge className="ml-2 bg-[#f8e2e4] text-[#562626]">{tuesdayExams.length}</Badge>
                     </TabsTrigger>
                 </TabsList>
 

@@ -10,7 +10,7 @@ import { FinalExamCard } from "@/components/FinalExamCard";
 import { StaticFinalData } from "@/components/StaticFinalData";
 import { CourseEntryForm } from "@/components/CourseEntryForm";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon, Smile } from "lucide-react";
 
 export default function Home() {
   // state for current CRN input
@@ -73,7 +73,6 @@ export default function Home() {
         <div className="w-full max-w-2xl mx-auto">
           <Card className="border shadow-sm rounded-xl bg-white">
             <CardContent className="p-6">
-              <h3 className="text-lg font-medium text-gray-800 mb-4">Mark your calendar for the following:</h3>
               
               {loading ? (
                 <div className="flex flex-col items-center justify-center py-12">
@@ -82,6 +81,10 @@ export default function Home() {
                 </div>
               ) : (
                 <div>
+                  <div className="flex items-center gap-2 mb-6 justify-center">
+                    <h2 className="text-xl font-bold">Good luck with your exams!</h2>
+                    <Smile size={22} className="text-[#562626]" />
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {courses.map((course, index) => (
                       <div key={index}>
