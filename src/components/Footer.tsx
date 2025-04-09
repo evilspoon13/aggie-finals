@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -14,8 +15,14 @@ export function Footer() {
           </div>
           
           <div className="flex space-x-6">
-            <Link href="https://aggie.tamu.edu/registration-and-records/classes/final-examination-schedules" className="text-sm text-gray-600 hover:text-[#500000]">
+            <Link 
+              href="https://aggie.tamu.edu/registration-and-records/classes/final-examination-schedules" 
+              className="text-sm text-gray-600 hover:text-[#500000] flex items-center gap-1"
+              target="_blank" 
+              rel="noopener noreferrer"
+            >
               Official Final Exam Info
+              <ExternalLink size={14} className="inline-block ml-1" /> {/* Small icon */}
             </Link>
           </div>
         </div>
