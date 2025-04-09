@@ -98,13 +98,6 @@ export const FinalExamCard = ({
         </div>
       </div>
       
-      <div className="px-4 py-3 border-b bg-gray-50 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <ClockIcon className="h-4 w-4 text-gray-500" />
-          <span className="text-sm font-medium">{lectureSchedule.beginTime} - {lectureSchedule.endTime}</span>
-        </div>
-      </div>
-      
       <CardContent className="p-0">
         {finalExam.success ? (
           <div className="p-4">
