@@ -50,4 +50,29 @@ export const searchCourseSections = async (request: CourseSectionRequest): Promi
     }
 };
 
+export interface SubjectSearchResult{
+    success: boolean;
+    subject: string[];
+    error?: string;
+}
 
+
+export const searchSubjects = async (): Promise<SubjectSearchResult[]> => {
+
+    try {
+        const response = await axios.post<SubjectSearchResult[]>(SECTIONS_API_URL, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        return response.data;
+    }
+    catch (error) {
+        if (axios.isAxiosError(error)){
+            console.error('API Error:', error.response?.data || error.message);
+            throw new Error(`Failed to search course subjects: ${error.message}`);
+        }
+        throw error;
+    }
+
+}
