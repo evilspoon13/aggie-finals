@@ -137,8 +137,8 @@ const addSelectedCourse = (course: CourseEntry) => {
                   addCourseByCrn();
                 }
               }}
-              label="Course Registration Number (CRN)"
-              description="Enter the 5-digit course CRN"
+              label="CRN"
+              description="Enter the 5-digit course registration number"
             />
             <div className="flex justify-center mt-4">
               <Button 

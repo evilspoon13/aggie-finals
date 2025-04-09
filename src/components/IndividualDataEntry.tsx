@@ -4,7 +4,7 @@ import { TabsContent } from "./ui/tabs";
 
 interface IndividualDataEntryProps {
     value: string;
-    tabValue: string; // Add this prop
+    tabValue: string;
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     handleKeyDown: (e: React.KeyboardEvent) => void;
     label: string;
