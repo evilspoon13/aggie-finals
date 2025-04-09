@@ -27,7 +27,7 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
   // for when a user enters their course by crn
   const [crn, setCrn] = useState<string>("");
 
-  const [currentTab, setCurrentTab] = useState<string>("crn");
+  const [currentTab, setCurrentTab] = useState<string>("course");
   const [submitted, setSubmitted] = useState<boolean>(false);
 
   const handleSearchForCourseButton = () => {
@@ -108,7 +108,7 @@ const addSelectedCourse = (course: CourseEntry) => {
         <h2 className="text-3xl font-bold mb-6">Find your courses</h2>
       )}
 
-      <Tabs defaultValue="crn" className="w-full" onValueChange={(value) => setCurrentTab(value)}>
+      <Tabs defaultValue="course" className="w-full" onValueChange={(value) => setCurrentTab(value)}>
         <TabsList className="w-full flex justify-center items-center rounded-lg shadow-sm mb-6">
           <TabsTrigger 
             value="course" 
