@@ -89,6 +89,9 @@ export default function Home() {
                     {courses.map((course, index) => (
                       <div key={index}>
                         <FinalExamCard
+                          subject={course.courseDetails?.subject}
+                          courseNumber={course.courseDetails?.courseNumber}
+                          title={course.courseDetails?.title}
                           loading={course.loading}
                           error={course.error}
                           lectureSchedule={course.lectureSchedule}

@@ -7,6 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, ClockIcon, AlertTriangleIcon, Loader2Icon } from "lucide-react";
 
 interface FinalExamCardProps {
+  subject: string | undefined;
+  courseNumber: string | undefined;
+  title: string | undefined;
   loading: boolean;
   error?: string | null;
   finalExam?: FinalExam;
@@ -15,6 +18,9 @@ interface FinalExamCardProps {
 }
 
 export const FinalExamCard = ({ 
+  subject,
+  courseNumber,
+  title,
   loading, 
   error, 
   finalExam, 
@@ -84,7 +90,7 @@ export const FinalExamCard = ({
       <div className="bg-[#562626] px-4 py-3">
         <div className="flex justify-between items-center">
           <div>
-            <p className="font-medium text-white">CRN: {crn}</p>
+            <p className="font-medium text-white">{subject} {courseNumber} - {title}</p>
           </div>
           <Badge className="bg-white/20 text-white hover:bg-white/30 border-none">
             {lectureSchedule.days}
