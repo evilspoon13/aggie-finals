@@ -105,7 +105,7 @@ const addSelectedCourse = (course: CourseEntry) => {
       )}
 
       {!submitted && (
-        <h2 className="text-3xl font-bold mb-6">Find your courses</h2>
+        <h2 className="text-3xl font-bold mb-6 text-white">Find your courses</h2>
       )}
 
       <Tabs defaultValue="course" className="w-full" onValueChange={(value) => setCurrentTab(value)}>
