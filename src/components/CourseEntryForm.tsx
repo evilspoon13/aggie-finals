@@ -17,10 +17,14 @@ interface CourseEntryFormProps {
 
 export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: CourseEntryFormProps) {
 
+  // for when a user enters their course by subject
   const [possibleCourses, setPossibleCourses] = useState<CourseEntry[]>([]);
-
+  const [possibleCoursesLoading, setPossibleCoursesLoading] = useState<boolean>(false);
   const [subject, setSubject] = useState<string>("");
   const [courseNumber, setCourseNumber] = useState<number>(0);
+  const [submittedCourseSearch, setSubmittedCourseSearch] = useState<boolean>(false);
+
+  // for when a user enters their course by crn
   const [crn, setCrn] = useState<string>("");
 
   const [currentTab, setCurrentTab] = useState<string>("crn");
@@ -53,12 +57,15 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
   }
 
   const searchBySubject = async () => {
+    setPossibleCoursesLoading(true);
+    setSubmittedCourseSearch(true);
     if (!subject.trim() || courseNumber <= 0) {
       return;
     }
 
     const result = await searchCourses(subject, courseNumber);
 
+    setPossibleCoursesLoading(false);
     setPossibleCourses(result.courses);
   };
 
@@ -71,6 +78,9 @@ const addSelectedCourse = (course: CourseEntry) => {
   setCourses([...courses, course]);
   
   setPossibleCourses([]);
+  setSubmittedCourseSearch(false);
+  setCourseNumber(0);
+  setSubject("");
 };
 
   const removeCourse = (crn: string) => {
@@ -166,8 +176,23 @@ const addSelectedCourse = (course: CourseEntry) => {
               </Button>
             </div>
 
-              {/* after the user inputs their course, display the search results */}
-            {possibleCourses.length > 0 && (
+
+            {(possibleCoursesLoading) && (
+              <div className="mt-6 border-t pt-4">
+                <h2 className="text-lg font-medium text-gray-800 mb-3 text-center">Loading possible courses...</h2>
+                <div className="animate-spin h-6 w-6 border-2 border-[#562626] border-t-transparent rounded-full mx-auto"></div>
+              </div>
+            )}
+
+            
+            {((possibleCourses.length === 0 && !possibleCoursesLoading) && submittedCourseSearch) && (
+              <div className="mt-6 border-t pt-4">
+                <h2 className="text-lg font-medium text-gray-800 mb-3 text-center">No courses found.</h2>
+              </div>
+            )}
+
+            {/* after the user inputs their course, display the search results */}
+            {(possibleCourses.length > 0 && submittedCourseSearch) && (
               <div className="mt-6 border-t pt-4">
                 <h3 className="text-lg font-medium text-gray-800 mb-3">Search Results</h3>
                 <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
