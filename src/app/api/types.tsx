@@ -25,10 +25,35 @@ export interface CourseInstructor{
 }
 
 export interface CourseResponse {
-    // both gross json that need to be parsed
-    SWV_CLASS_SEARCH_INSTRCTR_JSON: string;
-    SWV_CLASS_SEARCH_JSON_CLOB: string; 
-}
+    SWV_CLASS_SEARCH_TERM: string;
+    SWV_CLASS_SEARCH_CRN: string;
+    SWV_CLASS_SEARCH_TITLE: string;
+    SWV_CLASS_SEARCH_SUBJECT: string;
+    SWV_CLASS_SEARCH_SUBJECT_DESC: string;
+    SWV_CLASS_SEARCH_COURSE: string;
+    SWV_CLASS_SEARCH_SECTION: string;
+    SWV_CLASS_SEARCH_SSBSECT_HOURS: number | null;
+    SWV_CLASS_SEARCH_HOURS_LOW: number | null;
+    SWV_CLASS_SEARCH_HOURS_IND: string | null;
+    SWV_CLASS_SEARCH_HOURS_HIGH: string | null;
+    SWV_CLASS_SEARCH_SITE: string;
+    SWV_CLASS_SEARCH_PTRM: string;
+    SWV_CLASS_SEARCH_HAS_SYL_IND: string;
+    STUSEAT_OPEN: string;
+    SWV_CLASS_SEARCH_MAX_ENRL: string;
+    SWV_CLASS_SEARCH_ENRL: string;
+    SWV_CLASS_SEARCH_SEATS_AVAIL: string;
+    SWV_WAIT_CAPACITY: string;
+    SWV_WAIT_COUNT: string;
+    SWV_WAIT_AVAIL: string;
+    SWV_CLASS_SEARCH_SCHD: string;
+    SWV_CLASS_SEARCH_INST_TYPE: string;
+    SWV_CLASS_SEARCH_INSTRCTR_JSON: string; // JSON string to be parsed
+    SWV_CLASS_SEARCH_JSON_CLOB: string;      // JSON string to be parsed
+    SWV_CLASS_SEARCH_ATTRIBUTES: string;
+    SWV_CLASS_SEARCH_SESSION: string;
+    HRS_COLUMN_FIELD: number;
+  }
 
 export interface LectureSchedule {
     days: string;
@@ -42,4 +67,59 @@ export interface FinalExam {
     schedule: LectureSchedule | null;
     date?: string;
     examTime?: string;
+}
+
+export interface CourseSection {
+    SWV_CLASS_SEARCH_TERM: string;
+    SWV_CLASS_SEARCH_CRN: string;
+    SWV_CLASS_SEARCH_TITLE: string;
+    SWV_CLASS_SEARCH_SUBJECT: string;
+    SWV_CLASS_SEARCH_SUBJECT_DESC: string;
+    SWV_CLASS_SEARCH_COURSE: string;
+    SWV_CLASS_SEARCH_SECTION: string;
+    SWV_CLASS_SEARCH_SSBSECT_HOURS: number | null;
+    SWV_CLASS_SEARCH_HOURS_LOW: number | null;
+    SWV_CLASS_SEARCH_HOURS_IND: string | null;
+    SWV_CLASS_SEARCH_HOURS_HIGH: string | null;
+    SWV_CLASS_SEARCH_SITE: string;
+    SWV_CLASS_SEARCH_PTRM: string;
+    SWV_CLASS_SEARCH_HAS_SYL_IND: string;
+    STUSEAT_OPEN: string;
+    SWV_CLASS_SEARCH_MAX_ENRL: string;
+    SWV_CLASS_SEARCH_ENRL: string;
+    SWV_CLASS_SEARCH_SEATS_AVAIL: string;
+    SWV_WAIT_CAPACITY: string;
+    SWV_WAIT_COUNT: string;
+    SWV_WAIT_AVAIL: string;
+    SWV_CLASS_SEARCH_SCHD: string;
+    SWV_CLASS_SEARCH_INST_TYPE: string;
+    SWV_CLASS_SEARCH_INSTRCTR_JSON: string;
+    SWV_CLASS_SEARCH_JSON_CLOB: string;
+    SWV_CLASS_SEARCH_ATTRIBUTES: string;
+    SWV_CLASS_SEARCH_SESSION: string;
+    HRS_COLUMN_FIELD: number;
+  }
+
+export interface CourseSectionRequest {
+    department?: string;
+    courseNumber?: string;
+}
+
+export interface CourseEntry {
+    crn: string;
+    loading: boolean;
+    error: string | null;
+    courseDetails?: {
+      subject: string;
+      courseNumber: string;
+      section: string;
+      title: string;
+    };
+    lectureSchedule?: LectureSchedule;
+    finalExam?: FinalExam;
+  }
+
+export interface CourseSectionRequest {
+    department?: string;
+    courseNumber?: string;
 }

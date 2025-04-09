@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { CourseEntry } from "@/app/page";
+import { CourseEntry } from "@/app/api/types";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Trash2 } from "lucide-react";
+import { IndividualDataEntry } from "./IndividualDataEntry";
+import { searchCourses } from "@/app/api/hooks/searchCourses";
 
 interface CourseEntryFormProps {
   courses: CourseEntry[];
@@ -16,7 +16,13 @@ interface CourseEntryFormProps {
 }
 
 export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: CourseEntryFormProps) {
+
+  const [possibleCourses, setPossibleCourses] = useState<CourseEntry[]>([]);
+
+  const [subject, setSubject] = useState<string>("");
+  const [courseNumber, setCourseNumber] = useState<number>(0);
   const [crn, setCrn] = useState<string>("");
+
   const [currentTab, setCurrentTab] = useState<string>("crn");
   const [submitted, setSubmitted] = useState<boolean>(false);
 
@@ -31,7 +37,7 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
   }, [currentTab, setCourses]);
 
   // add a course to the list and clear CRN field
-  const addCourse = () => {
+  const addCourseByCrn = () => {
     if(!crn.trim() || courses.some(course => course.crn === crn)) {
       return;
     }
@@ -46,15 +52,31 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
     setCrn("");
   }
 
+  const searchBySubject = async () => {
+    if (!subject.trim() || courseNumber <= 0) {
+      return;
+    }
+
+    const result = await searchCourses(subject, courseNumber);
+
+    setPossibleCourses(result.courses);
+  };
+
+
+const addSelectedCourse = (course: CourseEntry) => {
+  if (courses.some(c => c.crn === course.crn)) {
+    return;
+  }
+  
+  setCourses([...courses, course]);
+  
+  setPossibleCourses([]);
+};
+
   const removeCourse = (crn: string) => {
     setCourses(courses.filter(course => course.crn !== crn));
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && crn.trim()) {
-      addCourse();
-    }
-  };
 
   return (
     <div className="w-full max-w-2xl mx-auto">
@@ -81,45 +103,108 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
 
         <Card className="border shadow-sm rounded-xl bg-white">
           <CardContent className="p-6">
-            <TabsContent value="crn" className="space-y-6 mt-0">
-              <div className="flex flex-col items-center space-y-6">
-                <div className="w-full max-w-md space-y-2">
-                  <Label htmlFor="crn" className="text-sm font-medium text-gray-700">
-                    Course Registration Number (CRN)
-                  </Label>
-                  <div className="flex gap-2">
-                    <Input
-                      type="text" 
-                      id="crn"
-                      value={crn}
-                      onChange={(e) => setCrn(e.target.value)}
-                      placeholder="Enter CRN (e.g. 12345)"
-                      className="rounded-md focus:ring-[#562626] focus:border-[#562626]"
-                      onKeyDown={handleKeyDown}
-                    />
-                    <Button 
-                      className="bg-[#562626] hover:bg-[#5A0010] text-white shadow-sm transition-colors" 
-                      onClick={addCourse}
-                      disabled={!crn.trim()}
-                    >
-                      Add
-                    </Button>
-                  </div>
-                  <p className="text-xs text-gray-500 mt-1">
-                    Enter the 5-digit course CRN
-                  </p>
+
+          <TabsContent value="crn">
+            <IndividualDataEntry
+              value={crn}
+              tabValue="crn"
+              onChange={(e) => setCrn(e.target.value)}
+              handleKeyDown={(e) => {
+                if (e.key === 'Enter' && crn.trim()) {
+                  addCourseByCrn();
+                }
+              }}
+              label="Course Registration Number (CRN)"
+              description="Enter the 5-digit course CRN"
+            />
+            <div className="flex justify-center mt-4">
+              <Button 
+                className="bg-[#562626] hover:bg-[#5A0010]text-white shadow-sm transition-colors w-50" 
+                onClick={addCourseByCrn}
+                disabled={!crn.trim()}
+              >
+                Add Course
+              </Button>
+            </div>
+        </TabsContent>
+
+        <TabsContent value="course">
+          <div className="space-y-4">
+            <IndividualDataEntry
+              value={subject}
+              tabValue="course"
+              onChange={(e) => setSubject(e.target.value)}
+              handleKeyDown={(e) => {
+                if (e.key === 'Enter' && subject.trim() && courseNumber > 0) {
+                  searchBySubject();
+                }
+              }}
+              label="Subject"
+              description="Enter department (e.g. CSCE)"
+            />
+
+            <IndividualDataEntry
+              value={courseNumber === 0 ? "" : courseNumber.toString()}
+              tabValue="course"
+              onChange={(e) => setCourseNumber(parseInt(e.target.value) || 0)}
+              handleKeyDown={(e) => {
+                if (e.key === 'Enter' && subject.trim() && courseNumber > 0) {
+                  searchBySubject();
+                }
+              }}
+              label="Course Number"
+              description="Enter Course Number (e.g. 120)"
+            />
+            
+            <div className="flex justify-center mt-4">
+              <Button 
+                className="bg-[#562626] hover:bg-[#5A0010]text-white shadow-sm transition-colors w-50" 
+                onClick={searchBySubject}
+                disabled={!subject.trim() || courseNumber <= 0}
+              >
+                Search for Course
+              </Button>
+            </div>
+
+              {/* after the user inputs their course, display the search results */}
+            {possibleCourses.length > 0 && (
+              <div className="mt-6 border-t pt-4">
+                <h3 className="text-lg font-medium text-gray-800 mb-3">Search Results</h3>
+                <div className="space-y-2 max-h-64 overflow-y-auto pr-2">
+                  {possibleCourses.map((course, index) => (
+                    <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-sm transition-shadow">
+                      <div className="flex-1">
+                        {course.courseDetails ? (
+                          <div>
+                            <span className="font-medium">
+                              {course.courseDetails.subject} {course.courseDetails.courseNumber}-{course.courseDetails.section}
+                            </span>
+                            <span className="text-sm text-gray-600 block">
+                              {course.courseDetails.title} (CRN: {course.crn})
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="font-medium">CRN: {course.crn}</span>
+                        )}
+                      </div>
+                      <Button 
+                        size="sm"
+                        onClick={() => addSelectedCourse(course)}
+                        className="bg-[#562626] hover:bg-[#5A0010] text-white"
+                      >
+                        Add
+                      </Button>
+                    </div>
+                  ))}
                 </div>
               </div>
-            </TabsContent>
+            )}
 
-            <TabsContent value="course" className="mt-0">
-              <div className="p-8 flex flex-col items-center justify-center text-center">
-                <h3 className="text-lg font-medium text-gray-700 mb-2">Coming Soon</h3>
-                <p className="text-gray-500">
-                  Search by course name and section functionality will be available soon!
-                </p>
-              </div>
-            </TabsContent>
+
+
+
+          </div>
+        </TabsContent>
             
             {courses.length > 0 && (
               <div className="mt-8 space-y-4">

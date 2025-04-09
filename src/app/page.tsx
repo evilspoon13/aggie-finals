@@ -1,7 +1,7 @@
 "use client";
 import { fetchCourseInfo, parseCourseResponse } from "./api/api";
 import { useState } from "react";
-import { FinalExam, LectureSchedule } from "./api/types";
+import { CourseEntry } from "./api/types";
 import { getLectureSchedule } from "./util/getLectureSchedule";
 import { findFinalExam } from "./util/findFinalExam";
 
@@ -11,14 +11,6 @@ import { StaticFinalData } from "@/components/StaticFinalData";
 import { CourseEntryForm } from "@/components/CourseEntryForm";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2Icon } from "lucide-react";
-
-export interface CourseEntry {
-  crn: string;
-  loading: boolean;
-  error: string | null;
-  lectureSchedule?: LectureSchedule;
-  finalExam?: FinalExam;
-}
 
 export default function Home() {
   // state for current CRN input
