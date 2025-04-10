@@ -1,3 +1,4 @@
+// Updated CourseEntryForm.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -8,6 +9,7 @@ import { Badge } from "./ui/badge";
 import { Trash2, User, Clock, Smile} from "lucide-react";
 import { IndividualDataEntry } from "./IndividualDataEntry";
 import { searchCourses } from "@/app/api/hooks/searchCourses";
+import { SubjectDropdown } from "./SubjectDropdownProps";
 
 interface CourseEntryFormProps {
   courses: CourseEntry[];
@@ -153,18 +155,16 @@ const addSelectedCourse = (course: CourseEntry) => {
 
         <TabsContent value="course">
           <div className="space-y-4">
-            <IndividualDataEntry
-              value={subject}
-              tabValue="course"
-              onChange={(e) => setSubject(e.target.value)}
-              handleKeyDown={(e) => {
-                if (e.key === 'Enter' && subject.trim() && courseNumber > 0) {
-                  searchBySubject();
-                }
-              }}
-              label="Subject"
-              description="Enter department (e.g. CSCE)"
-            />
+            {/* subject dropdown */}
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700">Subject</label>
+              <SubjectDropdown
+                value={subject}
+                onChange={setSubject}
+                placeholder="Select department (e.g. CSCE)"
+              />
+              <p className="text-xs text-gray-500">Enter department (e.g. CSCE)</p>
+            </div>
 
             <IndividualDataEntry
               value={courseNumber === 0 ? "" : courseNumber.toString()}

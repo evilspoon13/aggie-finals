@@ -58,14 +58,14 @@ export interface SubjectSearchResult{
 
 
 export const searchSubjects = async (): Promise<SubjectSearchResult[]> => {
-
     try {
-        const response = await axios.post<SubjectSearchResult[]>(SECTIONS_API_URL, {
+        const response = await axios.post('/api/course-subjects', {}, {
             headers: {
                 'Content-Type': 'application/json',
-            },
+            }
         });
-        return response.data;
+        
+        return [response.data];
     }
     catch (error) {
         if (axios.isAxiosError(error)){
@@ -74,5 +74,4 @@ export const searchSubjects = async (): Promise<SubjectSearchResult[]> => {
         }
         throw error;
     }
-
 }
