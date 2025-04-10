@@ -262,7 +262,12 @@ const addSelectedCourse = (course: CourseEntry) => {
                     <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-100 hover:shadow-sm transition-shadow">
                       <div className="flex items-center gap-2">
                         <Badge className="bg-[#562626] hover:bg-[#562626]">{index + 1}</Badge>
-                        <span className="font-medium">CRN: {course.crn}</span>
+                        
+                        {currentTab === "course" ? (
+                           <span className="font-medium"> {course.courseDetails?.subject} {course.courseDetails?.courseNumber}</span>
+                        ): (
+                          <span className="font-medium"> {course.crn}</span>
+                        )}
                       </div>
                       <Button 
                         variant="ghost" 

@@ -2,7 +2,7 @@ import { LectureSchedule, FinalExam } from "../api/types";
 import { examMappings } from "./examData";
 
 export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
-  // Convert time from "HH:MM AM/PM" format to decimal hours
+  // convert time from "HH:MM AM/PM" format to decimal hours
   const convertToDecimalHours = (timeStr: string): number => {
     const [time, period] = timeStr.split(" ");
     let [hours, minutes] = time.split(":");
@@ -22,6 +22,7 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
   // get meeting pattern and decimal time
   const days = lectureSchedule.days;
   const startTime = convertToDecimalHours(lectureSchedule.beginTime);
+  const endTime = convertToDecimalHours(lectureSchedule.endTime);
   
   // small tolerance for floating-point comparison
   const TIME_TOLERANCE = 0.01;
@@ -50,7 +51,59 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
     return false;
   };
 
-  // Find a matching slot with a tolerance for time
+  // Find all potentially matching slots with a tolerance for time
+  const potentialMatches = examMappings.filter(mapping => 
+    daysMatch(days, mapping.dayPattern) && 
+    Math.abs(startTime - mapping.timeStart) <= TIME_TOLERANCE
+  );
+
+  // if we have multiple potential matches, find the best one
+  if (potentialMatches.length > 1) {
+    // try to find exact match first
+    const exactMatch = potentialMatches.find(mapping => 
+      Math.abs(startTime - mapping.timeStart) < 0.01 && 
+      Math.abs(endTime - mapping.timeEnd) < 0.01
+    );
+    
+    if (exactMatch) return {
+      success: true,
+      error: null,
+      date: exactMatch.examDate,
+      examTime: exactMatch.examTime,
+      schedule: lectureSchedule
+    };
+    
+    // Otherwise pick the closest match
+    potentialMatches.sort((a, b) => {
+      const aStartDiff = Math.abs(startTime - a.timeStart);
+      const aEndDiff = Math.abs(endTime - a.timeEnd);
+      const bStartDiff = Math.abs(startTime - b.timeStart);
+      const bEndDiff = Math.abs(endTime - b.timeEnd);
+      
+      return (aStartDiff + aEndDiff) - (bStartDiff + bEndDiff);
+    });
+    
+    const bestMatch = potentialMatches[0];
+    return {
+      success: true,
+      error: null,
+      date: bestMatch.examDate,
+      examTime: bestMatch.examTime,
+      schedule: lectureSchedule
+    };
+  } 
+  else if(potentialMatches.length === 1){
+    // if we only have one match (ideal)
+    return {
+      success: true,
+      error: null,
+      date: potentialMatches[0].examDate,
+      examTime: potentialMatches[0].examTime,
+      schedule: lectureSchedule
+    };
+  }
+
+  // try a more lenient match if no matches found
   const match = examMappings.find(mapping => 
     daysMatch(days, mapping.dayPattern) && 
     startTime >= (mapping.timeStart - TIME_TOLERANCE) && 
@@ -67,6 +120,7 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
     };
   }
 
+  // we tried everything bro. its time to give up
   return {
     success: false,
     error: "No matching final exam time found for this course schedule",
