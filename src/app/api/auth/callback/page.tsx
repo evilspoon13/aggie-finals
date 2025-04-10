@@ -1,5 +1,8 @@
-// app/auth/callback/page.tsx
+
+
+/*
 'use client';
+
 
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -35,3 +38,4 @@ export default function AuthCallback() {
     </div>
   );
 }
+  */
