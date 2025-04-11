@@ -160,23 +160,27 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
         <TabsContent value="course">
           <div className="space-y-4">
             {/* Subject Dropdown */}
-            <div className="space-y-2">
-              <SubjectDropdown
-                value={subject}
-                onChange={handleSubjectChange}
-                placeholder="Select department (e.g. CSCE)"
-              />
+            <div className="flex flex-col items-center space-y-2">
+              <div className="w-100">
+                <SubjectDropdown
+                  value={subject}
+                  onChange={handleSubjectChange}
+                  placeholder="Select department (e.g. CSCE)"
+                />
+              </div>
             </div>
 
             {/* Course Number Dropdown */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Course Number</label>
-              <CourseNumberDropdown
-                value={courseNumber}
-                onChange={setCourseNumber}
-                placeholder="Select course number"
-                subject={subject}
-              />
+            <div className="flex flex-col items-center space-y-2">
+              <div className="w-100">
+                <label className="block text-sm font-medium text-gray-700">Course Number</label>
+                <CourseNumberDropdown
+                  value={courseNumber}
+                  onChange={setCourseNumber}
+                  placeholder="Select course number"
+                  subject={subject}
+                />
+              </div>
             </div>
             
             <div className="flex justify-center mt-4">
