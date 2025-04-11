@@ -1,7 +1,6 @@
-// components/SubjectDropdown.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -17,44 +16,56 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { searchSubjects } from '@/app/api/api';
+import axios from 'axios';
 
-interface SubjectDropdownProps {
+interface CourseNumberDropdownProps {
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
+  subject: string;
 }
 
-export function SubjectDropdown({ 
+export function CourseNumberDropdown({ 
   value, 
   onChange, 
-  placeholder = 'Select subject...' 
-}: SubjectDropdownProps) {
+  placeholder = 'Select course number...', 
+  subject
+}: CourseNumberDropdownProps) {
   const [open, setOpen] = useState(false);
-  const [subjects, setSubjects] = useState<string[]>([]);
+  const [courseNumbers, setCourseNumbers] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function loadSubjects() {
-      setLoading(true);
-      setError(null);
-      try {
-        const response = await searchSubjects();
-        // Get the first successful result's subjects
-        const subjectList = response.find(result => result.success)?.subject || [];
-        setSubjects(subjectList.sort());
-      } catch (err) {
-        setError('Failed to load subjects');
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
+  const fetchCourseNumbers = useCallback(async () => {
+    if (!subject) {
+      setCourseNumbers([]);
+      return;
     }
 
-    loadSubjects();
-    console.log(subjects)
-  }, []);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.post('/api/course-numbers', {
+        department: subject
+      });
+
+      if (response.data.success) {
+        setCourseNumbers(response.data.courseNumbers);
+      } else {
+        setError(response.data.error || 'Failed to load course numbers');
+      }
+    } catch (err) {
+      setError('Failed to load course numbers');
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  }, [subject]);
+
+  useEffect(() => {
+    fetchCourseNumbers();
+  }, [fetchCourseNumbers]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -64,36 +75,37 @@ export function SubjectDropdown({
           role="combobox"
           aria-expanded={open}
           className="w-full justify-between bg-white"
-          disabled={loading}
+          disabled={loading || !subject}
         >
-          {loading ? 'Loading subjects...' : 
+          {!subject ? 'Select subject first' : 
+           loading ? 'Loading course numbers...' : 
            value ? value : placeholder}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-full p-0">
         <Command>
-          <CommandInput placeholder="Search subject..." />
+          <CommandInput placeholder="Search course number..." />
           <CommandEmpty>
-            {error ? error : 'No subject found.'}
+            {error ? error : 'No course numbers found.'}
           </CommandEmpty>
           <CommandGroup className="max-h-64 overflow-y-auto">
-            {subjects.map((subject) => (
+            {courseNumbers.map((number) => (
               <CommandItem
-                key={subject}
+                key={number}
                 onSelect={() => {
-                  onChange(subject);
+                  onChange(number);
                   setOpen(false);
                 }}
-                value={subject}
+                value={number}
               >
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === subject ? "opacity-100" : "opacity-0"
+                    value === number ? "opacity-100" : "opacity-0"
                   )}
                 />
-                {subject}
+                {number}
               </CommandItem>
             ))}
           </CommandGroup>

@@ -1,9 +1,8 @@
-// app/api/course-subjects/route.ts
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 import { CourseSection } from '../types';
 
-export async function POST(request: Request) {
+export async function POST() {
   try {
     
     const response = await axios.post(
