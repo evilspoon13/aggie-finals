@@ -89,7 +89,7 @@ export function CourseNumberDropdown({
           <CommandEmpty>
             {error ? error : 'No course numbers found.'}
           </CommandEmpty>
-          <CommandGroup className="max-h-64 overflow-y-auto">
+          <CommandGroup className="max-h-[20vh] overflow-y-auto">
             {courseNumbers.map((number) => (
               <CommandItem
                 key={number}

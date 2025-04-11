@@ -85,7 +85,7 @@ export function DataDropdown({
             <CommandEmpty>
               {error ? error : `No ${label || 'option'} found.`}
             </CommandEmpty>
-            <CommandGroup className="max-h-[15vh] overflow-y-auto">
+            <CommandGroup className="max-h-[20vh] overflow-y-auto">
               {options.map((option) => (
                 <CommandItem
                   key={option}
