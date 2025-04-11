@@ -72,7 +72,7 @@ export function DataDropdown({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-full p-0" side="bottom" align="center">
+        <PopoverContent className="w-full p-0" side="bottom" align="center" sideOffset={4}>
           <Command>
             <CommandInput placeholder={`Search ${label || 'options'}...`} />
             <CommandEmpty>

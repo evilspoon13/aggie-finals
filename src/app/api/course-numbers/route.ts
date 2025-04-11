@@ -29,10 +29,14 @@ export async function POST(request: Request) {
     const filteredCourses = response.data.filter(
       (course: CourseSection) => course.SWV_CLASS_SEARCH_SUBJECT === department.toUpperCase()
     );
+
+    const undergradCourses = filteredCourses.filter(
+        (course: CourseSection) => parseInt(course.SWV_CLASS_SEARCH_COURSE) < 500
+    );
     
     // extract unique course numbers
     const uniqueCourseNumbers = [...new Set(
-        filteredCourses.map((course: CourseSection) => course.SWV_CLASS_SEARCH_COURSE)
+        undergradCourses.map((course: CourseSection) => course.SWV_CLASS_SEARCH_COURSE)
       )].filter(Boolean).sort((a, b) => {
         const numA = parseInt(a as string);
         const numB = parseInt(b as string);
