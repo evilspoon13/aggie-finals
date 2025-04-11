@@ -59,6 +59,7 @@ export interface LectureSchedule {
     days: string;
     beginTime: string;
     endTime: string;
+    courseType?: string;
 }
 
 export interface FinalExam {
