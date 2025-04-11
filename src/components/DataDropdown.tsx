@@ -72,13 +72,20 @@ export function DataDropdown({
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-full p-0" side="bottom" align="center" sideOffset={4}>
+        <PopoverContent 
+          className="w-full p-0 max-w-[calc(100vw-20px)]" 
+          side="bottom" 
+          align="center" 
+          sideOffset={4}
+          avoidCollisions={false} 
+          sticky="always"
+        >
           <Command>
             <CommandInput placeholder={`Search ${label || 'options'}...`} />
             <CommandEmpty>
               {error ? error : `No ${label || 'option'} found.`}
             </CommandEmpty>
-            <CommandGroup className="max-h-64 overflow-y-auto">
+            <CommandGroup className="max-h-[15vh] overflow-y-auto">
               {options.map((option) => (
                 <CommandItem
                   key={option}
