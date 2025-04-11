@@ -161,7 +161,7 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
           <div className="space-y-4">
             {/* Subject Dropdown */}
             <div className="flex flex-col items-center space-y-2">
-              <div className="w-100">
+              <div className="w-full max-w-xs">
                 <SubjectDropdown
                   value={subject}
                   onChange={handleSubjectChange}
@@ -172,7 +172,7 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
 
             {/* Course Number Dropdown */}
             <div className="flex flex-col items-center space-y-2">
-              <div className="w-100">
+              <div className="w-full max-w-xs">
                 <label className="block text-sm font-medium text-gray-700">Course Number</label>
                 <CourseNumberDropdown
                   value={courseNumber}
