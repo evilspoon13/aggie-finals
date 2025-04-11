@@ -20,13 +20,13 @@ export async function POST(request: Request) {
     // filter the results based on department and course number
     let filteredResults = response.data as CourseSection[];
     
-    if (department) {
+    if(department){
       filteredResults = filteredResults.filter(
         (course: CourseSection) => course.SWV_CLASS_SEARCH_SUBJECT === department.toUpperCase()
       );
     }
     
-    if (courseNumber) {
+    if(courseNumber){
       filteredResults = filteredResults.filter(
         (course: CourseSection) => course.SWV_CLASS_SEARCH_COURSE === courseNumber
       );
