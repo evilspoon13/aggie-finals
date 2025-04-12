@@ -1,8 +1,10 @@
 import { CourseMeeting } from "../api/types";
 
 export const getLectureSchedule = (meetings: CourseMeeting[]) => {
+  // Find the meeting to use
   const lectureMeeting = meetings.find(meeting => 
     meeting.SSRMEET_MTYP_CODE === "Lecture" || 
+    meeting.SSRMEET_MTYP_CODE === "Laboratory" ||
     meeting.SSRMEET_CREDIT_HR_SESS > 0
   );
   
@@ -10,7 +12,7 @@ export const getLectureSchedule = (meetings: CourseMeeting[]) => {
     return null;
   }
   
-  // check if all days are null (online course)
+  // Check if all days are null (online course)
   const hasNoDays = !lectureMeeting.SSRMEET_MON_DAY && 
                     !lectureMeeting.SSRMEET_TUE_DAY && 
                     !lectureMeeting.SSRMEET_WED_DAY &&
@@ -24,13 +26,16 @@ export const getLectureSchedule = (meetings: CourseMeeting[]) => {
     (lectureMeeting.SSRMEET_BLDG_CODE === "ONLINE" || 
      lectureMeeting.SSRMEET_ROOM_CODE === "ONLINE");
   
-  // Check if it's a seminar or special course type
+  // Check if it's a special course type
   const isSpecialCourseType = 
     lectureMeeting.SSRMEET_MTYP_CODE === "Seminar" || 
     lectureMeeting.SSRMEET_MTYP_CODE === "Research" ||
     lectureMeeting.SSRMEET_MTYP_CODE === "Independent Study";
   
-  // return special values for fully online courses with no meeting days
+  // Check if it's a laboratory
+  const isLaboratory = lectureMeeting.SSRMEET_MTYP_CODE === "Laboratory";
+  
+  // Return special values for fully online courses with no meeting days
   if (hasNoDays) {
     return {
       days: "Online",
@@ -52,7 +57,7 @@ export const getLectureSchedule = (meetings: CourseMeeting[]) => {
   
   const daysString = days.join("");
   
-  // online delivery courses?
+  // Online delivery courses
   if (isOnlineDelivery) {
     return {
       days: daysString,
@@ -62,7 +67,17 @@ export const getLectureSchedule = (meetings: CourseMeeting[]) => {
     };
   }
   
-  // for seminars and special courses!
+  // Laboratory courses
+  if (isLaboratory) {
+    return {
+      days: daysString,
+      beginTime: lectureMeeting.SSRMEET_BEGIN_TIME,
+      endTime: lectureMeeting.SSRMEET_END_TIME,
+      courseType: "Laboratory"
+    };
+  }
+  
+  // Seminars and special courses
   if (isSpecialCourseType) {
     return {
       days: daysString,
@@ -72,11 +87,11 @@ export const getLectureSchedule = (meetings: CourseMeeting[]) => {
     };
   }
   
-  // for regular in-person courses
+  // Regular in-person courses
   return {
     days: daysString,
     beginTime: lectureMeeting.SSRMEET_BEGIN_TIME,
     endTime: lectureMeeting.SSRMEET_END_TIME,
-    courseType: "Lecture" // default
+    courseType: lectureMeeting.SSRMEET_MTYP_CODE || "Lecture" // Use the actual type or default to "Lecture"
   };
 };

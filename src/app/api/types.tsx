@@ -60,6 +60,7 @@ export interface LectureSchedule {
     beginTime: string;
     endTime: string;
     courseType?: string;
+    creditHours?: number | null;
 }
 
 export interface FinalExam {

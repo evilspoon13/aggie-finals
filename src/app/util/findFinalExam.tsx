@@ -2,7 +2,7 @@ import { LectureSchedule, FinalExam } from "../api/types";
 import { examMappings } from "./examData";
 
 export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
-  // convert time from "HH:MM AM/PM" format to decimal hours
+  // Convert time from "HH:MM AM/PM" format to decimal hours
   const convertToDecimalHours = (timeStr: string): number => {
     const [time, period] = timeStr.split(" ");
     let [hours, minutes] = time.split(":");
@@ -15,11 +15,34 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
       hoursNum = 0;
     }
     
-    // round to 2 decimal places to avoid floating point precision issues
+    // Round to 2 decimal places to avoid floating point precision issues
     return parseFloat((hoursNum + parseInt(minutes) / 60).toFixed(2));
   };
 
-  if (lectureSchedule.days === "Online") {
+  // Check for 1 credit hour courses
+  if(lectureSchedule.creditHours === 1){
+    return {
+      success: true,
+      error: null,
+      date: "Check with Instructor",
+      examTime: "1 credit hour courses typically don't have final exams",
+      schedule: lectureSchedule
+    }
+  }
+
+  // Check for laboratory courses
+  if(lectureSchedule.courseType === "Laboratory"){
+    return {
+      success: true,
+      error: null,
+      date: "Check with Instructor",
+      examTime: "Laboratory courses typically don't have final exams",
+      schedule: lectureSchedule
+    };
+  }
+
+  // Check for online courses
+  if(lectureSchedule.days === "Online") {
     return {
       success: true,
       error: null,
@@ -29,8 +52,8 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
     };
   }
   
-  // handle online delivery courses w/ weird meeting times lol
-  if (lectureSchedule.courseType && lectureSchedule.courseType.startsWith("Online")) {
+  // Handle online delivery courses with specific meeting times
+  if(lectureSchedule.courseType && lectureSchedule.courseType.startsWith("Online")) {
     return {
       success: true,
       error: null,
@@ -40,7 +63,7 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
     };
   }
   
-  // handle seminar, research, and other special course types
+  // Handle seminar, research, and other special course types
   if (lectureSchedule.courseType === "Seminar" || 
       lectureSchedule.courseType === "Research" || 
       lectureSchedule.courseType === "Independent Study") {
@@ -53,22 +76,22 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
     };
   }
 
-  // get meeting pattern and decimal time
+  // Get meeting pattern and decimal time
   const days = lectureSchedule.days;
   const startTime = convertToDecimalHours(lectureSchedule.beginTime);
   const endTime = convertToDecimalHours(lectureSchedule.endTime);
   
-  // small tolerance for floating-point comparison
+  // Small tolerance for floating-point comparison
   const TIME_TOLERANCE = 0.01;
 
-  // helper function to check if days match
+  // Helper function to check if days match
   const daysMatch = (classDays: string, scheduleDays: string): boolean => {
     // Exact match
     if(classDays === scheduleDays) {
       return true;
     }
     
-    // single day mapping to double days
+    // Single day mapping to double days
     if(scheduleDays === "MW" && (classDays === "M" || classDays === "W")){
       return true;
     }
@@ -85,15 +108,15 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
     return false;
   };
 
-  // find all potentially matching slots with a tolerance for time
+  // Find all potentially matching slots with a tolerance for time
   const potentialMatches = examMappings.filter(mapping => 
     daysMatch(days, mapping.dayPattern) && 
     Math.abs(startTime - mapping.timeStart) <= TIME_TOLERANCE
   );
 
-  // if we have multiple potential matches,find the best one
+  // if we have multiple potential matches, find the best one
   if (potentialMatches.length > 1) {
-    // try to find exact match first
+    // Try to find exact match first
     const exactMatch = potentialMatches.find(mapping => 
       Math.abs(startTime - mapping.timeStart) < 0.01 && 
       Math.abs(endTime - mapping.timeEnd) < 0.01
@@ -107,7 +130,7 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
       schedule: lectureSchedule
     };
     
-    // Otherwise pick the closest match
+    // otherwise pick the closest match
     potentialMatches.sort((a, b) => {
       const aStartDiff = Math.abs(startTime - a.timeStart);
       const aEndDiff = Math.abs(endTime - a.timeEnd);
@@ -154,7 +177,7 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
     };
   }
 
-  // we tried everything bro. its time to give up
+  // we tried everything bro
   return {
     success: false,
     error: "No matching final exam time found for this course schedule",

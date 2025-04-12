@@ -2,7 +2,6 @@ import { CourseEntry } from "../types";
 import { searchCourseSections } from "../api";
 import { CourseSectionRequest, LectureSchedule, CourseMeeting, CourseInstructor } from "../types";
 
-
 export interface CourseSearchResult{
     success: boolean;
     courses: CourseEntry[];
@@ -46,10 +45,9 @@ export const searchCourses = async (
             try {
                 const instructors = JSON.parse(section.SWV_CLASS_SEARCH_INSTRCTR_JSON) as CourseInstructor[];
                 if (instructors && instructors.length > 0) {
-                    // Get the first instructor's name
+                    // get the first instructor's name
                     instructorName = instructors[0].NAME;
                     
-                    // Remove the "(P)" designation if present
                     instructorName = instructorName.replace(" (P)", "");
                 }
             } catch (error) {
@@ -57,7 +55,10 @@ export const searchCourses = async (
             }
             
             const lectureMeeting = meetings.find(meeting => 
-                meeting.SSRMEET_MTYP_CODE === "Lecture" && 
+                (meeting.SSRMEET_MTYP_CODE === "Lecture" || 
+                meeting.SSRMEET_MTYP_CODE === "Laboratory" || 
+                meeting.SSRMEET_MTYP_CODE === "Seminar" ||
+                meeting.SSRMEET_CREDIT_HR_SESS > 0) && 
                 (meeting.SSRMEET_BEGIN_TIME !== null && meeting.SSRMEET_END_TIME !== null)
             );
             
@@ -75,11 +76,13 @@ export const searchCourses = async (
                 if (lectureMeeting.SSRMEET_SUN_DAY) days += 'U';
                 
                 lectureSchedule = {
-                    days,
-                    beginTime: lectureMeeting.SSRMEET_BEGIN_TIME,
-                    endTime: lectureMeeting.SSRMEET_END_TIME
+                  days,
+                  beginTime: lectureMeeting.SSRMEET_BEGIN_TIME,
+                  endTime: lectureMeeting.SSRMEET_END_TIME,
+                  courseType: lectureMeeting.SSRMEET_MTYP_CODE,
+                  creditHours: lectureMeeting.SSRMEET_CREDIT_HR_SESS
                 };
-            }
+              }
             
             return {
                 crn: section.SWV_CLASS_SEARCH_CRN,

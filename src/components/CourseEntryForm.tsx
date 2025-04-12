@@ -72,6 +72,7 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
 
     const result = await searchCourses(subject, parseInt(courseNumber));
 
+    console.log(result);
     setPossibleCoursesLoading(false);
     setPossibleCourses(result.courses);
   };
@@ -229,11 +230,13 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
                             <div className="flex items-center gap-1 text-sm text-gray-600">
                             <Clock size={14} className="text-gray-500" />
                             <span className="text-sm text-gray-600 block">
+
                                 {(!course.lectureSchedule?.beginTime || course.lectureSchedule?.beginTime === "Online") ? 
                                   "Online Class" : 
                                   course.lectureSchedule?.courseType === "Seminar" || 
                                   course.lectureSchedule?.courseType === "Research" || 
-                                  course.lectureSchedule?.courseType === "Independent Study" ?
+                                  course.lectureSchedule?.courseType === "Independent Study" ||
+                                  course.lectureSchedule?.courseType === "Laboratory"?
                                     `${course.lectureSchedule.courseType}: ${course.lectureSchedule.beginTime}-${course.lectureSchedule.endTime}` :
                                     `${course.lectureSchedule?.beginTime}-${course.lectureSchedule?.endTime}`
                                 }
