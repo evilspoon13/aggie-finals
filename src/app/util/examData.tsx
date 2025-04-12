@@ -22,6 +22,7 @@ export const examMappings: examMapping[] = [
     
     // May 2 (Friday)
     { dayPattern: "MWF", timeStart: 9.17, timeEnd: 10.00, examDate: "May 2, 2025 (Friday)", examTime: "8:00 - 10:00 a.m.", regularClassTime: "9:10 – 10:00 a.m." },
+    { dayPattern: "MWF", timeStart: 9.75, timeEnd: 10.58, examDate: "May 2, 2025 (Friday)", examTime: "10:30 a.m. - 12:30 p.m.", regularClassTime: "9:45 – 10:35 a.m." },
     { dayPattern: "MWF", timeStart: 12.67, timeEnd: 13.50, examDate: "May 2, 2025 (Friday)", examTime: "10:30 a.m. - 12:30 p.m.", regularClassTime: "12:40 – 1:30 p.m." },
     { dayPattern: "MWF", timeStart: 13.25, timeEnd: 14.08, examDate: "May 2, 2025 (Friday)", examTime: "10:30 a.m. - 12:30 p.m.", regularClassTime: "1:15 – 2:05 p.m." },
     { dayPattern: "TR", timeStart: 8.00, timeEnd: 9.25, examDate: "May 2, 2025 (Friday)", examTime: "1:00 - 3:00 p.m.", regularClassTime: "8:00 – 9:15 a.m." },

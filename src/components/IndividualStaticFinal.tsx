@@ -42,11 +42,12 @@ export const IndividualStaticFinal: React.FC<IndividualStaticFinalProps> = ({
                         <span className="mr-2 font-bold text-[#562626] group-hover:text-[#5A0010]">{exam.dayPattern}</span> Class
                       </CardTitle>
                       <CardDescription className="flex items-center text-sm">
-                        Regular class time: {exam.regularClassTime}
+                        {exam.regularClassTime}
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-2">
+                        <h3 className="text-lg font-semibold text-[#562626]">Final Exam:</h3>
                         <div className="flex items-center">
                           <CalendarIcon className="h-4 w-4 mr-2 text-[#562626] group-hover:scale-110 transition-transform" />
                           <span>{exam.examDate}</span>

@@ -1,4 +1,3 @@
-// Updated CourseEntryForm.tsx
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,8 @@ import { Badge } from "./ui/badge";
 import { Trash2, User, Clock, Smile} from "lucide-react";
 import { IndividualDataEntry } from "./IndividualDataEntry";
 import { searchCourses } from "@/app/api/hooks/searchCourses";
-import { SubjectDropdown } from "./SubjectDropdownProps";
+import { SubjectDropdown } from "./SubjectDropdown";
+import { CourseNumberDropdown } from "./CourseNumberDropdown";
 
 interface CourseEntryFormProps {
   courses: CourseEntry[];
@@ -23,7 +23,7 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
   const [possibleCourses, setPossibleCourses] = useState<CourseEntry[]>([]);
   const [possibleCoursesLoading, setPossibleCoursesLoading] = useState<boolean>(false);
   const [subject, setSubject] = useState<string>("");
-  const [courseNumber, setCourseNumber] = useState<number>(0);
+  const [courseNumber, setCourseNumber] = useState<string>("");
   const [submittedCourseSearch, setSubmittedCourseSearch] = useState<boolean>(false);
 
   // for when a user enters their course by crn
@@ -66,39 +66,43 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
   const searchBySubject = async () => {
     setPossibleCoursesLoading(true);
     setSubmittedCourseSearch(true);
-    if (!subject.trim() || courseNumber <= 0) {
+    if (!subject.trim() || !courseNumber.trim()) {
       return;
     }
 
-    const result = await searchCourses(subject, courseNumber);
+    const result = await searchCourses(subject, parseInt(courseNumber));
 
     setPossibleCoursesLoading(false);
     setPossibleCourses(result.courses);
   };
 
 
-const addSelectedCourse = (course: CourseEntry) => {
-  if (courses.some(c => c.crn === course.crn)) {
-    return;
-  }
-  
-  setCourses([...courses, course]);
-  
-  setPossibleCourses([]);
-  setSubmittedCourseSearch(false);
-  setCourseNumber(0);
-  setSubject("");
-};
+  const addSelectedCourse = (course: CourseEntry) => {
+    if (courses.some(c => c.crn === course.crn)) {
+      return;
+    }
+    
+    setCourses([...courses, course]);
+    
+    setPossibleCourses([]);
+    setSubmittedCourseSearch(false);
+    setCourseNumber("");
+    setSubject("");
+  };
 
   const removeCourse = (crn: string) => {
     setCourses(courses.filter(course => course.crn !== crn));
   }
 
+  // handle subject change
+  const handleSubjectChange = (newSubject: string) => {
+    setSubject(newSubject);
+    setCourseNumber("");
+  };
 
   return (
     <div className="w-full max-w-2xl mx-auto">
       
-
       {submitted && (
         <div className="flex items-center gap-1 mb-4">
           <h2 className="text-xl font-bold">Good luck!</h2>
@@ -155,40 +159,39 @@ const addSelectedCourse = (course: CourseEntry) => {
 
         <TabsContent value="course">
           <div className="space-y-4">
-            {/* subject dropdown */}
-            <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">Subject</label>
-              <SubjectDropdown
-                value={subject}
-                onChange={setSubject}
-                placeholder="Select department (e.g. CSCE)"
-              />
-              <p className="text-xs text-gray-500">Enter department (e.g. CSCE)</p>
+            {/* Subject Dropdown */}
+            <div className="flex flex-col items-center space-y-2">
+              <div className="w-full max-w-xs">
+                <SubjectDropdown
+                  value={subject}
+                  onChange={handleSubjectChange}
+                  placeholder="Select department (e.g. CSCE)"
+                />
+              </div>
             </div>
 
-            <IndividualDataEntry
-              value={courseNumber === 0 ? "" : courseNumber.toString()}
-              tabValue="course"
-              onChange={(e) => setCourseNumber(parseInt(e.target.value) || 0)}
-              handleKeyDown={(e) => {
-                if (e.key === 'Enter' && subject.trim() && courseNumber > 0) {
-                  searchBySubject();
-                }
-              }}
-              label="Course Number"
-              description="Enter Course Number (e.g. 120)"
-            />
+            {/* Course Number Dropdown */}
+            <div className="flex flex-col items-center space-y-2">
+              <div className="w-full max-w-xs">
+                <label className="block text-sm font-medium text-gray-700">Course Number</label>
+                <CourseNumberDropdown
+                  value={courseNumber}
+                  onChange={setCourseNumber}
+                  placeholder="Select course number"
+                  subject={subject}
+                />
+              </div>
+            </div>
             
             <div className="flex justify-center mt-4">
               <Button 
                 className="bg-[#562626] hover:bg-[#5A0010]text-white shadow-sm transition-colors w-50" 
                 onClick={handleSearchForCourseButton}
-                disabled={!subject.trim() || courseNumber <= 0}
+                disabled={!subject.trim() || !courseNumber.trim()}
               >
                 Search for Course
               </Button>
             </div>
-
 
             {(possibleCoursesLoading) && (
               <div className="mt-6 border-t pt-4">
@@ -196,7 +199,6 @@ const addSelectedCourse = (course: CourseEntry) => {
                 <div className="animate-spin h-6 w-6 border-2 border-[#562626] border-t-transparent rounded-full mx-auto"></div>
               </div>
             )}
-
             
             {((possibleCourses.length === 0 && !possibleCoursesLoading) && submittedCourseSearch) && (
               <div className="mt-6 border-t pt-4">
@@ -226,8 +228,15 @@ const addSelectedCourse = (course: CourseEntry) => {
                             </span>
                             <div className="flex items-center gap-1 text-sm text-gray-600">
                             <Clock size={14} className="text-gray-500" />
-                              <span className="text-sm text-gray-600 block">
-                                {course.lectureSchedule?.beginTime}-{course.lectureSchedule?.endTime}
+                            <span className="text-sm text-gray-600 block">
+                                {(!course.lectureSchedule?.beginTime || course.lectureSchedule?.beginTime === "Online") ? 
+                                  "Online Class" : 
+                                  course.lectureSchedule?.courseType === "Seminar" || 
+                                  course.lectureSchedule?.courseType === "Research" || 
+                                  course.lectureSchedule?.courseType === "Independent Study" ?
+                                    `${course.lectureSchedule.courseType}: ${course.lectureSchedule.beginTime}-${course.lectureSchedule.endTime}` :
+                                    `${course.lectureSchedule?.beginTime}-${course.lectureSchedule?.endTime}`
+                                }
                               </span>
                             </div>
                           </div>
@@ -247,10 +256,6 @@ const addSelectedCourse = (course: CourseEntry) => {
                 </div>
               </div>
             )}
-
-
-
-
           </div>
         </TabsContent>
             

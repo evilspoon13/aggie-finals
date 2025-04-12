@@ -14,7 +14,7 @@ export function Footer() {
             </div>
           </div>
           
-          <div className="flex space-x-6">
+          <div className="flex flex-col items-center justify-between space-x-6 w-full max-w-2xs">
             <Link 
               href="https://aggie.tamu.edu/registration-and-records/classes/final-examination-schedules" 
               className="text-sm text-gray-600 hover:text-[#500000] flex items-center gap-1"
@@ -22,8 +22,9 @@ export function Footer() {
               rel="noopener noreferrer"
             >
               Official Final Exam Info
-              <ExternalLink size={14} className="inline-block ml-1" /> {/* Small icon */}
+              <ExternalLink size={14} className="inline-block ml-1" />
             </Link>
+            <p className="text-center mt-4 text-sm text-gray-600">Disclaimer: This website is student made. Double check any final exam information on the official Aggie One Stop website. </p>
           </div>
         </div>
         

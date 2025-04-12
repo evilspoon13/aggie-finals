@@ -19,6 +19,40 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
     return parseFloat((hoursNum + parseInt(minutes) / 60).toFixed(2));
   };
 
+  if (lectureSchedule.days === "Online") {
+    return {
+      success: true,
+      error: null,
+      date: "Check with Instructor",
+      examTime: "Check with Instructor",
+      schedule: lectureSchedule
+    };
+  }
+  
+  // handle online delivery courses w/ weird meeting times lol
+  if (lectureSchedule.courseType && lectureSchedule.courseType.startsWith("Online")) {
+    return {
+      success: true,
+      error: null,
+      date: "Check with Instructor",
+      examTime: "Check with Instructor",
+      schedule: lectureSchedule
+    };
+  }
+  
+  // handle seminar, research, and other special course types
+  if (lectureSchedule.courseType === "Seminar" || 
+      lectureSchedule.courseType === "Research" || 
+      lectureSchedule.courseType === "Independent Study") {
+    return {
+      success: true,
+      error: null,
+      date: "Check with Instructor",
+      examTime: "May not have traditional final exam",
+      schedule: lectureSchedule
+    };
+  }
+
   // get meeting pattern and decimal time
   const days = lectureSchedule.days;
   const startTime = convertToDecimalHours(lectureSchedule.beginTime);
@@ -34,7 +68,7 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
       return true;
     }
     
-    // Single day mapping to double days
+    // single day mapping to double days
     if(scheduleDays === "MW" && (classDays === "M" || classDays === "W")){
       return true;
     }
@@ -51,13 +85,13 @@ export function findFinalExam(lectureSchedule: LectureSchedule): FinalExam {
     return false;
   };
 
-  // Find all potentially matching slots with a tolerance for time
+  // find all potentially matching slots with a tolerance for time
   const potentialMatches = examMappings.filter(mapping => 
     daysMatch(days, mapping.dayPattern) && 
     Math.abs(startTime - mapping.timeStart) <= TIME_TOLERANCE
   );
 
-  // if we have multiple potential matches, find the best one
+  // if we have multiple potential matches,find the best one
   if (potentialMatches.length > 1) {
     // try to find exact match first
     const exactMatch = potentialMatches.find(mapping => 

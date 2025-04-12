@@ -56,7 +56,6 @@ export const searchCourses = async (
                 console.error("Error parsing instructor data:", error);
             }
             
-            // Find the lecture meeting (typically has MTYP_CODE = "Lecture")
             const lectureMeeting = meetings.find(meeting => 
                 meeting.SSRMEET_MTYP_CODE === "Lecture" && 
                 (meeting.SSRMEET_BEGIN_TIME !== null && meeting.SSRMEET_END_TIME !== null)

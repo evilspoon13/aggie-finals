@@ -1,4 +1,3 @@
-// app/api/course-subjects/route.ts
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 import { CourseSection } from '../types';
