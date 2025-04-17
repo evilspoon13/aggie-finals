@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aggie Finals
 
-## Getting Started
+## Easy Final Exam Scheduling for Texas A&M Students
 
-First, run the development server:
+Aggie Finals is a simple web tool that helps Texas A&M students quickly find their final exam schedules. No more confusion or wasted time.
+
+## Features
+
+- **Simple Course Entry**: Enter your courses and get your exam schedule
+- **Mobile Friendly**: Access your schedule on any device
+- **Clean Interface**: View your exams in an easy-to-read format
+
+## How It Works
+
+1. Enter your course information (department, course number, and section)
+2. View your personalized finals schedule instantly
+3. Save or screenshot your schedule for reference
+
+## Technology
+
+- Built with React.js and Tailwind CSS
+- Hosted on Vercel
+
+## Development
 
 ```bash
+# Clone the repository
+git clone https://github.com/cameron28202/aggie-finals.git
+
+# Navigate to the project directory
+cd aggie-finals
+
+# Install dependencies
+npm install
+
+# Start the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Roadmap
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [ ] PDF export feature
+- [ ] Calendar integration
+- [ ] Time conflict detection
+- [ ] SABRE schedule integration
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## About
 
-## Learn More
+Created by Aggies, for Aggies. This project is not officially affiliated with Texas A&M University.
 
-To learn more about Next.js, take a look at the following resources:
+**⚠️ Disclaimer:** Always verify your exam schedule with official Texas A&M University sources.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Gig 'em! 👍
