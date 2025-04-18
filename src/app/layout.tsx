@@ -17,8 +17,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Aggie Final Scheduler",
-  description: "App for Texas A&M students to plan their final exam schedule",
+  title: "Aggie Finals | Texas A&M Final Exam Schedule Generator",
+  description: "Generate your Texas A&M University final exam schedule instantly. Save time with our easy-to-use tool designed specifically for Aggies.",
   icons: {
     icon: "/favicon.ico",
   },
