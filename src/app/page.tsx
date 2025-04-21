@@ -37,6 +37,7 @@ export default function Home() {
         const parsedData = parseCourseResponse(data);
         const lectureSchedule = getLectureSchedule(parsedData.meetings);
 
+
         if(lectureSchedule){
           const finalExam = findFinalExam(lectureSchedule);
           course.lectureSchedule = lectureSchedule;

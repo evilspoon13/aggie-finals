@@ -90,7 +90,11 @@ export const FinalExamCard = ({
       <div className="bg-[#562626] px-4 py-3">
         <div className="flex justify-between items-center">
           <div>
-            <p className="font-medium text-white">{subject} {courseNumber} - {title}</p>
+            {!subject || !courseNumber || !title ? (
+              <p className="font-medium text-white">CRN - {crn}</p>
+            ) : (
+              <p className="font-medium text-white">{subject} {courseNumber} - {title}</p>
+            )}
           </div>
           <Badge className="bg-white/20 text-white hover:bg-white/30 border-none">
             {lectureSchedule.days}

@@ -72,7 +72,6 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
 
     const result = await searchCourses(subject, parseInt(courseNumber));
 
-    console.log(result);
     setPossibleCoursesLoading(false);
     setPossibleCourses(result.courses);
   };
