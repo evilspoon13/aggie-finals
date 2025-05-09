@@ -11,6 +11,7 @@ import { StaticFinalData } from "@/components/StaticFinalData";
 import { CourseEntryForm } from "@/components/CourseEntryForm";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2Icon, Smile } from "lucide-react";
+import Settings from "@/components/Settings";
 
 export default function Home() {
   // state for current CRN input
@@ -63,8 +64,10 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center w-full">
       <div className="w-full bg-gradient-to-b from-[#562626]/90 via-[#8a4141] to-[#f8f0e9] pt-12 pb-20 relative">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0zNiAxOGMzLjMxNCAwIDYtMi42ODYgNi02cy0yLjY4Ni02LTYtNmMtMyAwLTYgMi42ODYtNiA2czMgNiA2IDZ6bTAgMzZjMyAwIDYtMyA2LTZzLTMtNi02LTZjLTMgMC02IDMtNiA2czMgNiA2IDZ6IiBzdHJva2U9InJnYmEoMjU1LDI1NSwyNTUsMC4xKSIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9nPjwvc3ZnPg==')] opacity-10"></div>
         <div className="container max-w-7xl mx-auto px-4 relative z-10">
+          <div className="flex justify-end mb-4">
+            <Settings />
+          </div>
           {/* either show the CRN entry box or the user's final exam schedule*/}
           {!showSchedule ? (
             <CourseEntryForm 
@@ -73,6 +76,7 @@ export default function Home() {
               onGenerateSchedule={fetchCourseData}
             />
           ) : (
+
             <div className="w-full max-w-2xl mx-auto">
               <Card className="border shadow-sm rounded-xl bg-white">
                 <CardContent className="p-6">
