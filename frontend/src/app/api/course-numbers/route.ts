@@ -20,7 +20,7 @@ export async function POST(request: Request) {
       {
         startRow: 0,
         endRow: 500, 
-        termCode: "202531", // spring 2025
+        termCode: "202531",
         publicSearch: "Y"
       }
     );
