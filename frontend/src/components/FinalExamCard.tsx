@@ -1,32 +1,60 @@
-import { FinalExam, LectureSchedule } from "@/app/api/types";
 import {
   Card,
   CardContent,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, ClockIcon, AlertTriangleIcon, Loader2Icon } from "lucide-react";
+import { FinalExam } from "@/app/api/types";
 
 interface FinalExamCardProps {
-  subject: string | undefined;
-  courseNumber: string | undefined;
-  title: string | undefined;
-  loading: boolean;
-  error?: string | null;
-  finalExam?: FinalExam;
-  lectureSchedule?: LectureSchedule;
-  crn: string;
+  finalExam: FinalExam;
+  loading?: boolean;
+  crn?: string;
 }
 
 export const FinalExamCard = ({ 
-  subject,
-  courseNumber,
-  title,
-  loading, 
-  error, 
-  finalExam, 
-  lectureSchedule,
-  crn
+  finalExam,
+  loading = false,
+  crn = "",
 }: FinalExamCardProps) => {
+
+  if(!finalExam){
+    return (
+      <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 h-full bg-white">
+        <div className="bg-yellow-50 px-4 py-2 border-b">
+          <p className="text-sm font-medium text-yellow-700">CRN: {crn}</p>
+        </div>
+        <CardContent className="p-6">
+          <div className="flex items-start gap-3">
+            <div className="rounded-full bg-yellow-100 p-2 flex-shrink-0">
+              <AlertTriangleIcon className="h-5 w-5 text-yellow-600" />
+            </div>
+            <div>
+              <h4 className="font-medium text-yellow-700 mb-1">No Data Available</h4>
+              <p className="text-sm text-yellow-600">Could not find exam information for this course.</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+
+  const { 
+    success, 
+    error, 
+    schedule, 
+    date, 
+    examTime, 
+    courseDetails 
+  } = finalExam;
+
+  const subject = courseDetails?.subject;
+  const courseNumber = courseDetails?.courseNumber;
+  const title = courseDetails?.title;
+
+  console.log(finalExam);
+
   if(loading){
     return (
       <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 h-full bg-white">
@@ -64,7 +92,7 @@ export const FinalExamCard = ({
     );
   }
   
-  if(!lectureSchedule || !finalExam){
+  if(!schedule || !success){
     return (
       <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 h-full bg-white">
         <div className="bg-yellow-50 px-4 py-2 border-b">
@@ -97,13 +125,13 @@ export const FinalExamCard = ({
             )}
           </div>
           <Badge className="bg-white/20 text-white hover:bg-white/30 border-none">
-            {lectureSchedule.days}
+            {schedule.days}
           </Badge>
         </div>
       </div>
       
       <CardContent className="p-0">
-        {finalExam.success ? (
+        {(error === null) ? (
           <div className="p-4">
             <div className="mb-3">
               <h3 className="font-semibold text-gray-800 mb-1">Final Exam</h3>
@@ -117,7 +145,7 @@ export const FinalExamCard = ({
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Date</p>
-                    <p className="font-medium text-sm">{finalExam.date}</p>
+                    <p className="font-medium text-sm">{date}</p>
                   </div>
                 </div>
                 
@@ -127,7 +155,7 @@ export const FinalExamCard = ({
                   </div>
                   <div>
                     <p className="text-xs text-gray-500">Time</p>
-                    <p className="font-medium text-sm">{finalExam.examTime}</p>
+                    <p className="font-medium text-sm">{examTime}</p>
                   </div>
                 </div>
               </div>

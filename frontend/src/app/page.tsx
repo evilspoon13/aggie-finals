@@ -41,6 +41,8 @@ export default function Home() {
 
         if(lectureSchedule){
           const finalExam = findFinalExam(lectureSchedule);
+          finalExam.courseDetails = course.courseDetails;
+
           course.lectureSchedule = lectureSchedule;
           course.finalExam = finalExam;
           course.error = null;
@@ -95,16 +97,11 @@ export default function Home() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {courses.map((course, index) => (
                           <div key={index}>
-                            <FinalExamCard
-                              subject={course.courseDetails?.subject}
-                              courseNumber={course.courseDetails?.courseNumber}
-                              title={course.courseDetails?.title}
-                              loading={course.loading}
-                              error={course.error}
-                              lectureSchedule={course.lectureSchedule}
-                              finalExam={course.finalExam}
-                              crn={course.crn}
-                            />
+                              <FinalExamCard
+                                finalExam={course.finalExam}
+                                loading={course.loading}
+                                crn={course.crn}
+                              />
                           </div>
                         ))}
                       </div>

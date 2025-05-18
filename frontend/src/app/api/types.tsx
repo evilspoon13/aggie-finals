@@ -66,9 +66,10 @@ export interface LectureSchedule {
 export interface FinalExam {
     success: boolean;
     error: string | null;
-    schedule: LectureSchedule | null;
+    schedule?: LectureSchedule | null;
     date?: string;
     examTime?: string;
+    courseDetails?: CourseDetails
 }
 
 export interface CourseSection {
@@ -107,19 +108,21 @@ export interface CourseSectionRequest {
     courseNumber?: string;
 }
 
+export interface CourseDetails{
+    subject: string;
+    courseNumber: string;
+    section: string;
+    title: string;
+    instructor: string;
+}
+
 export interface CourseEntry {
     crn: string;
     loading: boolean;
     error: string | null;
-    courseDetails?: {
-      subject: string;
-      courseNumber: string;
-      section: string;
-      title: string;
-      instructor: string;
-    };
+    courseDetails?: CourseDetails;
     lectureSchedule?: LectureSchedule;
-    finalExam?: FinalExam;
+    finalExam: FinalExam;
   }
 
 export interface CourseSectionRequest {
