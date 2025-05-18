@@ -3,101 +3,135 @@ package com.evilspoon13.aggiefinals.Model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "final_exams")
 public class FinalExam {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exam_id")
-    private Long id;
+    private Long examId;
 
-    @Column(name = "course_code", nullable = false, unique = true)
-    private String courseCode;
+    @Column(name = "term_id", nullable = false, length = 10)
+    private String termId;
 
-    @Column(name = "course_description")
-    private String courseDescription;
+    @Column(name = "crn", nullable = false, length = 10)
+    private String crn;
 
-    @Column(name = "course_lecture_days")
-    private String courseLectureDays;
+    @Column(name = "success", nullable = false)
+    private Boolean success = true;
 
-    @Column(name = "exam_date", nullable = false)
-    private LocalDate examDate;
+    @Column(name = "error")
+    private String error;
 
-    @Column(name = "exam_start_time", nullable = false)
-    private LocalTime examStartTime;
+    @Column(name = "date")
+    private LocalDate date;
 
-    @Column(name = "exam_end_time", nullable = false)
-    private LocalTime examEndTime;
+    @Column(name = "exam_time", length = 50)
+    private String examTime;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "course_details_id")
+    private CourseDetails courseDetails;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "schedule_id")
+    private LectureSchedule schedule;
+
+    @Column(name = "created_at")
+    private ZonedDateTime createdAt;
 
     @ManyToMany(mappedBy = "finalExams")
-    private List<User> users = new ArrayList<>();
+    private Set<User> users = new HashSet<>();
 
-    public Long getId() {
-        return id;
+    public Long getExamId() {
+        return examId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setExamId(Long examId) {
+        this.examId = examId;
     }
 
-    public String getCourseCode() {
-        return courseCode;
+    public String getTermId() {
+        return termId;
     }
 
-    public void setCourseCode(String courseCode) {
-        this.courseCode = courseCode;
+    public void setTermId(String termId) {
+        this.termId = termId;
     }
 
-    public String getCourseDescription() {
-        return courseDescription;
+    public String getCrn() {
+        return crn;
     }
 
-    public void setCourseDescription(String courseDescription) {
-        this.courseDescription = courseDescription;
+    public void setCrn(String crn) {
+        this.crn = crn;
     }
 
-    public String getCourseLectureDays() {
-        return courseLectureDays;
+    public Boolean getSuccess() {
+        return success;
     }
 
-    public void setCourseLectureDays(String courseLectureDays) {
-        this.courseLectureDays = courseLectureDays;
+    public void setSuccess(Boolean success) {
+        this.success = success;
     }
 
-    public LocalDate getExamDate() {
-        return examDate;
+    public String getError() {
+        return error;
     }
 
-    public void setExamDate(LocalDate examDate) {
-        this.examDate = examDate;
+    public void setError(String error) {
+        this.error = error;
     }
 
-    public LocalTime getExamStartTime() {
-        return examStartTime;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setExamStartTime(LocalTime examStartTime) {
-        this.examStartTime = examStartTime;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public LocalTime getExamEndTime() {
-        return examEndTime;
+    public String getExamTime() {
+        return examTime;
     }
 
-    public void setExamEndTime(LocalTime examEndTime) {
-        this.examEndTime = examEndTime;
+    public void setExamTime(String examTime) {
+        this.examTime = examTime;
     }
 
-    public List<User> getUsers() {
+    public CourseDetails getCourseDetails() {
+        return courseDetails;
+    }
+
+    public void setCourseDetails(CourseDetails courseDetails) {
+        this.courseDetails = courseDetails;
+    }
+
+    public LectureSchedule getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(LectureSchedule schedule) {
+        this.schedule = schedule;
+    }
+
+    public ZonedDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Set<User> getUsers() {
         return users;
     }
 
-    public void setUsers(List<User> users) {
+    public void setUsers(Set<User> users) {
         this.users = users;
     }
 }

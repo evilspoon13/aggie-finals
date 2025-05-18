@@ -1,30 +1,28 @@
 package com.evilspoon13.aggiefinals.Model;
 
 import jakarta.persistence.*;
-
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long id;
+    @Column(name = "google_id", nullable = false)
+    private String googleId;
 
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "email")
+    @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
-    @Column(name = "password_hash")
-    private String passwordHash;
+    @Column(name = "name", length = 100)
+    private String name;
 
     @Column(name = "created_at")
-    private Timestamp createdAt;
+    private ZonedDateTime createdAt;
+
+    @Column(name = "last_login")
+    private ZonedDateTime lastLogin;
 
     @ManyToMany
     @JoinTable(
@@ -32,34 +30,15 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "exam_id")
     )
-    private List<FinalExam> finalExams = new ArrayList<>();
+    private Set<FinalExam> finalExams = new HashSet<>();
 
-    public User(){
-        this.createdAt = new Timestamp(System.currentTimeMillis());
+    // Getters and setters
+    public String getGoogleId() {
+        return googleId;
     }
 
-    public List<FinalExam> getFinalExams() {
-        return finalExams;
-    }
-
-    public void setFinalExams(List<FinalExam> finalExams) {
-        this.finalExams = finalExams;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 
     public String getEmail() {
@@ -70,15 +49,35 @@ public class User {
         this.email = email;
     }
 
-    public String getPasswordHash() {
-        return passwordHash;
+    public String getName() {
+        return name;
     }
 
-    public void setPasswordHash(String passwordHash) {
-        this.passwordHash = passwordHash;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Timestamp getCreatedAt() {
+    public ZonedDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public void setCreatedAt(ZonedDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public ZonedDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(ZonedDateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
+
+    public Set<FinalExam> getFinalExams() {
+        return finalExams;
+    }
+
+    public void setFinalExams(Set<FinalExam> finalExams) {
+        this.finalExams = finalExams;
     }
 }
