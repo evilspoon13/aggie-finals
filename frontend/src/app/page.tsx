@@ -15,7 +15,7 @@ import Settings from "@/components/Settings";
 
 export default function Home() {
   // state for current CRN input
-  const [term, setTerm] = useState<string>('202511'); // default to spring 2025
+  const [term, setTerm] = useState<string>('202531'); // default to spring 2025
   const [loading, setLoading] = useState<boolean>(false);
 
   // state for list of added courses

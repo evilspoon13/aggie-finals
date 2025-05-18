@@ -11,8 +11,8 @@ export async function POST(request: Request) {
       'https://howdy.tamu.edu/api/course-sections',
       {
         startRow: 0,
-        endRow: 0, 
-        termCode: "202511",
+        endRow: 500, 
+        termCode: "202531",
         publicSearch: "Y"
       },
       { timeout: 20000 } // 20 second timeout

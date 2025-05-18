@@ -27,7 +27,7 @@ export const FinalExamCard = ({
   lectureSchedule,
   crn
 }: FinalExamCardProps) => {
-  if (loading) {
+  if(loading){
     return (
       <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 h-full bg-white">
         <div className="bg-gray-50 px-4 py-2 border-b">
@@ -43,7 +43,7 @@ export const FinalExamCard = ({
     );
   }
   
-  if (error) {
+  if(error){
     return (
       <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 h-full bg-white">
         <div className="bg-red-50 px-4 py-2 border-b">
@@ -64,7 +64,7 @@ export const FinalExamCard = ({
     );
   }
   
-  if (!lectureSchedule || !finalExam) {
+  if(!lectureSchedule || !finalExam){
     return (
       <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 h-full bg-white">
         <div className="bg-yellow-50 px-4 py-2 border-b">

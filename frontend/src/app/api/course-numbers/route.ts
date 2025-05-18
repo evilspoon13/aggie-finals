@@ -19,8 +19,8 @@ export async function POST(request: Request) {
       'https://howdy.tamu.edu/api/course-sections',
       {
         startRow: 0,
-        endRow: 0, 
-        termCode: "202511", // spring 2025
+        endRow: 500, 
+        termCode: "202531", // spring 2025
         publicSearch: "Y"
       }
     );
