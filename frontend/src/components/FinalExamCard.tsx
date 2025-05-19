@@ -24,7 +24,7 @@ export const FinalExamCard = ({
         <div className="bg-yellow-50 px-4 py-2 border-b">
           <p className="text-sm font-medium text-yellow-700">CRN: {crn}</p>
         </div>
-        <CardContent className="p-6">
+        <CardContent className="p-6 flex-1">
           <div className="flex items-start gap-3">
             <div className="rounded-full bg-yellow-100 p-2 flex-shrink-0">
               <AlertTriangleIcon className="h-5 w-5 text-yellow-600" />
@@ -53,15 +53,13 @@ export const FinalExamCard = ({
   const courseNumber = courseDetails?.courseNumber;
   const title = courseDetails?.title;
 
-  console.log(finalExam);
-
   if(loading){
     return (
       <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 h-full bg-white">
         <div className="bg-gray-50 px-4 py-2 border-b">
           <p className="text-sm font-medium text-gray-500">CRN: {crn}</p>
         </div>
-        <CardContent className="p-8 flex justify-center items-center">
+        <CardContent className="p-8 flex justify-center items-center flex-1">
           <div className="flex flex-col items-center gap-2">
             <Loader2Icon className="h-6 w-6 text-[#562626] animate-spin" />
             <p className="text-sm text-gray-500">Loading exam details...</p>
@@ -77,7 +75,7 @@ export const FinalExamCard = ({
         <div className="bg-red-50 px-4 py-2 border-b">
           <p className="text-sm font-medium text-red-700">CRN: {crn}</p>
         </div>
-        <CardContent className="p-6">
+        <CardContent className="p-6 flex-1">
           <div className="flex items-start gap-3">
             <div className="rounded-full bg-red-100 p-2 flex-shrink-0">
               <AlertTriangleIcon className="h-5 w-5 text-red-600" />
@@ -98,7 +96,7 @@ export const FinalExamCard = ({
         <div className="bg-yellow-50 px-4 py-2 border-b">
           <p className="text-sm font-medium text-yellow-700">CRN: {crn}</p>
         </div>
-        <CardContent className="p-6">
+        <CardContent className="p-6 flex-1">
           <div className="flex items-start gap-3">
             <div className="rounded-full bg-yellow-100 p-2 flex-shrink-0">
               <AlertTriangleIcon className="h-5 w-5 text-yellow-600" />
@@ -114,30 +112,32 @@ export const FinalExamCard = ({
   }
 
   return (
-    <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 bg-white">
+    <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 h-full bg-white flex flex-col">
       <div className="bg-[#562626] px-4 py-3">
         <div className="flex justify-between items-center">
-          <div>
+          <div className="truncate pr-2 max-w-[70%]">
             {!subject || !courseNumber || !title ? (
-              <p className="font-medium text-white">CRN - {crn}</p>
+              <p className="font-medium text-white truncate">CRN - {crn}</p>
             ) : (
-              <p className="font-medium text-white">{subject} {courseNumber} - {title}</p>
+              <p className="font-medium text-white truncate" title={`${subject} ${courseNumber} - ${title}`}>
+                {subject} {courseNumber} - {title}
+              </p>
             )}
           </div>
-          <Badge className="bg-white/20 text-white hover:bg-white/30 border-none">
+          <Badge className="bg-white/20 text-white hover:bg-white/30 border-none flex-shrink-0">
             {schedule.days}
           </Badge>
         </div>
       </div>
       
-      <CardContent className="p-0">
+      <CardContent className="p-0 flex flex-col">
         {(error === null) ? (
-          <div className="p-4">
+          <div className="p-4 flex flex-col h-full">
             <div className="mb-3">
               <h3 className="font-semibold text-gray-800 mb-1">Final Exam</h3>
             </div>
             
-            <div className="rounded-md bg-[#562626]/10 p-4 border border-[#562626]/20">
+            <div className="rounded-md bg-[#562626]/10 p-4 border border-[#562626]/20 flex-1">
               <div className="flex flex-col space-y-3">
                 <div className="flex items-center gap-2">
                   <div className="bg-[#562626] rounded-full p-1.5 flex-shrink-0">
@@ -160,9 +160,14 @@ export const FinalExamCard = ({
                 </div>
               </div>
             </div>
+            <div className="mt-auto pt-3">
+              <button className="w-full py-2 px-4 bg-[#562626] text-white rounded-md hover:bg-[#562626]/90 transition-colors">
+                Add to Schedule
+              </button>
+            </div>
           </div>
         ) : (
-          <div className="p-4">
+          <div className="p-4 flex-1">
             <div className="flex items-start gap-3">
               <div className="rounded-full bg-orange-100 p-2 flex-shrink-0">
                 <AlertTriangleIcon className="h-5 w-5 text-orange-500" />
