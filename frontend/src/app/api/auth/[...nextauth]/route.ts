@@ -6,6 +6,7 @@ declare module "next-auth" {
     interface Session {
         user: {
         id: string;
+        googleId: string;
         email: string;
         name?: string;
         } & DefaultSession["user"];
@@ -49,10 +50,44 @@ export const authOptions: NextAuthOptions = {
       // add user ID and access token to session
       if (token && session.user) {
         session.user.id = token.sub as string;
+        session.user.googleId = token.sub as string;
         session.accessToken = token.accessToken as string;
       }
       
       return session;
+    },
+
+    async signIn({ user, account }) {
+      if (account?.provider === 'google') {
+        try {
+  
+          const response = await fetch('http://localhost:8080/api/users/auth', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              googleId: account.providerAccountId, // gogole ID
+              email: user.email,
+              name: user.name,
+            }),
+          })
+          
+          if(response.ok){
+            console.log('user created/updated in backend successfully')
+            return true
+          } 
+          else{
+            console.error('failed to create/update user in backend')
+            return false // block login if failed
+          }
+        } 
+        catch(error){
+          console.error('Error calling backend:', error)
+          return false // block login even if backend fails
+        }
+      }
+      return true
     },
   },
   
