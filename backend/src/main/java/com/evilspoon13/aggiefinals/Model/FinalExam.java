@@ -2,7 +2,9 @@ package com.evilspoon13.aggiefinals.Model;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,7 +15,7 @@ public class FinalExam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "exam_id")
-    private Long examId;
+    private Integer examId;
 
     @Column(name = "term_id", nullable = false, length = 10)
     private String termId;
@@ -33,13 +35,37 @@ public class FinalExam {
     @Column(name = "exam_time", length = 50)
     private String examTime;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "course_details_id")
-    private CourseDetails courseDetails;
+    // Store course info as simple fields (not foreign keys)
+    @Column(name = "subject", length = 10)
+    private String subject;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "schedule_id")
-    private LectureSchedule schedule;
+    @Column(name = "course_number", length = 10)
+    private String courseNumber;
+
+    @Column(name = "section", length = 10)
+    private String section;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "instructor", length = 100)
+    private String instructor;
+
+    // Store schedule info as simple fields
+    @Column(name = "days", length = 10)
+    private String days;
+
+    @Column(name = "begin_time")
+    private LocalTime beginTime;
+
+    @Column(name = "end_time")
+    private LocalTime endTime;
+
+    @Column(name = "course_type", length = 50)
+    private String courseType;
+
+    @Column(name = "credit_hours")
+    private BigDecimal creditHours;
 
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
@@ -47,11 +73,11 @@ public class FinalExam {
     @ManyToMany(mappedBy = "finalExams")
     private Set<User> users = new HashSet<>();
 
-    public Long getExamId() {
+    public Integer getExamId() {
         return examId;
     }
 
-    public void setExamId(Long examId) {
+    public void setExamId(Integer examId) {
         this.examId = examId;
     }
 
@@ -103,20 +129,84 @@ public class FinalExam {
         this.examTime = examTime;
     }
 
-    public CourseDetails getCourseDetails() {
-        return courseDetails;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setCourseDetails(CourseDetails courseDetails) {
-        this.courseDetails = courseDetails;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public LectureSchedule getSchedule() {
-        return schedule;
+    public String getCourseNumber() {
+        return courseNumber;
     }
 
-    public void setSchedule(LectureSchedule schedule) {
-        this.schedule = schedule;
+    public void setCourseNumber(String courseNumber) {
+        this.courseNumber = courseNumber;
+    }
+
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getInstructor() {
+        return instructor;
+    }
+
+    public void setInstructor(String instructor) {
+        this.instructor = instructor;
+    }
+
+    public String getDays() {
+        return days;
+    }
+
+    public void setDays(String days) {
+        this.days = days;
+    }
+
+    public LocalTime getBeginTime() {
+        return beginTime;
+    }
+
+    public void setBeginTime(LocalTime beginTime) {
+        this.beginTime = beginTime;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getCourseType() {
+        return courseType;
+    }
+
+    public void setCourseType(String courseType) {
+        this.courseType = courseType;
+    }
+
+    public BigDecimal getCreditHours() {
+        return creditHours;
+    }
+
+    public void setCreditHours(BigDecimal creditHours) {
+        this.creditHours = creditHours;
     }
 
     public ZonedDateTime getCreatedAt() {
