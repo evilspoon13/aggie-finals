@@ -3,8 +3,9 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarIcon, ClockIcon, AlertTriangleIcon, Loader2Icon } from "lucide-react";
+import { CalendarIcon, ClockIcon, AlertTriangleIcon, Loader2Icon, PlusIcon } from "lucide-react";
 import { FinalExam } from "@/app/api/types";
+
 
 interface FinalExamCardProps {
   finalExam: FinalExam;
@@ -160,9 +161,13 @@ export const FinalExamCard = ({
                 </div>
               </div>
             </div>
-            <div className="mt-auto pt-3">
-              <button className="w-full py-2 px-4 bg-[#562626] text-white rounded-md hover:bg-[#562626]/90 transition-colors">
-                Add to Schedule
+            <div className="flex justify-center mt-4">
+              <button 
+                className="w-.5 py-2 px-4 bg-[#562626] text-white rounded-md hover:bg-[#562626]/90 transition-colors"
+
+                >
+                
+                <PlusIcon/>
               </button>
             </div>
           </div>

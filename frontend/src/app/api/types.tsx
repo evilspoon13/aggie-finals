@@ -122,7 +122,7 @@ export interface CourseEntry {
     error: string | null;
     courseDetails?: CourseDetails;
     lectureSchedule?: LectureSchedule;
-    finalExam: FinalExam;
+    finalExam?: FinalExam;
   }
 
 export interface CourseSectionRequest {
