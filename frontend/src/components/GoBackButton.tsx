@@ -13,7 +13,7 @@ export function GoBackButton() {
     
     const handleButtonPress = () => {
         if(isMounted){
-            router.back();
+            router.replace("/")
         }
     };
     
