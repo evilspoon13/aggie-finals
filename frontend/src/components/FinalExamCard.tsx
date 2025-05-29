@@ -8,7 +8,7 @@ import { FinalExam } from "@/app/api/types";
 
 
 interface FinalExamCardProps {
-  finalExam: FinalExam;
+  finalExam?: FinalExam;
   loading?: boolean;
   crn?: string;
 }

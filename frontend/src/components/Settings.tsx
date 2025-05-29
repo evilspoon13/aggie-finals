@@ -2,7 +2,7 @@
 
 import { RiUserLine, RiLoginBoxLine, RiLogoutBoxLine, RiCalendar2Fill } from "react-icons/ri";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu";
-import { useSession, signOut } from "next-auth/react";
+import { useSession, signOut, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -12,8 +12,8 @@ export default function Settings() {
   const router = useRouter();
   const isAuthenticated = status === "authenticated" && session;
 
-  const handleLoginRedirect = () => {
-    router.push("/login");
+  const handleGoogleLogin = async () => {
+    await signIn("google", { callbackUrl: "/" });
   };
 
   const handleScheduleRedirect = () => {
@@ -74,7 +74,7 @@ export default function Settings() {
             <DropdownMenuItem 
               className="flex items-center justify-center gap-2"
               onSelect={(e) => e.preventDefault()}
-              onClick={handleLoginRedirect}
+              onClick={handleGoogleLogin}
             >
               <div className="flex items-center justify-center gap-2 w-full cursor-pointer">
                 <RiLoginBoxLine className="w-5 h-5 text-gray-400"/>
