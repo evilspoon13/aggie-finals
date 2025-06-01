@@ -19,6 +19,12 @@ export const FinalExamCard = ({
   crn = "",
 }: FinalExamCardProps) => {
 
+
+  const handleAddCourse = () => {
+    
+  };
+
+
   if(!finalExam){
     return (
       <Card className="border shadow-sm rounded-xl overflow-hidden transition-all duration-300 h-full bg-white">
@@ -164,7 +170,7 @@ export const FinalExamCard = ({
             <div className="flex justify-center mt-4">
               <button 
                 className="w-.5 py-2 px-4 bg-[#562626] text-white rounded-md hover:bg-[#562626]/90 transition-colors"
-
+                onClick={handleAddCourse}
                 >
                 
                 <PlusIcon/>

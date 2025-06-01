@@ -6,6 +6,8 @@ export function useUserExams() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  const USER_API_URL = "/api/users";
+
   const addExamToSchedule = async (examId: number) => {
     if (!session?.user?.googleId) {
       setError('User not authenticated')
@@ -17,7 +19,7 @@ export function useUserExams() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/users/${session.user.googleId}/exams/${examId}`,
+        `${USER_API_URL}${session.user.googleId}/exams/${examId}`,
         {
           method: 'POST',
           headers: {
@@ -54,7 +56,7 @@ export function useUserExams() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/users/${session.user.googleId}/exams/${examId}`,
+        `${USER_API_URL}${session.user.googleId}/exams/${examId}`,
         {
           method: 'DELETE',
         }
@@ -88,7 +90,7 @@ export function useUserExams() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/users/${session.user.googleId}/exams`
+        `${USER_API_URL}${session.user.googleId}/exams`
       )
 
       if (response.ok) {
