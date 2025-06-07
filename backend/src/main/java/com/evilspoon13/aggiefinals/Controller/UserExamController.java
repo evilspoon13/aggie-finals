@@ -1,4 +1,4 @@
-package com.evilspoon13.aggiefinals;
+package com.evilspoon13.aggiefinals.Controller;
 
 import com.evilspoon13.aggiefinals.Model.FinalExam;
 import com.evilspoon13.aggiefinals.Model.User;
