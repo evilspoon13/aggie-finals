@@ -1,5 +1,4 @@
 import React from 'react';
-import { examMapping } from '@/app/util/examData';
 import { 
   Card, 
   CardContent, 
@@ -12,28 +11,32 @@ import {
 } from "@/components/ui/tabs";
 import { CalendarIcon, ClockIcon } from 'lucide-react';
 
+interface FormattedExam {
+    examId: number;
+    dayPattern: string;
+    examDate: string;      // Already formatted: "Thursday, December 11, 2025"
+    examTime: string;      // "7:30 - 9:30 a.m."
+    regularClassTime: string; // Already formatted: "5:45 – 7:00 p.m."
+}
+
 interface IndividualStaticFinalProps {
-    exams: examMapping[];
+    exams: FormattedExam[];
     dayValue: string;
     dayTitle: string;
 }
-
 
 export const IndividualStaticFinal: React.FC<IndividualStaticFinalProps> = ({
     exams,
     dayValue,
     dayTitle
 }) => {
-
-
     return (
-
         <TabsContent value={dayValue} className="space-y-4">
             <h2 className="text-xl font-semibold text-[#562626] mb-4">{dayTitle}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {exams.map((exam, index) => (
+                {exams.map((exam) => (
                     <Card 
-                        key={index} 
+                        key={exam.examId} 
                         className="border-l-4 border-l-[#562626] hover:shadow-md transition-all duration-300 
                                 hover:-translate-y-1 hover:bg-red-50 group"
                     >
@@ -62,6 +65,5 @@ export const IndividualStaticFinal: React.FC<IndividualStaticFinalProps> = ({
                 ))}
             </div>
         </TabsContent>
-
     );
-}
+};

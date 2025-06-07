@@ -6,7 +6,7 @@ export function useUserExams() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const USER_API_URL = "/api/users";
+  const USER_API_URL = "/backend/users";
 
   const addExamToSchedule = async (examId: number) => {
     if (!session?.user?.googleId) {

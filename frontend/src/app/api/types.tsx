@@ -55,24 +55,7 @@ export interface CourseResponse {
     HRS_COLUMN_FIELD: number;
   }
 
-export interface LectureSchedule {
-    days: string;
-    beginTime: string;
-    endTime: string;
-    courseType?: string;
-    creditHours?: number | null;
-}
-
-export interface FinalExam {
-    success: boolean;
-    error: string | null;
-    schedule?: LectureSchedule | null;
-    date?: string;
-    examTime?: string;
-    courseDetails?: CourseDetails
-}
-
-export interface CourseSection {
+  export interface CourseSection {
     SWV_CLASS_SEARCH_TERM: string;
     SWV_CLASS_SEARCH_CRN: string;
     SWV_CLASS_SEARCH_TITLE: string;
@@ -103,6 +86,44 @@ export interface CourseSection {
     HRS_COLUMN_FIELD: number;
   }
 
+export interface LectureSchedule {
+    days: string;
+    beginTime: string;
+    endTime: string;
+    courseType?: string;
+    creditHours?: number | null;
+}
+// Change this interface name
+export interface FinalExamResult {  // Changed from FinalExam
+    success: boolean;
+    error: string | null;
+    schedule?: LectureSchedule | null;
+    date?: string;
+    examTime?: string;
+    courseDetails?: CourseDetails
+}
+
+// Add the new backend interface
+export interface FinalExam {
+    examId: number;
+    termId: string;
+    dayPattern: string;
+    date: string; // ISO date string
+    examTime: string;
+    classBeginTime: string;
+    classEndTime: string;
+}
+
+// Update CourseEntry to use the new name
+export interface CourseEntry {
+    crn: string;
+    loading: boolean;
+    error: string | null;
+    courseDetails?: CourseDetails;
+    lectureSchedule?: LectureSchedule;
+    finalExam?: FinalExamResult;  // Changed from FinalExam
+}
+
 export interface CourseSectionRequest {
     department?: string;
     courseNumber?: string;
@@ -116,14 +137,6 @@ export interface CourseDetails{
     instructor: string;
 }
 
-export interface CourseEntry {
-    crn: string;
-    loading: boolean;
-    error: string | null;
-    courseDetails?: CourseDetails;
-    lectureSchedule?: LectureSchedule;
-    finalExam?: FinalExam;
-  }
 
 export interface CourseSectionRequest {
     department?: string;

@@ -1,9 +1,9 @@
 "use client";
 import { fetchCourseInfo, parseCourseResponse } from "./api/api";
 import { useState } from "react";
-import { CourseEntry } from "./api/types";
-import { getLectureSchedule } from "./util/getLectureSchedule";
-import { findFinalExam } from "./util/findFinalExam";
+import { CourseEntry, FinalExamResult } from "./api/types";
+import { getLectureSchedule } from "@/lib/util/getLectureSchedule";
+import { useFindExam, createExamRequest } from "@/app/api/hooks/useFindExam";
 
 import { Button } from "@/components/ui/button";
 import { FinalExamCard } from "@/components/FinalExamCard";
@@ -24,6 +24,8 @@ export default function Home() {
   // state to control when to show the schedule
   const [showSchedule, setShowSchedule] = useState<boolean>(false);
 
+  const { findExam } = useFindExam();
+
   const fetchCourseData = async () => {
     setLoading(true);
     setShowSchedule(true);
@@ -38,16 +40,71 @@ export default function Home() {
         const parsedData = parseCourseResponse(data);
         const lectureSchedule = getLectureSchedule(parsedData.meetings);
 
-
         if(lectureSchedule){
-          const finalExam = findFinalExam(lectureSchedule);
-          finalExam.courseDetails = course.courseDetails;
+          // Handle special cases on frontend first
+          if (lectureSchedule.days === "Online" || 
+              lectureSchedule.courseType === "Laboratory" ||
+              lectureSchedule.courseType === "Seminar" ||
+              lectureSchedule.courseType === "Research" ||
+              lectureSchedule.courseType === "Independent Study") {
+            
+            const finalExam: FinalExamResult = {
+              success: true,
+              error: null,
+              date: "Check with Instructor",
+              examTime: getSpecialCaseMessage(lectureSchedule),
+              schedule: lectureSchedule,
+              courseDetails: course.courseDetails
+            };
+            
+            course.lectureSchedule = lectureSchedule;
+            course.finalExam = finalExam;
+            course.error = null;
+          } else {
+            // Make API call for regular courses
+            try {
+              const examRequest = createExamRequest(
+                term, // "202531"
+                lectureSchedule.days,
+                lectureSchedule.beginTime,
+                lectureSchedule.endTime
+              );
 
-          course.lectureSchedule = lectureSchedule;
-          course.finalExam = finalExam;
-          course.error = null;
-        }
-        else{
+              const apiExam = await findExam(examRequest);
+              
+              if (apiExam) {
+                // Convert API response to FinalExamResult format
+                const finalExam: FinalExamResult = {
+                  success: true,
+                  error: null,
+                  date: formatExamDate(apiExam.date),
+                  examTime: apiExam.examTime,
+                  schedule: lectureSchedule,
+                  courseDetails: course.courseDetails
+                };
+                
+                course.lectureSchedule = lectureSchedule;
+                course.finalExam = finalExam;
+                course.error = null;
+              } else {
+                // No exam found via API
+                const finalExam: FinalExamResult = {
+                  success: false,
+                  error: "No matching final exam time found for this course schedule",
+                  schedule: lectureSchedule,
+                  courseDetails: course.courseDetails
+                };
+                
+                course.lectureSchedule = lectureSchedule;
+                course.finalExam = finalExam;
+                course.error = null;
+              }
+            } catch (apiError) {
+              // API call failed, set error
+              course.error = "Failed to fetch exam schedule from server";
+            }
+          }
+        } else {
           course.error = "No lecture component found for this course.";
         }
       }
@@ -61,6 +118,34 @@ export default function Home() {
     }
 
     setLoading(false);
+  };
+
+  // Helper function for special case messages
+  const getSpecialCaseMessage = (lectureSchedule: any): string => {
+    if (lectureSchedule.days === "Online") {
+      return "Check with Instructor";
+    }
+    if (lectureSchedule.courseType === "Laboratory") {
+      return "Laboratory courses typically don't have final exams";
+    }
+    if (lectureSchedule.courseType === "Seminar" || 
+        lectureSchedule.courseType === "Research" || 
+        lectureSchedule.courseType === "Independent Study") {
+      return "May not have traditional final exam";
+    }
+    return "Check with Instructor";
+  };
+
+  // Helper function to format API date to display format
+  const formatExamDate = (dateStr: string): string => {
+    const date = new Date(dateStr);
+    const options: Intl.DateTimeFormatOptions = { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    };
+    return date.toLocaleDateString('en-US', options);
   };
 
   return (

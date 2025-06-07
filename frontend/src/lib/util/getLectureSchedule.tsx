@@ -1,4 +1,4 @@
-import { CourseMeeting } from "../api/types";
+import { CourseMeeting } from "@/app/api/types";
 
 export const getLectureSchedule = (meetings: CourseMeeting[]) => {
   // Find the meeting to use
