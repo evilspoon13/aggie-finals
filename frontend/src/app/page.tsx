@@ -31,9 +31,13 @@ export default function Home() {
     setShowSchedule(true);
 
     const updatedCourses = [...courses];
+    
     for(let i = 0; i < updatedCourses.length; i++){
       const course = updatedCourses[i];
       course.loading = true;
+      
+      // Update UI to show this course is loading
+      setCourses([...updatedCourses]);
 
       try{
         const data = await fetchCourseInfo({term: term, crn: course.crn})
@@ -70,7 +74,11 @@ export default function Home() {
                 lectureSchedule.endTime
               );
 
+              console.log("Making API call with:", examRequest); // Debug log
+
               const apiExam = await findExam(examRequest);
+              
+              console.log("API response:", apiExam); // Debug log
               
               if (apiExam) {
                 // Convert API response to FinalExamResult format
@@ -100,7 +108,7 @@ export default function Home() {
                 course.error = null;
               }
             } catch (apiError) {
-              // API call failed, set error
+              console.error("API call failed:", apiError); // Debug log
               course.error = "Failed to fetch exam schedule from server";
             }
           }
@@ -109,11 +117,13 @@ export default function Home() {
         }
       }
       catch(error){
+        console.error("Course fetch error:", error); // Debug log
         course.error = "Failed to load course data. Did you enter the right CRN?";
       }
       finally{
         course.loading = false;
-        setCourses([...updatedCourses])
+        // Update state after each course is processed
+        setCourses([...updatedCourses]);
       }
     }
 

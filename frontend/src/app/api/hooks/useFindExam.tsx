@@ -26,7 +26,7 @@ export const useFindExam = (): UseFindExamResult => {
     setExam(null);
 
     try {
-      const response = await fetch('/backend/exams/search', {
+      const response = await fetch('/backend/final-exams/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

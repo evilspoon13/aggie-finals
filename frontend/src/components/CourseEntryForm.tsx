@@ -38,7 +38,6 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
   }
 
   const handleGenerateSchedule = () => {
-    // function to set submitted to true and generate schedule so we can have two functions called on one button press
     setSubmitted(true);
     onGenerateSchedule();
   }

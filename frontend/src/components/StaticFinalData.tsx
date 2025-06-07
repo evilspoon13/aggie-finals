@@ -14,23 +14,19 @@ interface GroupedExams {
 
 function groupExamsByDay(examData: FinalExam[]): GroupedExams {
   const grouped = examData.reduce((acc, exam) => {
-    const date = new Date(exam.date);
-    const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    console.log(`Processing exam with date: ${exam.date}`);
     
-    switch (dayOfWeek) {
-      case 4: // Thursday
-        acc.thursdayExams.push(exam);
-        break;
-      case 5: // Friday
-        acc.fridayExams.push(exam);
-        break;
-      case 1: // Monday
-        acc.mondayExams.push(exam);
-        break;
-      case 2: // Tuesday
-        acc.tuesdayExams.push(exam);
-        break;
+    // Just check the actual date strings from your database
+    if (exam.date.includes('2025-12-11')) { // Thursday
+      acc.thursdayExams.push(exam);
+    } else if (exam.date.includes('2025-12-12')) { // Friday
+      acc.fridayExams.push(exam);
+    } else if (exam.date.includes('2025-12-15')) { // Monday
+      acc.mondayExams.push(exam);
+    } else if (exam.date.includes('2025-12-16')) { // Tuesday
+      acc.tuesdayExams.push(exam);
     }
+    
     return acc;
   }, {
     thursdayExams: [] as FinalExam[],
@@ -101,7 +97,6 @@ export const StaticFinalData: React.FC = () => {
 
   const { thursdayExams, fridayExams, mondayExams, tuesdayExams } = groupExamsByDay(exams);
 
-  // Format exams for display (to maintain compatibility with existing component)
   const formattedThursdayExams = thursdayExams.map(formatExamForDisplay);
   const formattedFridayExams = fridayExams.map(formatExamForDisplay);
   const formattedMondayExams = mondayExams.map(formatExamForDisplay);
