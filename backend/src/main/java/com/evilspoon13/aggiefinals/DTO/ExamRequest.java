@@ -5,8 +5,8 @@ import java.time.LocalTime;
 public class ExamRequest{
     private String termId;
     private String dayPattern;
-    private LocalTime classStartTime;
-    private LocalTime classEndTime;
+    private String classStartTime;
+    private String classEndTime;
 
     public String getTermId() {
         return termId;
@@ -22,17 +22,17 @@ public class ExamRequest{
         this.dayPattern = dayPattern;
     }
 
-    public LocalTime getClassStartTime() {
+    public String getClassStartTime() {
         return classStartTime;
     }
-    public void setClassStartTime(LocalTime classStartTime) {
+    public void setClassStartTime(String classStartTime) {
         this.classStartTime = classStartTime;
     }
 
-    public LocalTime getClassEndTime() {
+    public String getClassEndTime() {
         return classEndTime;
     }
-    public void setClassEndTime(LocalTime classEndTime) {
+    public void setClassEndTime(String classEndTime) {
         this.classEndTime = classEndTime;
     }
 }

@@ -3,6 +3,7 @@ package com.evilspoon13.aggiefinals.Repository;
 import com.evilspoon13.aggiefinals.Model.FinalExam;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
@@ -14,16 +15,10 @@ public interface FinalExamRepository extends JpaRepository<FinalExam, Long> {
 
     List<FinalExam> findByTermId(String termId);
 
+    // Add this method to help with debugging
+    List<FinalExam> findByTermIdAndDayPattern(String termId, String dayPattern);
 
-    @Query("""
-    SELECT f FROM FinalExam f 
-    WHERE f.termId = :termId 
-    AND f.dayPattern = :dayPattern 
-    AND f.classBeginTime = :classStart 
-    AND f.classEndTime = :classEnd
-    """)
-    Optional<FinalExam> findByClassSchedule(
-            String termId, String dayPattern,
-            LocalTime classStart, LocalTime classEnd
+    Optional<FinalExam> findByTermIdAndDayPatternAndClassBeginTimeAndClassEndTime(
+            String termId, String dayPattern, LocalTime classBeginTime, LocalTime classEndTime
     );
 }
