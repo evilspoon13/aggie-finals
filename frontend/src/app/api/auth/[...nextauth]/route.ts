@@ -84,7 +84,7 @@ export const authOptions: NextAuthOptions = {
         } 
         catch(error){
           console.error('Error calling backend:', error)
-          return false // block login even if backend fails
+          return false
         }
       }
       return true

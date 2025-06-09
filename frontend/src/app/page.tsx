@@ -58,7 +58,8 @@ export default function Home() {
               date: "Check with Instructor",
               examTime: getSpecialCaseMessage(lectureSchedule),
               schedule: lectureSchedule,
-              courseDetails: course.courseDetails
+              courseDetails: course.courseDetails,
+              examId: 0
             };
             
             course.lectureSchedule = lectureSchedule;
@@ -88,7 +89,8 @@ export default function Home() {
                   date: formatExamDate(apiExam.date),
                   examTime: apiExam.examTime,
                   schedule: lectureSchedule,
-                  courseDetails: course.courseDetails
+                  courseDetails: course.courseDetails,
+                  examId: apiExam.examId
                 };
                 
                 course.lectureSchedule = lectureSchedule;
@@ -100,7 +102,8 @@ export default function Home() {
                   success: false,
                   error: "No matching final exam time found for this course schedule",
                   schedule: lectureSchedule,
-                  courseDetails: course.courseDetails
+                  courseDetails: course.courseDetails,
+                  examId: 0
                 };
                 
                 course.lectureSchedule = lectureSchedule;
@@ -221,7 +224,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Bottom section with white background */}
+      {/* Find your final exam by hand section */}
       <div className="w-full bg-white py-12">
         <div className="container max-w-7xl mx-auto px-4">
           <StaticFinalData/>

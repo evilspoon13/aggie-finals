@@ -4,10 +4,11 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, ClockIcon, AlertTriangleIcon, Loader2Icon, PlusIcon } from "lucide-react";
-import { FinalExamResult } from "@/app/api/types"; // Changed from FinalExam
+import { FinalExamResult } from "@/app/api/types";
+import { useUserExams } from "@/app/api/hooks/useUserExams";
 
 interface FinalExamCardProps {
-  finalExam?: FinalExamResult; // Changed from FinalExam
+  finalExam?: FinalExamResult;
   loading?: boolean;
   crn?: string;
 }
@@ -18,8 +19,10 @@ export const FinalExamCard = ({
   crn = "",
 }: FinalExamCardProps) => {
 
-  const handleAddCourse = () => {
-    // Add course logic here
+  const { addExamToSchedule } = useUserExams();
+
+  const handleAddCourse = (exam: FinalExamResult) => {
+    addExamToSchedule(exam.examId);
   };
 
   if (loading) {
@@ -163,13 +166,13 @@ export const FinalExamCard = ({
             </div>
           </div>
           
+          {/* add course to schedule button */}
           <div className="flex justify-center mt-4">
             <button 
-              onClick={handleAddCourse}
-              className="w-full py-2 px-4 bg-[#562626] text-white rounded-md hover:bg-[#562626]/90 transition-colors flex items-center justify-center gap-2"
+              onClick={() => handleAddCourse(finalExam)}
+              className="w-12 py-2 px-4 bg-[#562626] text-white rounded-md hover:bg-[#562626]/90 transition-colors flex items-center justify-center gap-2"
             >
               <PlusIcon className="h-4 w-4" />
-              Add to Schedule
             </button>
           </div>
         </div>

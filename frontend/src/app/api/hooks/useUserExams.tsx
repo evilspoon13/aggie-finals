@@ -1,3 +1,5 @@
+"use client";
+
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 
@@ -6,7 +8,7 @@ export function useUserExams() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const USER_API_URL = "/backend/users";
+  const USER_API_URL = "/backend/users/";
 
   const addExamToSchedule = async (examId: number) => {
     if (!session?.user?.googleId) {

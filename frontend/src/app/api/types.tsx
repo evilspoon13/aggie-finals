@@ -93,17 +93,18 @@ export interface LectureSchedule {
     courseType?: string;
     creditHours?: number | null;
 }
-// Change this interface name
-export interface FinalExamResult {  // Changed from FinalExam
+
+export interface FinalExamResult {
     success: boolean;
     error: string | null;
     schedule?: LectureSchedule | null;
     date?: string;
     examTime?: string;
     courseDetails?: CourseDetails
+    examId: number;
 }
 
-// Add the new backend interface
+
 export interface FinalExam {
     examId: number;
     termId: string;
@@ -114,14 +115,14 @@ export interface FinalExam {
     classEndTime: string;
 }
 
-// Update CourseEntry to use the new name
+
 export interface CourseEntry {
     crn: string;
     loading: boolean;
     error: string | null;
     courseDetails?: CourseDetails;
     lectureSchedule?: LectureSchedule;
-    finalExam?: FinalExamResult;  // Changed from FinalExam
+    finalExam?: FinalExamResult;
 }
 
 export interface CourseSectionRequest {
