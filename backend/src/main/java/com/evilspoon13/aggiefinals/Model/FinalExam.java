@@ -1,5 +1,6 @@
 package com.evilspoon13.aggiefinals.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -34,6 +35,7 @@ public class FinalExam {
     private LocalTime classEndTime;    // 9:15 AM
 
     @ManyToMany(mappedBy = "finalExams")
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     public FinalExam() {

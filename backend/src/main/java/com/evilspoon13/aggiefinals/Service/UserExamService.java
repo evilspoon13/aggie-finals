@@ -34,10 +34,12 @@ public class UserExamService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         FinalExam exam = finalExamRepository.findById(examId)
-                .orElseThrow(() -> new RuntimeException("Exam not found"));
+                .orElseThrow(() -> new RuntimeException("Exam not found "));
 
-        user.getFinalExams().add(exam);
-        userRepository.save(user);
+        if(!user.getFinalExams().contains(exam)){
+            user.getFinalExams().add(exam);
+            userRepository.save(user);
+        }
     }
 
     // remove exam from user's schedule
