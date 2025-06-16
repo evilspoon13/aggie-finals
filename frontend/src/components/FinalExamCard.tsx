@@ -3,9 +3,11 @@ import {
   CardContent,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { CalendarIcon, ClockIcon, AlertTriangleIcon, Loader2Icon, PlusIcon } from "lucide-react";
+import { CalendarIcon, ClockIcon, AlertTriangleIcon, Loader2Icon, PlusIcon, CheckIcon, XIcon } from "lucide-react";
 import { FinalExamResult } from "@/app/api/types";
 import { useUserExams } from "@/app/api/hooks/useUserExams";
+import { useState } from "react";
+import { signIn, useSession } from "next-auth/react";
 
 interface FinalExamCardProps {
   finalExam?: FinalExamResult;
@@ -19,10 +21,36 @@ export const FinalExamCard = ({
   crn = "",
 }: FinalExamCardProps) => {
 
+  const { data: session } = useSession();
   const { addExamToSchedule } = useUserExams();
+  const [added, setAdded] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [failed, setFailed] = useState(false);
 
-  const handleAddCourse = (exam: FinalExamResult) => {
-    addExamToSchedule(exam.examId);
+  const handleAddCourse = async (exam: FinalExamResult, className: string) => {
+    setAdding(true);
+
+    if (!session?.user?.googleId) {
+      setAdding(false);
+      setFailed(true);
+      setTimeout(() => setFailed(false), 1200);
+      await signIn("google", { callbackUrl: "/" });
+      return;
+    }
+
+
+
+
+    const result = await addExamToSchedule(exam.examId, className);
+    if (result) {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1200);
+    }
+    else{
+      setFailed(true);
+      setTimeout(() => setFailed(false), 1200);
+    }
+    setAdding(false);
   };
 
   if (loading) {
@@ -74,6 +102,7 @@ export const FinalExamCard = ({
   const subject = courseDetails?.subject;
   const courseNumber = courseDetails?.courseNumber;
   const title = courseDetails?.title;
+  const className = `${subject} ${courseNumber} - ${title}`;
 
   if (error) {
     return (
@@ -169,10 +198,20 @@ export const FinalExamCard = ({
           {/* add course to schedule button */}
           <div className="flex justify-center mt-4">
             <button 
-              onClick={() => handleAddCourse(finalExam)}
-              className="w-12 py-2 px-4 bg-[#562626] text-white rounded-md hover:bg-[#562626]/90 transition-colors flex items-center justify-center gap-2"
+              onClick={() => handleAddCourse(finalExam, className)}
+              className={`w-12 py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2 ${added ? 'bg-green-600' : failed ? 'bg-red-600' : 'bg-[#562626] text-white hover:bg-[#562626]/90'} ${adding ? 'opacity-60 cursor-not-allowed' : ''}`}
+              disabled={adding}
             >
-              <PlusIcon className="h-4 w-4" />
+              {adding ? (
+                <Loader2Icon className="h-4 w-4 animate-spin" />
+              ) : added ? (
+                <CheckIcon className="h-4 w-4 text-white" />
+              ) : 
+              failed ? (
+                <XIcon className="h-4 w-4 text-white" />
+              ) : (
+                <PlusIcon className="h-4 w-4" />
+              )}
             </button>
           </div>
         </div>

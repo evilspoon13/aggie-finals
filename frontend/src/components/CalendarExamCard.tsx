@@ -4,11 +4,11 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { CalendarIcon, ClockIcon, MinusIcon } from "lucide-react";
-import { FinalExam } from "@/app/api/types";
 import { useState } from "react";
+import { ExamWithClassName } from "@/app/api/hooks/useUserExams";
 
 interface CalendarExamCardProps {
-  exam: FinalExam;
+  exam: ExamWithClassName;
   onRemove: (examId: number) => Promise<void>;
 }
 
@@ -44,7 +44,7 @@ export const CalendarExamCard = ({ exam, onRemove }: CalendarExamCardProps) => {
         <div className="flex justify-between items-center">
           <div className="truncate pr-2 max-w-[70%]">
             <p className="font-medium text-white truncate">
-              Final Exam
+              {exam.className}
             </p>
           </div>
           <Badge className="bg-white/20 text-white hover:bg-white/30 border-none flex-shrink-0">
@@ -56,7 +56,7 @@ export const CalendarExamCard = ({ exam, onRemove }: CalendarExamCardProps) => {
       <CardContent className="p-0 flex flex-col">
         <div className="p-4 flex flex-col h-full">
           <div className="mb-3">
-            <h3 className="font-semibold text-gray-800 mb-1">Exam Details</h3>
+            <h3 className="font-semibold text-gray-800 mb-1">Final Exam</h3>
           </div>
           
           <div className="rounded-md bg-[#562626]/10 p-4 border border-[#562626]/20 flex-1">

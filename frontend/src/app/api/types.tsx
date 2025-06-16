@@ -109,7 +109,7 @@ export interface FinalExam {
     examId: number;
     termId: string;
     dayPattern: string;
-    date: string; // ISO date string
+    date: string;
     examTime: string;
     classBeginTime: string;
     classEndTime: string;

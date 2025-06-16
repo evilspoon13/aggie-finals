@@ -4,8 +4,8 @@ import { FinalExam } from '../types';
 interface ExamRequest {
   termId: string;
   dayPattern: string;
-  classStartTime: string; // Format: "HH:mm:ss"
-  classEndTime: string;   // Format: "HH:mm:ss"
+  classStartTime: string;
+  classEndTime: string;
 }
 
 interface UseFindExamResult {

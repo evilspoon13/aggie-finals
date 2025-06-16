@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CourseEntry } from "@/app/api/types";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 import { Card, CardContent } from "./ui/card";
 import { Badge } from "./ui/badge";
 import { Trash2, User, Clock, Smile} from "lucide-react";
@@ -26,10 +25,6 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
   const [courseNumber, setCourseNumber] = useState<string>("");
   const [submittedCourseSearch, setSubmittedCourseSearch] = useState<boolean>(false);
 
-  // for when a user enters their course by crn
-  const [crn, setCrn] = useState<string>("");
-
-  const [currentTab, setCurrentTab] = useState<string>("course");
   const [submitted, setSubmitted] = useState<boolean>(false);
 
   const handleSearchForCourseButton = () => {
@@ -40,26 +35,6 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
   const handleGenerateSchedule = () => {
     setSubmitted(true);
     onGenerateSchedule();
-  }
-
-  useEffect(() => {
-    setCourses([]);
-  }, [currentTab, setCourses]);
-
-  // add a course to the list and clear CRN field
-  const addCourseByCrn = () => {
-    if(!crn.trim() || courses.some(course => course.crn === crn)) {
-      return;
-    }
-
-    const newCourse: CourseEntry = {
-      crn,
-      loading: false,
-      error: null
-    }
-
-    setCourses([...courses, newCourse]);
-    setCrn("");
   }
 
   const searchBySubject = async () => {
@@ -113,50 +88,11 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
         <h2 className="text-3xl font-bold mb-6 text-white">Find your courses</h2>
       )}
 
-      <Tabs defaultValue="course" className="w-full" onValueChange={(value) => setCurrentTab(value)}>
-        <TabsList className="w-full flex justify-center items-center rounded-lg shadow-sm mb-6">
-          <TabsTrigger 
-            value="course" 
-            className="flex-1 py-3 rounded-l-lg data-[state=active]:bg-[#562626] data-[state=active]:text-white transition-all"
-          >
-            Search by course
-          </TabsTrigger>
-          <TabsTrigger 
-            value="crn" 
-            className="flex-1 py-3 rounded-r-lg data-[state=active]:bg-[#562626] data-[state=active]:text-white transition-all"
-          >
-            Search by CRN
-          </TabsTrigger>
-        </TabsList>
+      
 
         <Card className="border shadow-sm rounded-xl bg-white">
           <CardContent className="p-6">
 
-          <TabsContent value="crn">
-            <IndividualDataEntry
-              value={crn}
-              tabValue="crn"
-              onChange={(e) => setCrn(e.target.value)}
-              handleKeyDown={(e) => {
-                if (e.key === 'Enter' && crn.trim()) {
-                  addCourseByCrn();
-                }
-              }}
-              label="CRN"
-              description="Enter the 5-digit CRN (e.g. 12345)"
-            />
-            <div className="flex justify-center mt-4">
-              <Button 
-                className="bg-[#562626] hover:bg-[#5A0010]text-white shadow-sm transition-colors w-50" 
-                onClick={addCourseByCrn}
-                disabled={!crn.trim()}
-              >
-                Add Course
-              </Button>
-            </div>
-        </TabsContent>
-
-        <TabsContent value="course">
           <div className="space-y-4">
             {/* Subject Dropdown */}
             <div className="flex flex-col items-center space-y-2">
@@ -258,7 +194,6 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
               </div>
             )}
           </div>
-        </TabsContent>
             
             {courses.length > 0 && (
               <div className="mt-8 space-y-4">
@@ -269,11 +204,8 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
                       <div className="flex items-center gap-2">
                         <Badge className="bg-[#562626] hover:bg-[#562626]">{index + 1}</Badge>
                         
-                        {currentTab === "course" ? (
-                           <span className="font-medium"> {course.courseDetails?.subject} {course.courseDetails?.courseNumber}</span>
-                        ): (
-                          <span className="font-medium"> {course.crn}</span>
-                        )}
+                          <span className="font-medium"> {course.courseDetails?.subject} {course.courseDetails?.courseNumber}</span>
+                        
                       </div>
                       <Button 
                         variant="ghost" 
@@ -300,7 +232,6 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
             )}
           </CardContent>
         </Card>
-      </Tabs>
     </div>
   );
 }

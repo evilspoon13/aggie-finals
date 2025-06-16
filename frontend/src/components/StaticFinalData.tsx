@@ -16,7 +16,6 @@ function groupExamsByDay(examData: FinalExam[]): GroupedExams {
   const grouped = examData.reduce((acc, exam) => {
     console.log(`Processing exam with date: ${exam.date}`);
     
-    // Just check the actual date strings from your database
     if (exam.date.includes('2025-12-11')) { // Thursday
       acc.thursdayExams.push(exam);
     } else if (exam.date.includes('2025-12-12')) { // Friday
@@ -71,7 +70,7 @@ const formatClassTime = (beginTime: string, endTime: string): string => {
 };
 
 export const StaticFinalData: React.FC = () => {
-  const { exams, loading, error } = useAllExams("202531"); // Fall 2025 term
+  const { exams, loading, error } = useAllExams("202531"); // fall 2025 term
   
   if (loading) {
     return (

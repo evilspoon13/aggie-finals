@@ -3,14 +3,26 @@
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 
+// Update your types to match the new DTO
+export interface ExamWithClassName {
+  examId: number;
+  termId: string;
+  dayPattern: string;
+  date: string;
+  examTime: string;
+  classBeginTime: string;
+  classEndTime: string;
+  className: string;
+}
+
 export function useUserExams() {
-  const { data: session } = useSession()
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+  const { data: session } = useSession();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const USER_API_URL = "/backend/users/";
 
-  const addExamToSchedule = async (examId: number) => {
+  const addExamToSchedule = async (examId: number, className: string) => {
     if (!session?.user?.googleId) {
       setError('User not authenticated')
       return false
@@ -21,12 +33,17 @@ export function useUserExams() {
 
     try {
       const response = await fetch(
-        `${USER_API_URL}${session.user.googleId}/exams/${examId}`,
+        USER_API_URL,
         {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+          body: JSON.stringify({ 
+            userId: session.user.googleId,
+            examId, 
+            className 
+          }),
         }
       )
 
@@ -47,10 +64,10 @@ export function useUserExams() {
     }
   }
 
-  const removeExamFromSchedule = async (examId: number) => {
+  const removeExamFromSchedule = async (examId: number, className: string) => {
     if (!session?.user?.googleId) {
       setError('User not authenticated')
-      return false
+      return false;
     }
 
     setLoading(true)
@@ -58,9 +75,17 @@ export function useUserExams() {
 
     try {
       const response = await fetch(
-        `${USER_API_URL}${session.user.googleId}/exams/${examId}`,
+        USER_API_URL,
         {
           method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            userId: session.user.googleId,
+            examId, 
+            className 
+          }),
         }
       )
 
@@ -81,7 +106,7 @@ export function useUserExams() {
     }
   }
 
-  const getUserExams = async () => {
+  const getUserExams = async (): Promise<ExamWithClassName[]> => {
     if (!session?.user?.googleId) {
       setError('User not authenticated')
       return []
@@ -96,7 +121,7 @@ export function useUserExams() {
       )
 
       if (response.ok) {
-        const exams = await response.json()
+        const exams: ExamWithClassName[] = await response.json()
         return exams
       } else {
         setError('Failed to fetch user exams')

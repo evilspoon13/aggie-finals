@@ -1,14 +1,13 @@
 "use client";
 
 import { GoBackButton } from "@/components/GoBackButton";
-import { FinalExam } from "../api/types";
 import { CalendarExamCard } from "@/components/CalendarExamCard";
-import { useUserExams } from "../api/hooks/useUserExams";
+import { useUserExams, ExamWithClassName } from "../api/hooks/useUserExams";
 import { useEffect, useState } from "react";
 
 export default function Calendar(){
-    const { getUserExams, removeExamFromSchedule } = useUserExams(); // Get remove function here
-    const [userExams, setUserExams] = useState<FinalExam[]>([]);
+    const { getUserExams, removeExamFromSchedule } = useUserExams();
+    const [userExams, setUserExams] = useState<ExamWithClassName[]>([]);
 
     useEffect(() => {
         const fetchExams = async () => {
@@ -20,9 +19,15 @@ export default function Calendar(){
         fetchExams();
     }, [])
 
-    // Handle remove at parent level
     const handleRemoveExam = async (examId: number) => {
-        const success = await removeExamFromSchedule(examId);
+        // Find the exam to get its className
+        const examToRemove = userExams.find(exam => exam.examId === examId);
+        if (!examToRemove) {
+            console.error('Exam not found');
+            return;
+        }
+
+        const success = await removeExamFromSchedule(examId, examToRemove.className);
         if (success) {
             // Remove from local state immediately
             setUserExams(prev => prev.filter(exam => exam.examId !== examId));
@@ -35,21 +40,25 @@ export default function Calendar(){
                 <GoBackButton/>
             </div>
             
-            <div className="flex min-h-screen flex-col items-center justify-center">
-                <div className="w-full max-w-md space-y-8 p-6 bg-white rounded-lg shadow-md">
-                    <div className="text-center">
-                        <h1 className="text-2xl font-bold">Your Final Exams</h1>
-                    </div>
+            <div className="flex min-h-screen flex-col items-center justify-center p-4">
+                <div className="text-center">
+                    <h2 className="text-3xl font-bold mb-6 text-white">Your Final Exams</h2>
+                </div>
+
+                <div className="w-2xl max-w-4xl space-y-8 p-6 bg-white rounded-lg shadow-md">
+                    
                     {userExams.length === 0 ? (
-                        <p className="text-center text-gray-500">No exams added yet</p>
+                        <p className="text-center text-gray-500">No exams added yet!</p>
                     ) : (
-                        userExams.map((exam) => (
-                            <CalendarExamCard 
-                                key={exam.examId} 
-                                exam={exam} 
-                                onRemove={handleRemoveExam} // Pass down remove handler
-                            />
-                        ))
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {userExams.map((exam) => (
+                                <CalendarExamCard 
+                                    key={exam.examId} 
+                                    exam={exam} 
+                                    onRemove={handleRemoveExam}
+                                />
+                            ))}
+                        </div>
                     )}
                 </div>
             </div>

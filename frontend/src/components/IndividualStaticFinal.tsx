@@ -14,9 +14,9 @@ import { CalendarIcon, ClockIcon } from 'lucide-react';
 interface FormattedExam {
     examId: number;
     dayPattern: string;
-    examDate: string;      // Already formatted: "Thursday, December 11, 2025"
-    examTime: string;      // "7:30 - 9:30 a.m."
-    regularClassTime: string; // Already formatted: "5:45 – 7:00 p.m."
+    examDate: string;
+    examTime: string;
+    regularClassTime: string;
 }
 
 interface IndividualStaticFinalProps {
