@@ -24,13 +24,9 @@ public class User {
     @Column(name = "last_login")
     private ZonedDateTime lastLogin;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_exams",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "exam_id")
-    )
-    private Set<FinalExam> finalExams = new HashSet<>();
+    public User(){
+
+    }
 
     // Getters and setters
     public String getGoogleId() {
@@ -71,13 +67,5 @@ public class User {
 
     public void setLastLogin(ZonedDateTime lastLogin) {
         this.lastLogin = lastLogin;
-    }
-
-    public Set<FinalExam> getFinalExams() {
-        return finalExams;
-    }
-
-    public void setFinalExams(Set<FinalExam> finalExams) {
-        this.finalExams = finalExams;
     }
 }

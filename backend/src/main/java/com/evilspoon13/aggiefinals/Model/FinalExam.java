@@ -1,12 +1,9 @@
 package com.evilspoon13.aggiefinals.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "final_exams")
@@ -33,10 +30,6 @@ public class FinalExam {
 
     @Column(name = "class_end_time")
     private LocalTime classEndTime;    // 9:15 AM
-
-    @ManyToMany(mappedBy = "finalExams")
-    @JsonIgnore
-    private Set<User> users = new HashSet<>();
 
     public FinalExam() {
     }
@@ -97,11 +90,4 @@ public class FinalExam {
         this.classEndTime = classEndTime;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
 }

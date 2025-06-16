@@ -1,7 +1,5 @@
 package com.evilspoon13.aggiefinals.DTO;
 
-import java.time.LocalTime;
-
 public class ExamRequest{
     private String termId;
     private String dayPattern;

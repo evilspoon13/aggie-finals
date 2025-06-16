@@ -1,7 +1,9 @@
 package com.evilspoon13.aggiefinals.Controller;
 
+import com.evilspoon13.aggiefinals.DTO.ExamWithClassNameDTO;
 import com.evilspoon13.aggiefinals.Model.FinalExam;
 import com.evilspoon13.aggiefinals.Model.User;
+import com.evilspoon13.aggiefinals.Model.UserExam;
 import com.evilspoon13.aggiefinals.Service.UserExamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +13,15 @@ import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
-@CrossOrigin(origins = "http://localhost:3000")
 public class UserExamController {
 
     @Autowired
     private UserExamService userExamService;
 
-    // Get user's exam schedule
     @GetMapping("/{googleId}/exams")
-    public ResponseEntity<Set<FinalExam>> getUserExams(@PathVariable String googleId) {
+    public ResponseEntity<Set<ExamWithClassNameDTO>> getUserExams(@PathVariable String googleId) {
         try {
-            Set<FinalExam> exams = userExamService.getUserExams(googleId);
+            Set<ExamWithClassNameDTO> exams = userExamService.getUserExamsWithClassName(googleId);
             return ResponseEntity.ok(exams);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
@@ -29,11 +29,10 @@ public class UserExamController {
     }
 
     // Add exam to user's schedule
-    @PostMapping("/{googleId}/exams/{examId}")
-    public ResponseEntity<String> addExamToUser(@PathVariable String googleId,
-                                                @PathVariable Long examId) {
+    @PostMapping
+    public ResponseEntity<String> addExamToUser(@RequestBody UserExam userExam) {
         try {
-            userExamService.addExamToUser(googleId, examId);
+            userExamService.addExamToUser(userExam);
             return ResponseEntity.ok("Exam added successfully");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -41,46 +40,13 @@ public class UserExamController {
     }
 
     // Remove exam from user's schedule
-    @DeleteMapping("/{googleId}/exams/{examId}")
-    public ResponseEntity<String> removeExamFromUser(@PathVariable String googleId,
-                                                     @PathVariable Long examId) {
+    @DeleteMapping
+    public ResponseEntity<String> removeExamFromUser(@RequestBody UserExam userExam) {
         try {
-            userExamService.removeExamFromUser(googleId, examId);
+            userExamService.removeExamFromUser(userExam);
             return ResponseEntity.ok("Exam removed successfully");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-    }
-
-    // Create or update user (for NextAuth)
-    @PostMapping("/auth")
-    public ResponseEntity<User> createOrUpdateUser(@RequestBody UserAuthRequest request) {
-        try {
-            User user = userExamService.createOrUpdateUser(
-                    request.getGoogleId(),
-                    request.getEmail(),
-                    request.getName()
-            );
-            return ResponseEntity.ok(user);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }
-
-    // DTO for user authentication
-    public static class UserAuthRequest {
-        private String googleId;
-        private String email;
-        private String name;
-
-        // Getters and setters
-        public String getGoogleId() { return googleId; }
-        public void setGoogleId(String googleId) { this.googleId = googleId; }
-
-        public String getEmail() { return email; }
-        public void setEmail(String email) { this.email = email; }
-
-        public String getName() { return name; }
-        public void setName(String name) { this.name = name; }
     }
 }

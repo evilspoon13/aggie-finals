@@ -15,7 +15,6 @@ public interface FinalExamRepository extends JpaRepository<FinalExam, Long> {
 
     List<FinalExam> findByTermId(String termId);
 
-    // Add this method to help with debugging
     List<FinalExam> findByTermIdAndDayPattern(String termId, String dayPattern);
 
     Optional<FinalExam> findByTermIdAndDayPatternAndClassBeginTimeAndClassEndTime(
