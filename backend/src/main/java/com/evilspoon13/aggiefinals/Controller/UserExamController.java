@@ -5,6 +5,7 @@ import com.evilspoon13.aggiefinals.Model.FinalExam;
 import com.evilspoon13.aggiefinals.Model.User;
 import com.evilspoon13.aggiefinals.Model.UserExam;
 import com.evilspoon13.aggiefinals.Service.UserExamService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +20,17 @@ public class UserExamController {
     private UserExamService userExamService;
 
     @GetMapping("/{googleId}/exams")
-    public ResponseEntity<Set<ExamWithClassNameDTO>> getUserExams(@PathVariable String googleId) {
+    public ResponseEntity<Set<ExamWithClassNameDTO>> getUserExams(@PathVariable String googleId,
+                                                                  HttpServletRequest request) {
         try {
+
+            String authenticatedGoogleId = (String) request.getAttribute("authenticatedGoogleId");
+
+            // user can only access their own exams
+            if (authenticatedGoogleId == null || !authenticatedGoogleId.equals(googleId)) {
+                return ResponseEntity.status(403).body(null); // Forbidden
+            }
+
             Set<ExamWithClassNameDTO> exams = userExamService.getUserExamsWithClassName(googleId);
             return ResponseEntity.ok(exams);
         } catch (RuntimeException e) {
@@ -30,8 +40,16 @@ public class UserExamController {
 
     // Add exam to user's schedule
     @PostMapping
-    public ResponseEntity<String> addExamToUser(@RequestBody UserExam userExam) {
+    public ResponseEntity<String> addExamToUser(@RequestBody UserExam userExam,
+                                                HttpServletRequest request) {
         try {
+
+            String authenticatedGoogleId = (String) request.getAttribute("authenticatedGoogleId");
+
+            // user can only add exams to their own schedule
+            if (authenticatedGoogleId == null || !authenticatedGoogleId.equals(userExam.getGoogleId())) {
+                return ResponseEntity.status(403).body(null); // Forbidden
+            }
             userExamService.addExamToUser(userExam);
             return ResponseEntity.ok("Exam added successfully");
         } catch (RuntimeException e) {
@@ -41,8 +59,16 @@ public class UserExamController {
 
     // Remove exam from user's schedule
     @DeleteMapping
-    public ResponseEntity<String> removeExamFromUser(@RequestBody UserExam userExam) {
+    public ResponseEntity<String> removeExamFromUser(@RequestBody UserExam userExam,
+                                                     HttpServletRequest request) {
         try {
+            String authenticatedGoogleId = (String) request.getAttribute("authenticatedGoogleId");
+
+            // user can only remove exams from their own schedule
+            if (authenticatedGoogleId == null || !authenticatedGoogleId.equals(userExam.getGoogleId())) {
+                return ResponseEntity.status(403).body(null); // Forbidden
+            }
+
             userExamService.removeExamFromUser(userExam);
             return ResponseEntity.ok("Exam removed successfully");
         } catch (RuntimeException e) {

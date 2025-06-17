@@ -12,7 +12,7 @@ import java.util.Set;
 @Repository
 public interface UserExamRepository extends JpaRepository<UserExam, Long> {
 
-    Set<UserExam> findByUserId(String userId);
+    Set<UserExam> findByGoogleId(String googleId);
 
-    Optional<UserExam> findByExamIdAndUserId(Long examId, String userId);
+    Optional<UserExam> findByExamIdAndGoogleId(Long examId, String googleId);
 }

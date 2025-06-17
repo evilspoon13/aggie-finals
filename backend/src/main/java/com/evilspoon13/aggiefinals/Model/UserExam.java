@@ -11,8 +11,8 @@ public class UserExam {
     @Column(name= "id", nullable = false)
     private Long id;
 
-    @Column(name = "user_id", nullable = false)
-    private String userId;
+    @Column(name = "google_id", nullable = false)
+    private String googleId;
 
     @Column(name = "exam_id", nullable = false)
     private Long examId;
@@ -23,12 +23,20 @@ public class UserExam {
     public UserExam() {
     }
 
-    public String getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getGoogleId() {
+        return googleId;
+    }
+
+    public void setGoogleId(String googleId) {
+        this.googleId = googleId;
     }
 
     public Long getExamId() {

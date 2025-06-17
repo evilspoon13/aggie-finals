@@ -25,7 +25,7 @@ public class UserExamService {
 
     // get user's final exams
     public Set<ExamWithClassNameDTO> getUserExamsWithClassName(String googleId) {
-        Set<UserExam> userExams = userExamRepo.findByUserId(googleId);
+        Set<UserExam> userExams = userExamRepo.findByGoogleId(googleId);
 
         return userExams.stream().map(userExam -> {
             FinalExam finalExam = finalExamRepo.findById(userExam.getExamId())
@@ -46,7 +46,7 @@ public class UserExamService {
 
     // add exam to user's schedule
     public void addExamToUser(UserExam userExam) {
-        Set<UserExam> userExams = userExamRepo.findByUserId(userExam.getUserId());
+        Set<UserExam> userExams = userExamRepo.findByGoogleId(userExam.getGoogleId());
 
         if(userExams.stream().anyMatch(exam -> exam.getExamId().equals(userExam.getExamId()))) {
             throw new RuntimeException("Exam already exists in user's schedule");
@@ -57,7 +57,7 @@ public class UserExamService {
 
     // remove exam from user's schedule
     public void removeExamFromUser(UserExam userExam) {
-        Optional<UserExam> userExamOptional = userExamRepo.findByExamIdAndUserId(userExam.getExamId(), userExam.getUserId());
+        Optional<UserExam> userExamOptional = userExamRepo.findByExamIdAndGoogleId(userExam.getExamId(), userExam.getGoogleId());
 
         if (userExamOptional.isEmpty()) {
             throw new RuntimeException("Exam not found in user's schedule");
