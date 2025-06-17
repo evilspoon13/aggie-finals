@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import axios from 'axios';
-import { CourseSection } from '@/app/api/types';
+import { courseCache } from '@/lib/courseCache';
 
 export async function POST(request: Request) {
   try {
@@ -15,37 +14,27 @@ export async function POST(request: Request) {
       });
     }
     
-    const response = await axios.post(
-      'https://howdy.tamu.edu/api/course-sections',
-      {
-        startRow: 0,
-        endRow: 500, 
-        termCode: "202531",
-        publicSearch: "Y"
-      }
+    // Use cached data
+    const departmentCourses = await courseCache.getCoursesByDepartment(department);
+    
+    // Filter for undergraduate courses
+    const undergradCourses = departmentCourses.filter(
+      course => parseInt(course.SWV_CLASS_SEARCH_COURSE) < 500
     );
     
-    // filter to get courses for the specified department
-    const filteredCourses = response.data.filter(
-      (course: CourseSection) => course.SWV_CLASS_SEARCH_SUBJECT === department.toUpperCase()
-    );
-
-    const undergradCourses = filteredCourses.filter(
-        (course: CourseSection) => parseInt(course.SWV_CLASS_SEARCH_COURSE) < 500
-    );
-    
-    // extract unique course numbers
+    // Extract unique course numbers
     const uniqueCourseNumbers = [...new Set(
-        undergradCourses.map((course: CourseSection) => course.SWV_CLASS_SEARCH_COURSE)
-      )].filter(Boolean).sort((a, b) => {
-        const numA = parseInt(a as string);
-        const numB = parseInt(b as string);
-        return numA - numB;
-      });
+      undergradCourses.map(course => course.SWV_CLASS_SEARCH_COURSE)
+    )].filter(Boolean).sort((a, b) => {
+      const numA = parseInt(a as string);
+      const numB = parseInt(b as string);
+      return numA - numB;
+    });
     
     return NextResponse.json({
       success: true,
-      courseNumbers: uniqueCourseNumbers
+      courseNumbers: uniqueCourseNumbers,
+      cached: true // Let frontend know this was cached
     });
   } 
   catch (error) {

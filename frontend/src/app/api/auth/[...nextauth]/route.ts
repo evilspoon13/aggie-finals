@@ -5,12 +5,14 @@ import { NextAuthOptions } from "next-auth";
 declare module "next-auth" {
     interface Session {
         user: {
-        id: string;
-        googleId: string;
-        email: string;
-        name?: string;
-        } & DefaultSession["user"];
+          id: string;
+          googleId: string;
+          email: string;
+          name?: string;
+        } 
+        & DefaultSession["user"];
         accessToken?: string;
+        nextAuthToken?: any;
         error?: string;
     }
 }
@@ -27,6 +29,18 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+
+  jwt: {
+    // Use HS256 algorithm (signed, not encrypted)
+    encode: async ({ secret, token }) => {
+      const jwt = require('jsonwebtoken');
+      return jwt.sign(token, secret, { algorithm: 'HS256' });
+    },
+    decode: async ({ secret, token }) => {
+      const jwt = require('jsonwebtoken');
+      return jwt.verify(token, secret, { algorithms: ['HS256'] });
+    },
   },
   
   callbacks: {
@@ -53,6 +67,8 @@ export const authOptions: NextAuthOptions = {
         session.user.googleId = token.sub as string;
         session.accessToken = token.accessToken as string;
       }
+
+      session.nextAuthToken = token;
       
       return session;
     },
@@ -89,11 +105,6 @@ export const authOptions: NextAuthOptions = {
       }
       return true
     },
-  },
-  
-  pages: {
-    signIn: '/login',
-    error: '/login',
   },
 };
 

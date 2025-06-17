@@ -75,7 +75,6 @@ export default function Home() {
                 lectureSchedule.endTime
               );
 
-              console.log("Making API call with:", examRequest); // Debug log
 
               const apiExam = await findExam(examRequest);
               

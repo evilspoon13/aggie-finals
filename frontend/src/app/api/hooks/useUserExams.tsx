@@ -1,9 +1,9 @@
 "use client";
 
+import { authenticatedFetch } from '@/lib/api';
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 
-// Update your types to match the new DTO
 export interface ExamWithClassName {
   examId: number;
   termId: string;
@@ -32,7 +32,7 @@ export function useUserExams() {
     setError(null)
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         USER_API_URL,
         {
           method: 'POST',
@@ -40,7 +40,7 @@ export function useUserExams() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ 
-            userId: session.user.googleId,
+            googleId: session.user.googleId,
             examId, 
             className 
           }),
@@ -74,7 +74,7 @@ export function useUserExams() {
     setError(null)
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         USER_API_URL,
         {
           method: 'DELETE',
@@ -82,7 +82,7 @@ export function useUserExams() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ 
-            userId: session.user.googleId,
+            googleId: session.user.googleId,
             examId, 
             className 
           }),
@@ -116,7 +116,7 @@ export function useUserExams() {
     setError(null)
 
     try {
-      const response = await fetch(
+      const response = await authenticatedFetch(
         `${USER_API_URL}${session.user.googleId}/exams`
       )
 
