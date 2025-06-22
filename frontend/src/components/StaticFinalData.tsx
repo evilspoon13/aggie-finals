@@ -3,7 +3,7 @@ import { IndividualStaticFinal } from "./IndividualStaticFinal";
 import { Badge } from "./ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import { FinalExam } from "@/app/api/types";
-
+import { parseLocalDate } from "@/lib/util/parseLocalDate";
 
 interface GroupedExams {
   thursdayExams: FinalExam[];
@@ -14,8 +14,6 @@ interface GroupedExams {
 
 function groupExamsByDay(examData: FinalExam[]): GroupedExams {
   const grouped = examData.reduce((acc, exam) => {
-    console.log(`Processing exam with date: ${exam.date}`);
-    
     if (exam.date.includes('2025-12-11')) { // Thursday
       acc.thursdayExams.push(exam);
     } else if (exam.date.includes('2025-12-12')) { // Friday
@@ -47,7 +45,7 @@ const formatExamForDisplay = (exam: FinalExam) => ({
 });
 
 const formatDate = (dateStr: string): string => {
-  const date = new Date(dateStr);
+  const date = parseLocalDate(dateStr);
   const options: Intl.DateTimeFormatOptions = { 
     weekday: 'long', 
     year: 'numeric', 

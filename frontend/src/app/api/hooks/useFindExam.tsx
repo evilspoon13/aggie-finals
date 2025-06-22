@@ -36,6 +36,9 @@ export const useFindExam = (): UseFindExamResult => {
 
       if (response.ok) {
         const examData: FinalExam = await response.json();
+
+        console.log(examData.date);
+
         setExam(examData);
         return examData;
       } else if (response.status === 404) {

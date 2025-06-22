@@ -32,14 +32,11 @@ export const FinalExamCard = ({
 
     if (!session?.user?.googleId) {
       setAdding(false);
-      setFailed(true);
+      setFailed(false);
       setTimeout(() => setFailed(false), 1200);
       await signIn("google", { callbackUrl: "/" });
       return;
     }
-
-
-
 
     const result = await addExamToSchedule(exam.examId, className);
     if (result) {
@@ -52,6 +49,7 @@ export const FinalExamCard = ({
     }
     setAdding(false);
   };
+
 
   if (loading) {
     return (
@@ -103,6 +101,7 @@ export const FinalExamCard = ({
   const courseNumber = courseDetails?.courseNumber;
   const title = courseDetails?.title;
   const className = `${subject} ${courseNumber} - ${title}`;
+
 
   if (error) {
     return (

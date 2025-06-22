@@ -90,7 +90,6 @@ export const authOptions: NextAuthOptions = {
           })
           
           if(response.ok){
-            console.log('user created/updated in backend successfully')
             return true
           } 
           else{

@@ -3,6 +3,7 @@ import { CourseInstructor, CourseMeeting, CourseRequest, CourseResponse, CourseS
 
 const INFO_API_URL = "/api/course-info";
 const SECTIONS_API_URL = "/api/course-sections";
+const SUBJECTS_API_URL = "/backend/subjects"
 
 export const fetchCourseInfo = async (request: CourseRequest): Promise<CourseResponse> => {
     try{
@@ -50,27 +51,26 @@ export const searchCourseSections = async (request: CourseSectionRequest): Promi
     }
 };
 
-export interface SubjectSearchResult{
-    success: boolean;
-    subject: string[];
-    error?: string;
+export interface Subject {
+    id: number;
+    shortName: string;
+    longName: string;
 }
 
-
-export const searchSubjects = async (): Promise<SubjectSearchResult[]> => {
+export const searchSubjects = async (): Promise<Subject[]> => {
     try {
-        const response = await axios.post('/api/course-subjects', {}, {
+        const response = await axios.get<Subject[]>(SUBJECTS_API_URL, {
             headers: {
                 'Content-Type': 'application/json',
             }
         });
         
-        return [response.data];
+        return response.data;
     }
     catch (error) {
         if (axios.isAxiosError(error)){
             console.error('API Error:', error.response?.data || error.message);
-            throw new Error(`Failed to search course subjects: ${error.message}`);
+            throw new Error(`Failed to fetch subjects: ${error.message}`);
         }
         throw error;
     }

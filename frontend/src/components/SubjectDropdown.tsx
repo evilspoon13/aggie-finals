@@ -16,10 +16,11 @@ export function SubjectDropdown({
   placeholder = 'Select subject...' 
 }: SubjectDropdownProps) {
   const fetchSubjects = useCallback(async () => {
-    const response = await searchSubjects();
-    // Get the first successful result's subjects
-    const subjectList = response.find(result => result.success)?.subject || [];
-    return subjectList.sort();
+    const subjects = await searchSubjects();
+    
+    const subjectCodes = subjects.map(subject => subject.longName);
+
+    return subjectCodes;
   }, []);
 
   return (

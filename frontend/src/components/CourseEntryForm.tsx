@@ -70,7 +70,8 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
 
   // handle subject change
   const handleSubjectChange = (newSubject: string) => {
-    setSubject(newSubject);
+    // every course code is 4 letters lol
+    setSubject(newSubject.substring(0, 4));
     setCourseNumber("");
   };
 
@@ -108,7 +109,6 @@ export function CourseEntryForm({ courses, setCourses, onGenerateSchedule }: Cou
             {/* Course Number Dropdown */}
             <div className="flex flex-col items-center space-y-2">
               <div className="w-full max-w-xs">
-                <label className="block text-sm font-medium text-gray-700">Course Number</label>
                 <CourseNumberDropdown
                   value={courseNumber}
                   onChange={setCourseNumber}

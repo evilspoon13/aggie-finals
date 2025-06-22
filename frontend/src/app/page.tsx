@@ -78,7 +78,6 @@ export default function Home() {
 
               const apiExam = await findExam(examRequest);
               
-              console.log("API response:", apiExam); // Debug log
               
               if (apiExam) {
                 // Convert API response to FinalExamResult format

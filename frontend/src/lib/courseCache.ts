@@ -17,7 +17,6 @@ class CourseCache {
 
     // Return cached data if fresh
     if (cached && Date.now() - cached.timestamp < this.CACHE_DURATION) {
-      console.log('Using cached course data');
       return cached.data;
     }
     
@@ -49,7 +48,6 @@ class CourseCache {
       
       
       if (cached) {
-        console.log('Using stale cache due to API error');
         return cached.data;
       }
       

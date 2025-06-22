@@ -16,10 +16,9 @@ export interface ExamWithClassName {
 }
 
 export function useUserExams() {
-  const { data: session } = useSession();
+  const { data: session, status: sessionStatus } = useSession();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
   const USER_API_URL = "/backend/users/";
 
   const addExamToSchedule = async (examId: number, className: string) => {
@@ -48,7 +47,6 @@ export function useUserExams() {
       )
 
       if (response.ok) {
-        console.log('Exam added successfully!')
         return true
       } else {
         const errorText = await response.text()
@@ -90,7 +88,7 @@ export function useUserExams() {
       )
 
       if (response.ok) {
-        console.log('Exam removed successfully!')
+      
         return true
       } else {
         const errorText = await response.text()
@@ -107,6 +105,7 @@ export function useUserExams() {
   }
 
   const getUserExams = async (): Promise<ExamWithClassName[]> => {
+    
     if (!session?.user?.googleId) {
       setError('User not authenticated')
       return []
@@ -117,7 +116,7 @@ export function useUserExams() {
 
     try {
       const response = await authenticatedFetch(
-        `${USER_API_URL}${session.user.googleId}/exams`
+        `${USER_API_URL}/exams`
       )
 
       if (response.ok) {
@@ -141,6 +140,7 @@ export function useUserExams() {
     removeExamFromSchedule,
     getUserExams,
     loading,
-    error
+    error,
+    sessionStatus
   }
 }
