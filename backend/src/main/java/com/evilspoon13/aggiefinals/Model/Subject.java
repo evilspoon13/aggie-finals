@@ -10,10 +10,10 @@ public class Subject {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "short", nullable = false, length = 10)
+    @Column(name = "short_name", nullable = false, length = 10)
     private String shortName;
 
-    @Column(name = "long", nullable = false, length = 50)
+    @Column(name = "long_name", nullable = false, length = 50)
     private String longName;
 
     public Subject(){
