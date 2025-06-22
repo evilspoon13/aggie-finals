@@ -77,7 +77,7 @@ export const authOptions: NextAuthOptions = {
       if (account?.provider === 'google') {
         try {
   
-          const response = await fetch('http://localhost:8080/api/users/auth', {
+          const response = await fetch('https://aggie-finals.fly.dev/api/users/auth', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

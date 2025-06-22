@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/backend/:path*',
-        destination: 'http://localhost:8080/api/:path*',
+        destination: 'https://aggie-finals.fly.dev/api/:path*',
       },
     ];
   },
