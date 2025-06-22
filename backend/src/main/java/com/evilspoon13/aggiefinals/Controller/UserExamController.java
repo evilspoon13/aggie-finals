@@ -19,19 +19,19 @@ public class UserExamController {
     @Autowired
     private UserExamService userExamService;
 
-    @GetMapping("/{googleId}/exams")
-    public ResponseEntity<Set<ExamWithClassNameDTO>> getUserExams(@PathVariable String googleId,
-                                                                  HttpServletRequest request) {
+    @GetMapping("/exams")
+    public ResponseEntity<Set<ExamWithClassNameDTO>> getUserExams(HttpServletRequest request) {
         try {
 
             String authenticatedGoogleId = (String) request.getAttribute("authenticatedGoogleId");
 
             // user can only access their own exams
-            if (authenticatedGoogleId == null || !authenticatedGoogleId.equals(googleId)) {
+            if (authenticatedGoogleId == null) {
                 return ResponseEntity.status(403).body(null); // Forbidden
             }
 
-            Set<ExamWithClassNameDTO> exams = userExamService.getUserExamsWithClassName(googleId);
+            Set<ExamWithClassNameDTO> exams = userExamService.getUserExamsWithClassName(authenticatedGoogleId);
+
             return ResponseEntity.ok(exams);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();

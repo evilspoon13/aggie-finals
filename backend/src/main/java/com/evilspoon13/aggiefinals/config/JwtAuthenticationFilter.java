@@ -26,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String requestPath = request.getRequestURI();
 
         //skip auth at user creation endpoint
-        if(requestPath.equals("/api/users/auth") || requestPath.startsWith("/api/final-exams")){
+        if(requestPath.equals("/api/users/auth") || requestPath.startsWith("/api/final-exams") || requestPath.startsWith("/api/subjects")) {
             filterChain.doFilter(request, response);
             return;
         }
