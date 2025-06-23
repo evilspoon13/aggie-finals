@@ -15,6 +15,10 @@ public class SubjectService {
         this.subjectRepo = subjectRepo;
     }
 
+    public long count() {
+        return subjectRepo.count();
+    }
+
     public List<Subject> getAllSubjects() {
         return subjectRepo.findAll();
     }
