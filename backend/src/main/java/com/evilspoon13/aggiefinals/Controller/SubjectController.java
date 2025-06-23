@@ -18,16 +18,6 @@ public class SubjectController {
     @Autowired
     private SubjectService subjectService;
 
-    @GetMapping("/test")
-    public ResponseEntity<String> testConnection() {
-        try {
-            long count = subjectService.count();
-            return ResponseEntity.ok("Subject count: " + count);
-        } catch (Exception e) {
-            return ResponseEntity.ok("Error: " + e.getMessage());
-        }
-    }
-
     @GetMapping
     public ResponseEntity<List<Subject>> getAllSubjects() {
         try {
