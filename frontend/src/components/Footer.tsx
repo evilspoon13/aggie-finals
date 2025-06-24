@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
+import { RiGithubFill } from "react-icons/ri";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -9,8 +10,16 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-4 md:mb-0">
-            <div className="flex items-center justify-center md:justify-start">
-              <span className="text-sm font-medium text-gray-800">Made by Cam</span>
+            <div className="flex items-center justify-center md:justify-start m-4">
+              <Link 
+                href="https://github.com/evilspoon13/aggie-finals" 
+                className="text-sm text-gray-600 hover:text-[#500000] flex items-center gap-1"
+                target="_blank" 
+                rel="noopener noreferrer"
+              >
+                <RiGithubFill/>
+                <span className="text-sm font-medium text-gray-800">Made by Cam</span>
+              </Link>
             </div>
           </div>
           

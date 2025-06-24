@@ -38,8 +38,9 @@ export default function Calendar() {
                 <GoBackButton/>
             </div>
             
-            <div className="flex min-h-screen flex-col items-center justify-center p-4">
+            <div className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-16">
                 <div className="text-center">
+
                     <h2 className="text-3xl font-bold mb-6 text-white">Your Final Exams</h2>
                 </div>
 

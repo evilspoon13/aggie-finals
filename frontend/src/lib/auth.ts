@@ -32,7 +32,6 @@ export const authOptions: NextAuthOptions = {
   },
 
   jwt: {
-    // Use HS256 algorithm (signed, not encrypted)
     encode: async ({ secret, token }) => {
       const jwt = require('jsonwebtoken');
       return jwt.sign(token, secret, { algorithm: 'HS256' });
