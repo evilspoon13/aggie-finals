@@ -1,5 +1,6 @@
 package com.evilspoon13.aggiefinals.Model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -20,6 +21,7 @@ public class FinalExam {
     private String dayPattern;
 
     @Column(name = "date")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate date;
 
     @Column(name = "exam_time", length = 50)
