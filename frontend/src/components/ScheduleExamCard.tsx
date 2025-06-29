@@ -14,7 +14,6 @@ const formatExamDateShort = (dateStr: string) => {
 
 export const CalendarExamCard = ({ exam, onRemove }: { exam: ExamWithClassName; onRemove: (examId: number) => Promise<void>; }) => {
   const [isRemoving, setIsRemoving] = useState(false);
-  const dateInfo = formatExamDateShort(exam.date);
 
   const handleRemove = async () => {
     setIsRemoving(true);
@@ -39,7 +38,9 @@ export const CalendarExamCard = ({ exam, onRemove }: { exam: ExamWithClassName; 
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-start gap-3">
                 <div className="w-10 h-10 rounded-lg bg-[#562626] flex items-center justify-center">
-                  <BookOpen className="w-5 h-5 text-white" />
+                    <span className="text-xs px-2 py-1 text-white rounded-full font-medium">
+                    {exam.dayPattern}
+                  </span>
                 </div>
                 <div>
                   <h3 className="font-semibold text-gray-900 text-lg leading-tight">
@@ -73,12 +74,7 @@ export const CalendarExamCard = ({ exam, onRemove }: { exam: ExamWithClassName; 
                     <span className="text-sm font-medium">{exam.examTime}</span>
                   </div>
                 </div>
-                
-                <div className="flex items-center gap-2">
-                  <span className="text-xs px-2 py-1 bg-[#562626] text-white rounded-full font-medium">
-                    {exam.dayPattern}
-                  </span>
-                </div>
+
               </div>
             </div>
           </div>

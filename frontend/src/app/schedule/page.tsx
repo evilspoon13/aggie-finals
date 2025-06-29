@@ -43,14 +43,14 @@ const ExamSchedule = () => {
       </div>
 
       {/* Header */}
-      <div className="relative z-10 pt-16 pb-8 mt-5">
+      <div className="relative z-10 pt-16 pb-8">
         <div className="text-center">
-                      <div className="inline-flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <Calendar className="w-6 h-6 text-white" />
+            <div className="inline-flex items-center gap-3 mb-4 mt-8">
+                <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-white" />
+                </div>
+                <h1 className="text-4xl font-bold text-white">Your Schedule</h1>
             </div>
-            <h1 className="text-4xl font-bold text-white">Your Schedule</h1>
-          </div>
          <div className="flex items-center gap-2 mb-6 justify-center">
                 <h2 className="text-xl font-bold text-white">Good luck with your exams!</h2>
                 <Smile size={22} className="text-white" />
@@ -59,7 +59,7 @@ const ExamSchedule = () => {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 px-4 pb-16">
+      <div className="relative z-10 px-4 pb-16 mt-5">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden">
             {error && (
