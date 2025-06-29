@@ -31,120 +31,70 @@ export default function Home() {
     setShowSchedule(true);
 
     const updatedCourses = [...courses];
-    
-    for(let i = 0; i < updatedCourses.length; i++){
+
+    for (let i = 0; i < updatedCourses.length; i++) {
       const course = updatedCourses[i];
       course.loading = true;
-      
-      // Update UI to show this course is loading
       setCourses([...updatedCourses]);
 
-      try{
-        const data = await fetchCourseInfo({term: term, crn: course.crn})
+      try {
+        const data = await fetchCourseInfo({ term, crn: course.crn });
         const parsedData = parseCourseResponse(data);
         const lectureSchedule = getLectureSchedule(parsedData.meetings);
 
-        if(lectureSchedule){
-          // Handle special cases on frontend first
-          if (lectureSchedule.days === "Online" || 
-              lectureSchedule.courseType === "Laboratory" ||
-              lectureSchedule.courseType === "Seminar" ||
-              lectureSchedule.courseType === "Research" ||
-              lectureSchedule.courseType === "Independent Study") {
-            
-            const finalExam: FinalExamResult = {
-              success: true,
-              error: null,
-              date: "Check with Instructor",
-              examTime: getSpecialCaseMessage(lectureSchedule),
-              schedule: lectureSchedule,
-              courseDetails: course.courseDetails,
-              examId: 0
-            };
-            
+        if (lectureSchedule) {
+          // Special cases: show "could not find exam information"
+          if (
+            lectureSchedule.days === "Online" ||
+            ["Laboratory", "Seminar", "Research", "Independent Study"].includes(lectureSchedule.courseType)
+          ) {
             course.lectureSchedule = lectureSchedule;
-            course.finalExam = finalExam;
+            course.finalExam = undefined;
             course.error = null;
           } else {
-            // Make API call for regular courses
+            // Regular courses: fetch exam info
             try {
               const examRequest = createExamRequest(
-                term, // "202531"
+                term,
                 lectureSchedule.days,
                 lectureSchedule.beginTime,
                 lectureSchedule.endTime
               );
-
-
               const apiExam = await findExam(examRequest);
-              
-              
+
               if (apiExam) {
-                // Convert API response to FinalExamResult format
-                const finalExam: FinalExamResult = {
+                course.lectureSchedule = lectureSchedule;
+                course.finalExam = {
                   success: true,
                   error: null,
                   date: formatExamDate(apiExam.date),
                   examTime: apiExam.examTime,
                   schedule: lectureSchedule,
                   courseDetails: course.courseDetails,
-                  examId: apiExam.examId
+                  examId: apiExam.examId,
                 };
-                
-                course.lectureSchedule = lectureSchedule;
-                course.finalExam = finalExam;
                 course.error = null;
               } else {
-                // No exam found via API
-                const finalExam: FinalExamResult = {
-                  success: false,
-                  error: "No matching final exam time found for this course schedule",
-                  schedule: lectureSchedule,
-                  courseDetails: course.courseDetails,
-                  examId: 0
-                };
-                
                 course.lectureSchedule = lectureSchedule;
-                course.finalExam = finalExam;
+                course.finalExam = undefined;
                 course.error = null;
               }
-            } catch (apiError) {
-              console.error("API call failed:", apiError); // Debug log
+            } catch {
               course.error = "Failed to fetch exam schedule from server";
             }
           }
         } else {
           course.error = "No lecture component found for this course.";
         }
-      }
-      catch(error){
-        console.error("Course fetch error:", error); // Debug log
+      } catch {
         course.error = "Failed to load course data. Did you enter the right CRN?";
-      }
-      finally{
+      } finally {
         course.loading = false;
-        // Update state after each course is processed
         setCourses([...updatedCourses]);
       }
     }
 
     setLoading(false);
-  };
-
-  // Helper function for special case messages
-  const getSpecialCaseMessage = (lectureSchedule: any): string => {
-    if (lectureSchedule.days === "Online") {
-      return "Check with Instructor";
-    }
-    if (lectureSchedule.courseType === "Laboratory") {
-      return "Laboratory courses typically don't have final exams";
-    }
-    if (lectureSchedule.courseType === "Seminar" || 
-        lectureSchedule.courseType === "Research" || 
-        lectureSchedule.courseType === "Independent Study") {
-      return "May not have traditional final exam";
-    }
-    return "Check with Instructor";
   };
 
   // Helper function to format API date to display format
