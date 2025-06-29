@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/backend/:path*',
-        destination: 'https://aggie-finals.fly.dev/api/:path*',
+        destination: `${process.env.BACKEND_URL}/api/:path*`,
       },
     ];
   },

@@ -48,7 +48,12 @@ export function useUserExams() {
 
       if (response.ok) {
         return true
-      } else {
+      } 
+      else if(response.status === 409){
+        setError("Exam already exists in schedule");
+        return 'already_exists';
+      }
+      else {
         const errorText = await response.text()
         setError(`Failed to add exam: ${errorText}`)
         return false

@@ -3,7 +3,8 @@ import { IndividualStaticFinal } from "./IndividualStaticFinal";
 import { Badge } from "./ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
 import { FinalExam } from "@/app/api/types";
-import { parseLocalDate } from "@/lib/util/parseLocalDate";
+import { formatExamDate } from "@/lib/util/parseLocalDate";
+
 
 interface GroupedExams {
   thursdayExams: FinalExam[];
@@ -38,22 +39,12 @@ function groupExamsByDay(examData: FinalExam[]): GroupedExams {
 // Helper function to format exam data for display
 const formatExamForDisplay = (exam: FinalExam) => ({
   dayPattern: exam.dayPattern,
-  examDate: formatDate(exam.date),
+  examDate: formatExamDate(exam.date),
   examTime: exam.examTime,
   regularClassTime: formatClassTime(exam.classBeginTime, exam.classEndTime),
   examId: exam.examId
 });
 
-const formatDate = (dateStr: string): string => {
-  const date = parseLocalDate(dateStr);
-  const options: Intl.DateTimeFormatOptions = { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  };
-  return date.toLocaleDateString('en-US', options);
-};
 
 const formatClassTime = (beginTime: string, endTime: string): string => {
   const formatTime = (time: string): string => {

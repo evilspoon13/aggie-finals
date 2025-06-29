@@ -8,6 +8,7 @@ import { FinalExamResult } from "@/app/api/types";
 import { useUserExams } from "@/app/api/hooks/useUserExams";
 import { useState } from "react";
 import { signIn, useSession } from "next-auth/react";
+import { Button } from "./ui/button";
 
 interface FinalExamCardProps {
   finalExam?: FinalExamResult;
@@ -26,6 +27,7 @@ export const FinalExamCard = ({
   const [added, setAdded] = useState(false);
   const [adding, setAdding] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [alreadyExists, setAlreadyExists] = useState(false);
 
   const handleAddCourse = async (exam: FinalExamResult, className: string) => {
     setAdding(true);
@@ -39,9 +41,13 @@ export const FinalExamCard = ({
     }
 
     const result = await addExamToSchedule(exam.examId, className);
-    if (result) {
+    if (result === true) {
       setAdded(true);
       setTimeout(() => setAdded(false), 1200);
+    }
+    else if( result === 'already_exists') {
+      setAlreadyExists(true);
+      setTimeout(() => setAlreadyExists(false), 1200);
     }
     else{
       setFailed(true);
@@ -178,7 +184,7 @@ export const FinalExamCard = ({
                 </div>
                 <div>
                   <p className="text-xs text-gray-500">Date</p>
-                  <p className="font-medium text-sm">{date}</p>
+                  <p className="font-medium text-sm">{date || 'Date not available'}</p>
                 </div>
               </div>
               
@@ -195,23 +201,49 @@ export const FinalExamCard = ({
           </div>
           
           {/* add course to schedule button */}
-          <div className="flex justify-center mt-4">
-            <button 
+          <div className="flex flex-col items-center mt-4 gap-2">
+            <Button 
               onClick={() => handleAddCourse(finalExam, className)}
-              className={`w-12 py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2 ${added ? 'bg-green-600' : failed ? 'bg-red-600' : 'bg-[#562626] text-white hover:bg-[#562626]/90'} ${adding ? 'opacity-60 cursor-not-allowed' : ''}`}
-              disabled={adding}
+              className={`w-full max-w-xs py-2 px-4 rounded-md transition-colors flex items-center justify-center gap-2 font-medium
+                ${added ? 'bg-green-600 text-white hover:bg-green-600/90' 
+                  : alreadyExists ? 'bg-yellow-500 text-white' 
+                  : failed ? 'bg-red-600 text-white' 
+                  : !session?.user?.googleId ? 'bg-gray-300 text-gray-500 cursor-not-allowed' 
+                  : 'bg-[#562626] text-white hover:bg-[#562626]/90'}
+                ${adding ? 'opacity-60 cursor-not-allowed' : ''}`}
+              disabled={adding || !session?.user?.googleId || alreadyExists || failed}
+              aria-disabled={adding || !session?.user?.googleId}
             >
               {adding ? (
-                <Loader2Icon className="h-4 w-4 animate-spin" />
+                <>
+                  <Loader2Icon className="h-4 w-4 animate-spin" />
+                  Adding...
+                </>
               ) : added ? (
-                <CheckIcon className="h-4 w-4 text-white" />
-              ) : 
-              failed ? (
-                <XIcon className="h-4 w-4 text-white" />
+                <>
+                  <CheckIcon className="h-4 w-4" />
+                  Added!
+                </>
+              ) : alreadyExists ? (
+                <>
+                  <AlertTriangleIcon className="h-4 w-4" />
+                  Already in Schedule
+                </>
+              ) : failed ? (
+                <>
+                  <XIcon className="h-4 w-4" />
+                  Failed
+                </>
               ) : (
-                <PlusIcon className="h-4 w-4" />
+                <>
+                  <PlusIcon className="h-4 w-4" />
+                  Add to Schedule
+                </>
               )}
-            </button>
+            </Button>
+            {!session?.user?.googleId && (
+              <span className="text-xs text-gray-500">Sign in to add exams to your schedule.</span>
+            )}
           </div>
         </div>
       </CardContent>
