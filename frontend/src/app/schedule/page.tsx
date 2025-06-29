@@ -51,10 +51,6 @@ const ExamSchedule = () => {
                 </div>
                 <h1 className="text-4xl font-bold text-white">Your Schedule</h1>
             </div>
-         <div className="flex items-center gap-2 mb-6 justify-center">
-                <h2 className="text-xl font-bold text-white">Good luck with your exams!</h2>
-                <Smile size={22} className="text-white" />
-            </div>
         </div>
       </div>
 
