@@ -43,7 +43,7 @@ const ExamSchedule = () => {
       </div>
 
       {/* Header */}
-      <div className="relative z-10 pt-16 pb-8">
+      <div className="relative z-10 pt-16 pb-8 mt-5">
         <div className="text-center">
                       <div className="inline-flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
