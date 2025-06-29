@@ -30,7 +30,7 @@ class CourseCache {
           publicSearch: "Y"
         },
         {
-          timeout: 15000, // 15 second timeout
+          timeout: 8000, // 15 second timeout
         }
       );
 

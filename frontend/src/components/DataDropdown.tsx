@@ -118,7 +118,7 @@ export function DataDropdown({
             className="w-full justify-between bg-white"
             disabled={loading || disabled}
           >
-            {loading ? `Loading ${label || 'options'}...` : 
+            {loading ? `Loading options...` : 
              value ? value : placeholder}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
