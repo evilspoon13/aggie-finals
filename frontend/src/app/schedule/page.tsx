@@ -47,9 +47,9 @@ const ExamSchedule = () => {
         <div className="text-center">
                       <div className="inline-flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <GraduationCap className="w-6 h-6 text-white" />
+              <Calendar className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-4xl font-bold text-white">Final Exams</h1>
+            <h1 className="text-4xl font-bold text-white">Your Schedule</h1>
           </div>
          <div className="flex items-center gap-2 mb-6 justify-center">
                 <h2 className="text-xl font-bold text-white">Good luck with your exams!</h2>
@@ -88,14 +88,8 @@ const ExamSchedule = () => {
               ) : (
                 <div className="space-y-8">
                   {/* Stats Header */}
-                  <div className="flex items-center justify-between mb-8 p-4 bg-[#562626]/5 rounded-lg border border-[#562626]/10">
-                    <div>
-                      <h2 className="text-lg font-semibold text-gray-900">Exam Schedule Overview</h2>
-                      <p className="text-gray-600 text-sm">
-                        {sortedExams.length} exam{sortedExams.length !== 1 ? 's' : ''} scheduled
-                      </p>
-                    </div>
-                    <div className="text-right">
+                  <div className="flex items-center justify-center mb-8 p-4 bg-[#562626]/5 rounded-lg border border-[#562626]/10">
+                    <div className="text-center">
                       <p className="text-2xl font-bold text-[#562626]">{sortedExams.length}</p>
                       <p className="text-xs text-gray-500 uppercase tracking-wide">Total Exams</p>
                     </div>
