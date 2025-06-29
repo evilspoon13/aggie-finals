@@ -1,10 +1,9 @@
-package com.evilspoon13.aggiefinals.Controller;
+package com.evilspoon13.aggiefinals.controller;
 
-import com.evilspoon13.aggiefinals.DTO.ExamWithClassNameDTO;
-import com.evilspoon13.aggiefinals.Model.FinalExam;
-import com.evilspoon13.aggiefinals.Model.User;
-import com.evilspoon13.aggiefinals.Model.UserExam;
-import com.evilspoon13.aggiefinals.Service.UserExamService;
+import com.evilspoon13.aggiefinals.dto.ExamWithClassNameDTO;
+import com.evilspoon13.aggiefinals.exception.ExamAlreadyExistsException;
+import com.evilspoon13.aggiefinals.model.UserExam;
+import com.evilspoon13.aggiefinals.service.UserExamService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,16 +42,25 @@ public class UserExamController {
     public ResponseEntity<String> addExamToUser(@RequestBody UserExam userExam,
                                                 HttpServletRequest request) {
         try {
-
             String authenticatedGoogleId = (String) request.getAttribute("authenticatedGoogleId");
 
             // user can only add exams to their own schedule
             if (authenticatedGoogleId == null || !authenticatedGoogleId.equals(userExam.getGoogleId())) {
                 return ResponseEntity.status(403).body(null); // Forbidden
             }
+
+            if(userExamService.isExamAlreadyExists(userExam)) {
+                throw new ExamAlreadyExistsException("Exam already exists in your schedule.");
+            }
+
             userExamService.addExamToUser(userExam);
             return ResponseEntity.ok("Exam added successfully");
-        } catch (RuntimeException e) {
+        }
+        catch(ExamAlreadyExistsException e){
+            return ResponseEntity.status(409).body("Exam already exists in your schedule.");
+        }
+
+        catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

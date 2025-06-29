@@ -1,4 +1,4 @@
-package com.evilspoon13.aggiefinals.DTO;
+package com.evilspoon13.aggiefinals.dto;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

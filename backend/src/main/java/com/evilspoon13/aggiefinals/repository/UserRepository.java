@@ -1,6 +1,6 @@
-package com.evilspoon13.aggiefinals.Repository;
+package com.evilspoon13.aggiefinals.repository;
 
-import com.evilspoon13.aggiefinals.Model.User;
+import com.evilspoon13.aggiefinals.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;

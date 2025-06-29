@@ -1,4 +1,4 @@
-package com.evilspoon13.aggiefinals.Model;
+package com.evilspoon13.aggiefinals.model;
 
 import jakarta.persistence.*;
 

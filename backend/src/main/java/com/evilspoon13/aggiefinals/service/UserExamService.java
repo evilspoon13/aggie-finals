@@ -1,10 +1,10 @@
-package com.evilspoon13.aggiefinals.Service;
+package com.evilspoon13.aggiefinals.service;
 
-import com.evilspoon13.aggiefinals.DTO.ExamWithClassNameDTO;
-import com.evilspoon13.aggiefinals.Model.FinalExam;
-import com.evilspoon13.aggiefinals.Model.UserExam;
-import com.evilspoon13.aggiefinals.Repository.FinalExamRepository;
-import com.evilspoon13.aggiefinals.Repository.UserExamRepository;
+import com.evilspoon13.aggiefinals.dto.ExamWithClassNameDTO;
+import com.evilspoon13.aggiefinals.model.FinalExam;
+import com.evilspoon13.aggiefinals.model.UserExam;
+import com.evilspoon13.aggiefinals.repository.FinalExamRepository;
+import com.evilspoon13.aggiefinals.repository.UserExamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +22,12 @@ public class UserExamService {
 
     @Autowired
     private FinalExamRepository finalExamRepo;
+
+
+    public boolean isExamAlreadyExists(UserExam userExam) {
+        Set<UserExam> userExams = userExamRepo.findByGoogleId(userExam.getGoogleId());
+        return userExams.stream().anyMatch(exam -> exam.getExamId().equals(userExam.getExamId()));
+    }
 
     // get user's final exams
     public Set<ExamWithClassNameDTO> getUserExamsWithClassName(String googleId) {

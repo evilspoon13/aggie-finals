@@ -1,7 +1,7 @@
-package com.evilspoon13.aggiefinals.Service;
+package com.evilspoon13.aggiefinals.service;
 
-import com.evilspoon13.aggiefinals.Model.User;
-import com.evilspoon13.aggiefinals.Repository.UserRepository;
+import com.evilspoon13.aggiefinals.model.User;
+import com.evilspoon13.aggiefinals.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

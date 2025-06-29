@@ -1,7 +1,7 @@
-package com.evilspoon13.aggiefinals.Controller;
+package com.evilspoon13.aggiefinals.controller;
 
-import com.evilspoon13.aggiefinals.Model.Subject;
-import com.evilspoon13.aggiefinals.Service.SubjectService;
+import com.evilspoon13.aggiefinals.model.Subject;
+import com.evilspoon13.aggiefinals.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

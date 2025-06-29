@@ -1,9 +1,8 @@
-package com.evilspoon13.aggiefinals.Service;
+package com.evilspoon13.aggiefinals.service;
 
-import com.evilspoon13.aggiefinals.Controller.FinalExamController;
-import com.evilspoon13.aggiefinals.DTO.ExamRequest;
-import com.evilspoon13.aggiefinals.Model.FinalExam;
-import com.evilspoon13.aggiefinals.Repository.FinalExamRepository;
+import com.evilspoon13.aggiefinals.dto.ExamRequest;
+import com.evilspoon13.aggiefinals.model.FinalExam;
+import com.evilspoon13.aggiefinals.repository.FinalExamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

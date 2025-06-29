@@ -1,9 +1,7 @@
-package com.evilspoon13.aggiefinals.Model;
+package com.evilspoon13.aggiefinals.model;
 
 import jakarta.persistence.*;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")

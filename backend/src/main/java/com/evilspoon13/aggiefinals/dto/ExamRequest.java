@@ -1,4 +1,4 @@
-package com.evilspoon13.aggiefinals.DTO;
+package com.evilspoon13.aggiefinals.dto;
 
 public class ExamRequest{
     private String termId;

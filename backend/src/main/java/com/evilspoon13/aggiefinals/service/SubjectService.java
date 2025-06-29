@@ -1,7 +1,7 @@
-package com.evilspoon13.aggiefinals.Service;
+package com.evilspoon13.aggiefinals.service;
 
-import com.evilspoon13.aggiefinals.Model.Subject;
-import com.evilspoon13.aggiefinals.Repository.SubjectRepository;
+import com.evilspoon13.aggiefinals.model.Subject;
+import com.evilspoon13.aggiefinals.repository.SubjectRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

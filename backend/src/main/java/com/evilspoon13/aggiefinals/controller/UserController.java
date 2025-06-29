@@ -1,7 +1,7 @@
-package com.evilspoon13.aggiefinals.Controller;
+package com.evilspoon13.aggiefinals.controller;
 
-import com.evilspoon13.aggiefinals.Model.User;
-import com.evilspoon13.aggiefinals.Service.UserService;
+import com.evilspoon13.aggiefinals.model.User;
+import com.evilspoon13.aggiefinals.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
